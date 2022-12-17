@@ -1,180 +1,155 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-	<head>
-		<title>方块岛</title>   
-		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-		<meta name="KEYWords" contect="演示">
-		<meta name="DEscription" contect="演示">
-		<meta name="Robots" contect= "all">
-		<link rel="stylesheet"  href="style.css">
-	</head>
-	<body>
-		<div class="container"><!-- 主体开始 -->
-			<div class="hander"><!-- 导航开始 -->
-				<nav id="nav-menu">
-					<a href="#" data-rel="home-me-section" class="active">首页</a>
-					<a href="#" data-rel="about-exp-section">关于</a>
-					<a href="#" data-rel="course-exp-section">历程</a>
-					<a href="#" data-rel="website-exp-section">站点</a>
-					</nav>
-				</div><!-- 导航结束 -->
-			<div class="content"><!-- 内容开始 -->
-				<section class="home-me-section active-section"><!-- 首页开始 -->
-					<div class="main"><!-- 首页内容 -->
-						<img src="RE4wE9b.jfif" class="bgo" />
-						<div class="name" onclick="javascript:this.innerHTML=(this.innerHTML=='cuzbk°'?'cuzbk°':'cuzbk°');">方块狗</div>
-						<div class="motto" onclick="javascript:this.innerHTML=(this.innerHTML=='心存敬畏 行有所止'?'Be in awe and stop':'心存敬畏 行有所止');"></div>
-						<div class="motto" onclick="javascript:this.innerHTML=(this.innerHTML=='心存敬畏 行有所止'?'Be in awe and stop':'心存敬畏 行有所止');"></div>
-					
-						<div class="motto" onclick="javascript:this.innerHTML=(this.innerHTML=='心存敬畏 行有所止'?'Be in awe and stop':'心存敬畏 行有所止');">心存敬畏 行有所止</div>						<div class="motto" onclick="javascript:this.innerHTML=(this.innerHTML=='心存敬畏 行有所止'?'Be in awe and stop':'心存敬畏 行有所止');"></div>
-						<div class="motto" onclick="javascript:this.innerHTML=(this.innerHTML=='心存敬畏 行有所止'?'Be in awe and stop':'心存敬畏 行有所止');"></div>
-						<div class="motto" onclick="javascript:this.innerHTML=(this.innerHTML=='心存敬畏 行有所止'?'Be in awe and stop':'心存敬畏 行有所止');"></div>
-						<div class="motto" onclick="javascript:this.innerHTML=(this.innerHTML=='心存敬畏 行有所止'?'Be in awe and stop':'心存敬畏 行有所止');"></div>
-
-						
-
-						<div class="navo">
-							<ul>
-								<li><a href="#" target="_blank"><i class="fab fa-qq"></i></a></li><!-- QQ -->
-								<li><a href="#" target="_blank"><i class="fab fa-weibo"></i></a></li><!-- 微博 -->
-								<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li><!-- twitter -->
-								<li><a href="https://github.com/fangkuaidog" target="_blank"><i class="fab fa-github"></i></a></li><!-- github -->
-								<li><a href="https://www.baidu.com" target="_blank"><i class="fas fa-paw"></i></a></li><!-- 百度 -->
-								<li><a href="#" target="_blank"><i class="fas fa-envelope"></i></a></li><!-- 邮箱 -->
-							</ul>
-						</div>
-					</div><!-- 首页内容结束 -->
-					</section><!-- 首页结束 -->
-				<section class="about-exp-section"><!-- 关于开始 -->
-					<div class="main"><!-- 关于内容 -->
-						<img src="RE4wE9b.jfif" class="bgt" />
-						
-						<div class="about">
-							<p>>_酷爱开发，会去自学感兴趣的一切东西
-							<br>>_略懂c++，python，喜欢折腾，努力去解决遇到的一切问题
-							</p>
-						</div>
-						<div class="about" style="margin-top:20px;">
-							<p>这条路我才刚刚迈开了我的第一步
-							<br>路上的坎一定会非常多，但
-							<br>在我眼里
-							<br>没有什么问题是尝试不能解决的，
-							<br>即使前方的路看似绝境，也要有硬生生给自己开出一条路的勇气</p>
-						</div>
-					</div><!-- 关于内容结束 -->
-					</section><!-- 关于结束 -->
-				<section class="course-exp-section"><!-- 历程开始 -->
-					<div class="main"><!-- 历程内容 -->
-						<img src="RE4wE9b.jfif" class="bgt" />
-						
-						<div class="box">
-							<div id="boxs">
-								<div class="track-list"><!-- 时间轴开始 -->
-								<ul>
-									<li>
-										<i class="node-icon"><img src="img/tbl.svg"></i>
-										<span class="time" style="color:#2ECC71"><!DOCTYPE html>
-											
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-		<style type="text/css">
-			#Main
-			{
-				margin-top: 10px;
-				margin-left: 10px;
-				height: 10px;
-				font-size: 5px;
-			}
-		</style>
-		<script type="text/javascript">
-			window.onload=function()
-			{
-				window.requestAnimationFrame(getDate)
-			}
-			
-			function getDate()
-			{
-				window.setTimeout(function(){
-					window.requestAnimationFrame(getDate)
-				},1000/2)
-				var d=new Date();   
-				var year=d.getFullYear()  //获取年
-				var month=d.getMonth()+1;  //获取月，从 Date 对象返回月份 (0 ~ 11)，故在此处+1
-				var day=d.getDay()    //获取日
-				var days=d.getDate() //获取日期
-				var hour=d.getHours()   //获取小时
-				var minute=d.getMinutes()  //获取分钟
-				var second=d.getSeconds()   //获取秒
-				
-				if(month<10) month="0"+month
-				if(days<10) days="0"+days
-				if(hour<10) hour="0"+hour
-				if(minute<10) minute="0"+minute
-				if(second<10) second="0"+second
-				
-				var week=new Array("星期日","星期一","星期二","星期三","星期四","星期五","星期六")
-				var Tools=document.getElementById("Main")
-				var da=year+" 年 "+month+" 月 "+days+" 日 "+week[day]+" "+hour+" : "+minute+" :"+second
-				Tools.innerHTML=da
-			}
-			
-		</script>
-	</head>
-	<body>
-		<div id="Main"></div>
-	</body>
-</html></span>
-										<span class="txt" style="color:#2ECC71">无</span>
-									</li>
-									<li>
-										<i class="node-icon"><img src="img/tb.svg"></i>
-										<span class="time">2021-1-6</span>
-										<span class="txt">无</span>
-									</li>
-									<li>
-										<i class="node-icon"><img src="img/tb.svg"></i>
-										<span class="time">2021-1-6</span>
-										<span class="txt">无</span>
-									</li>
-									<li>
-										<i class="node-icon"><img src="img/tb.svg"></i>
-										<span class="time">2021-1-6</span>
-										<span class="txt">无</span>
-									</li>
-									<li>
-										<i class="node-icon"><img src="img/tb.svg"></i>
-										<span class="time">2021-1-6</span>
-										<span class="txt">无</span>
-									</li>
-								</ul>
-							</div><!-- 时间轴结束 -->
-						</div>
-					</div>
-						<div style="color:#aaa;text-align:center;font-size:12px">
-								注: 上下滑动查看历史进程
-							</div>
-						</div><!-- 历程内容结束 -->
-					</section><!-- 历程结束 -->
-				<section class="website-exp-section"><!-- 站点开始 -->
-					<div class="main"><!-- 站点内容开始 -->
-						<img src="RE4wE9b.jfif" class="bgt" />
-						
-						<a href="#" target="_blank"><div class="web">引导页</div></a><!-- 站点一 -->
-						<a href="#" target="_blank"><div class="web">引导页</div></a><!-- 站点二 -->
-						<div class="web" onclick="alert('敬请期待')">敬请期待</div>
-						<div class="tips">所有站点均正常运行</div>
-						</div><!-- 站点内容结束 -->
-					</section><!-- 站点结束 -->
-				</div><!-- 内容结束 -->
-			</div><!-- 主体结束 -->
-			<img src="img/China.svg" style="width:60px;right:0px;position:fixed;bottom:0px;" /><!-- 右下角国旗 -->
-		<div class="footer"><!-- 底部版权 -->
-				<span id="sitetime"></span><!-- 运行时间 -->
-				
-			</div><!-- 版权结束 -->
-		<div id="tp-weather-widget"></div><!-- 天气插件 -->
+<head>
+    <meta charset="utf-8"/>
+    <meta name="referrer" content="no-referrer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="http://lf-cdn-tos.bytescm.com/obj/static/atsx-fe/campus/favicon.ico">
+    <title>HI,这是我的网站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Gilroy Semi Bold, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+        }
+
+        .video-box {
+            position: relative;
+            height: 100vh;
+            background-color: #C1CFF7;
+            /*进行视频裁剪*/
+            overflow: hidden;
+        }
+
+        .video-box .video-background {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            /*保证视频内容始终居中*/
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            min-height: 800px;
+        }
+
+        .layer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(19, 60, 154, .2);
+        }
+
+        .layer img {
+            margin-top: 15px;
+            margin-left: 100px;
+        }
+
+        .slogan {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 684px;
+            color: white;
+            text-align: center;
+        }
+
+        .slogan .subtitle {
+            font-weight: 550;
+            font-size: 20px;
+            letter-spacing: 10px;
+            margin: 0 0 16px;
+        }
+
+        .slogan .title {
+            font-weight: 550;
+            font-size: 56px;
+            margin: 0 0 16px;
+        }
+
+        .slogan .try-btn {
+            position: relative;
+            left: 50%;
+            width: 156px;
+            height: 54px;
+            line-height: 54px;
+            margin-top: 40px;
+            margin-left: -78px;
+            color: #3370ff;
+            background: white;
+            text-align: center;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background-color: black;
+        }
+
+        .content .avatar-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .content .avatar-box .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 25px;
+        }
+
+        .content .avatar-box .nickname {
+            font-size: 35px;
+            font-weight: 550;
+        }
+    </style>
+</head>
+<body>
+<div class="video-box">
+    <video class="video-background" preload="auto" loop playsinline autoplay
+           src="image/bj.mp4" tabindex="-1"
+           muted="muted"></video>
+    <div class="layer">
+        
+        <div class="slogan">
+            <div class="subtitle">hi,这是我的网站</div>
+            <div class="title">激发创造，丰富生活
+            </div>
+            <div class="subtitle">你是怎么知道我的？
+            </div>
+            <div class="try-btn" onclick="postNow()">在学校</div>
+            <div class="try-btn" onclick="postNow1()">在网络上</div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="avatar-box">
+        <img class="avatar" src="http://lf-cdn-tos.bytescm.com/obj/static/atsx-fe/campus/favicon.ico" alt="前端二次元">
+        <p class="nickname">这是我的网站</p>
+    </div>
+</div>
+<script>
+    function postNow () {
+        location.href = 'school/index.html'
+    }
+    function postNow1() {
+        location.href='eorry.html'
+    }
+</script>
+<div id="tp-weather-widget"></div><!-- 天气插件 -->
 		<script>
 			(function(a,h,g,f,e,d,c,b){b=function(){d=h.createElement(g);c=h.getElementsByTagName(g)[0];d.src=e;d.charset="utf-8";d.async=1;c.parentNode.insertBefore(d,c)};a["SeniverseWeatherWidgetObject"]=f;a[f]||(a[f]=function(){(a[f].q=a[f].q||[]).push(arguments)});a[f].l=+new Date();if(a.attachEvent){a.attachEvent("onload",b)}else{a.addEventListener("load",b,false)}}(window,document,"script","SeniverseWeatherWidget","//cdn.sencdn.com/widget2/static/js/bundle.js?t="+parseInt((new Date().getTime() / 100000000).toString(),10)));
 			window.SeniverseWeatherWidget('show', {
@@ -188,21 +163,7 @@
 			hover: "disabled",
 			container: "tp-weather-widget"
 			})
+			
 		</script><!-- 天气插件结束 -->
-		
-		
-		<div class="motto" onclick="javascript:this.innerHTML=(this.innerHTML=='心存敬畏 行有所止'?'Be in awe and stop':'心存敬畏 行有所止');"></div>
-		<div class="motto" onclick="javascript:this.innerHTML=(this.innerHTML=='心存敬畏 行有所止'?'Be in awe and stop':'心存敬畏 行有所止');"></div>
-
-		<div class="motto" onclick="javascript:this.innerHTML=(this.innerHTML=='心存敬畏 行有所止'?'Be in awe and stop':'心存敬畏 行有所止');"></div>
-		
-		<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1867107328&auto=1&height=66"></iframe>
-		
-		
-		
-		<script src="js/index.js"></script><!-- 核心插件 -->
-		<script src="js/all.js"></script><!-- 图标库 -->
-		<script src="js/Sitetime.js"></script><!-- 运行时间 -->
-		<script src="js/Mouse.js"></script><!-- 点击烟花特效 -->
-	</body>
+</body>
 </html>
