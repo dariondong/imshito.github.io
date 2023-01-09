@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+    <style>
+        .loader {
+ --height-of-loader: 4px;
+ --loader-color: #0071e2;
+ width: 60%;
+ height: var(--height-of-loader);
+ border-radius: 30px;
+ background-color: rgba(0,0,0,0.2);
+ position: relative;
+}
+
+.loader::before {
+ content: "";
+ position: absolute;
+ background: var(--loader-color);
+ top: 0;
+ left: 0;
+ width: 0%;
+ height: 100%;
+ border-radius: 30px;
+ animation: moving 1s ease-in-out infinite;
+ ;
+}
+
+@keyframes moving {
+ 50% {
+  width: 100%;
+ }
+
+ 100% {
+  width: 0;
+  right: 0;
+  left: unset;
+ }
+}
+        .container {
+  position: relative;
+  font-family: sans-serif;
+}
+
+.container::before {
+  border-radius: 50%;
+  width: 6rem;
+  height: 6rem;
+  top: 30%;
+  right: 7%;
+}
+
+.container::after {
+  content: "";
+  position: absolute;
+  height: 3rem;
+  top: 8%;
+  right: 5%;
+  border: 1px solid;
+}
+
+.container .box {
+  width: 11.875em;
+  height: 15.875em;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.074);
+  border: 1px solid rgba(255, 255, 255, 0.222);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: .7rem;
+  transition: all ease .3s;
+}
+
+.container .box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.container .box .title {
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: .1em
+}
+
+.container .box div strong {
+  display: block;
+  margin-bottom: .5rem;
+}
+
+.container .box div p {
+  margin: 0;
+  font-size: .9em;
+  font-weight: 300;
+  letter-spacing: .1em;
+}
+
+.container .box div span {
+  font-size: .7rem;
+  font-weight: 300;
+}
+
+.container .box div span:nth-child(3) {
+  font-weight: 500;
+  margin-right: .2rem;
+}
+
+.container .box:hover {
+  box-shadow: 0px 0px 20px 1px #0000003f;
+  border: 1px solid rgba(255, 255, 255, 0.454);
+}
+
+    </style>
+<body style="background-color: rgb(255, 255, 255);">
+    
+<div class="loader" style="margin:0 auto;"></div>
+    <div class="container" style="text-align: center;margin:0 auto;"  >
+        <div class="box" style="text-align: center;margin:0 auto;margin-top: 100px;" onclick="tishi()">
+            <span class="title"  >获取报告</span>
+            <div>
+                <strong>点击以获取</strong>
+                <p>会话ID:114514</p>
+                <p style="font-size: 3px;">本网站不会收集任何个人信息</p>
+                <span>云帆基因云鉴定STUDIO</span> <span>2023</span>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+<script>
+    function tishi()
+
+{
+var t=prompt("输入姓名（不会收集你的姓名仅仅进行验证）")
+var t=prompt("请输入身份证号码（不会收集你的身份证仅仅进行验证）")
+
+if (t!=null && t!="" && t.length==18)
+
+  {
+
+  window.location=("baogao.docx")
+
+  }
+else{
+    alert("输入错误")
+}
+}
+</script>
+</html>
