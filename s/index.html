@@ -11,6 +11,8 @@
     align-items: center;
     justify-content: space-between;
     text-align: center;
+    width: 60%;
+    margin: 0 auto;
   }
   
   .search__input {
@@ -21,7 +23,7 @@
     color: #646464;
     padding: 0.7rem 1rem;
     border-radius: 30px;
-    width: 200px;
+    width: 90%;
     transition: all ease-in-out .5s;
     margin-right: -2rem;
   }
@@ -45,9 +47,11 @@
   }
   
   .search__button {
+    width: 10%;
     border: none;
     background-color: #f4f2f2;
-    margin-top: .1em;
+    border-radius: 30px;
+    
   }
   
   .search__button:hover {
@@ -55,8 +59,9 @@
   }
   
   .search__icon {
-    height: 1.3em;
-    width: 1.3em;
+    
+    height: 16px;
+    width: 16px;
     fill: #b4b4b4;
   }
   .option{
@@ -67,11 +72,13 @@
     /*border-radius: 5px;*/
   /*盒子阴影修饰作用,自己随意*/
  /* box-shadow: 0 0 5px #ccc;*/
-    border: 1px solid #cccccc;
+    border: 1px solid #cccccc00;
     position: relative;
+    border-radius: 20px;
   }
   .option select{
   /*清除select的边框样式*/
+  border-radius: 20px;
   border: none;
   /*清除select聚焦时候的边框颜色*/
   outline: none;
@@ -84,10 +91,12 @@
     -webkit-appearance: none;
     -moz-appearance: none;
   /*通过padding-left的值让文字居中*/
-  padding-left: 20px;
+  
+  text-align: center;
   }
   /*使用伪类给select添加自己想用的图标*/
   .option:after{
+    
       content: "";
       width: 14px;
       height: 8px;
@@ -98,9 +107,104 @@
       top: 41%;
     /*给自定义的图标实现点击下来功能*/
     pointer-events: none;
-    }</style>
-<body style="background-image: url(https://bing.biturl.top/?resolution=1920&format=image&index=0&mkt=zh-CN); background-size: 100%; background-repeat: no-repeat; ">
-    <div style="margin: 100px auto;text-align: center;"><img src="yunfanstudio.png" alt="" width="30%" height="20%" style="width: 30%; margin: 0 auto;"></div>
+    }
+    
+    
+    ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(51, 51, 51, 0);
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: rgb(22, 22, 22);
+}
+
+.g:hover{
+  background-color:#ededed88;
+}
+button {
+  font-family: inherit;
+  font-size: 20px;
+  background: rgb(0, 0, 0);
+  color: white;
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.2s;
+  display:inline-block;
+  width: 135px;
+}
+
+button span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+}
+
+button svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+button:hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+button:hover svg {
+  transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+button:hover span {
+  transform: translateX(5em);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.1em);
+  }
+
+  to {
+    transform: translateY(-0.1em);
+  }
+}
+
+
+</style>
+<body style="background-image: url(https://bing.biturl.top/?resolution=1920&format=image&index=0&mkt=zh-CN); height: 100%; background-repeat: no-repeat; ">
+  
+    <div style="margin: 0 auto;text-align: center;"><ul>
+    <li ><a class="active" onclick="gopage1()" >主页</a></li>
+    <li ><a onclick="gopage2()" >关于</a></li>
+    
+  </ul></div>
+  
+  
+  <div id="page1" style="display: block;">
+  <div style="margin: 100px auto;text-align: center;"><img src="yunfanstudio.png" alt=""  style="margin: 0 auto;width: 40%;"></div>
     <div class="option" style="margin: 10px auto;">
         <select name="" id="ssyq" class="select">
         <option value="1" class="select">搜狗</option>
@@ -108,9 +212,9 @@
         <option value="3" class="select">bing</option>
     </select>
     </div>
-    <div style="text-align: center; margin: 0 auto;width: 600px;">
-        <div class="search" style="width: 600px;">
-        <input id="s_text" type="text" class="search__input" placeholder="Type your text" style="width: 600px;">
+    <div style="text-align: center; margin: 0 auto;">
+        <div class="search" >
+        <input id="s_text" type="text" class="search__input" placeholder="Type your text" >
         <button class="search__button" onclick="click()">
             <svg class="search__icon" aria-hidden="true" viewBox="0 0 24 24" onclick="click()">
                 <g>
@@ -120,9 +224,83 @@
         </button>
     </div>
 </div>
+  </div>
+  <div id="page2" style="display: none;">
+    <div style="margin: 50px auto;width: 80%;">
+                
+      <div class="g">
+                  <img src="yunfanstudio.png" alt="" width="30%" height="20%" style="width: 30%; margin: 0 auto;">
+                <div class="">
+                  <h2 style="color: #2e2e2e;">
+                  YunFan STUDIO 这是一个人的工作室
+                </h2>
+                
+                <button onclick="location.href='https://www.github.com/123yunfan'">
+                  <div class="svg-wrapper-1">
+                    <div class="svg-wrapper">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                        <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <span>GitHub</span>
+                </button>
+                <button onclick="location.href='https://space.bilibili.com/1799847757'" style="background-color: #c94482;">
+                  <div class="svg-wrapper-1">
+                    <div class="svg-wrapper">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                        <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <span>bilibili</span>
+                </button>
+              </div>
+                  
+                </div> 
+                
+                
+                
+                </div>
+    
+  
+  
+  
+  
+  
+  </div>
+  
 </body>
 </html>
 <script>
+  window.onkeypress=function(e){
+    var keynum;
+    var keychar;
+
+    keynum = window.event ? e.keyCode : e.which;
+    keychar = String.fromCharCode(keynum);
+    if(keynum==13){
+      click()
+    }
+
+
+
+  }
+    function gopage1(){
+      
+      document.getElementById("page1").style.display="block";
+      document.getElementById("page2").style.display="none";
+      
+
+    }
+    function gopage2(){
+      document.getElementById("page1").style.display="none";
+      document.getElementById("page2").style.display="block";
+      
+    }
+    
     function click(){
         var ssyq=document.getElementById('ssyq').value
         
