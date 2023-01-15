@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh">
-<head>
+<head >
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,9 @@
     align-items: center;
     justify-content: space-between;
     text-align: center;
-    width: 60%;
+    width: 50%;
     margin: 0 auto;
+    height: 50px;
   }
   
   .search__input {
@@ -21,11 +22,12 @@
     background-color: #f4f2f2;
     border: none;
     color: #646464;
-    padding: 0.7rem 1rem;
-    border-radius: 30px;
-    width: 90%;
+    width: 75%;
+    border-radius: 4px;
+    
     transition: all ease-in-out .5s;
     margin-right: -2rem;
+    height: 100%;
   }
   
   .search__input:hover, .search__input:focus {
@@ -50,14 +52,13 @@
     width: 10%;
     border: none;
     background-color: #f4f2f2;
-    border-radius: 30px;
+    border-radius: 4px;
+    height: 50px;
+    width: 50px;
     
   }
   
-  .search__button:hover {
-    cursor: pointer;
-  }
-  
+
   .search__icon {
     
     height: 16px;
@@ -194,7 +195,7 @@ button:active {
 
 
 </style>
-<body style="background-image: url(https://bing.biturl.top/?resolution=1920&format=image&index=0&mkt=zh-CN); height: 100%; background-repeat: no-repeat; ">
+<body style="background-image: url(https://bing.biturl.top/?resolution=1920&format=image&index=0&mkt=zh-CN); height: 100%; background-repeat: no-repeat; " onload="load()">
   
     <div style="margin: 0 auto;text-align: center;"><ul>
     <li ><a class="active" onclick="gopage1()" >主页</a></li>
@@ -275,6 +276,13 @@ button:active {
 </body>
 </html>
 <script>
+  function load(){
+    var URL= document.domain;
+    if(URL!='123yunfan.github.io/s'){
+      document.write('这里不是YunFan STUDIO官方 官方网址为https://123yunfan.github.io/s')
+    }
+    
+  }
   window.onkeypress=function(e){
     var keynum;
     var keychar;
