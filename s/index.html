@@ -278,7 +278,7 @@ button:active {
 <script>
   function load(){
     var URL= document.domain;
-    alert(URL)
+
     if(URL!='123yunfan.github.io'){
       document.write('这里不是YunFan STUDIO官方 官方网址为https://123yunfan.github.io/s/')
     }
@@ -314,15 +314,10 @@ button:active {
         var ssyq=document.getElementById('ssyq').value
         
         var s_text=document.getElementById('s_text').value
-        if (s_text=="朱英乐")
-        {
-            alert("找他干嘛，他就是个sb")
-        }
-        else{
-            if(ssyq=="1"){location.href="https://www.sogou.com/web?query="+s_text}
-            if(ssyq=="2"){location.href="https://www.baidu.com/s?wd="+s_text}
-            if(ssyq=="3"){location.href="https://cn.bing.com/search?q="+s_text}
-        }
+       
+        if(ssyq=="1"){location.href="https://www.sogou.com/web?query="+s_text}
+        if(ssyq=="2"){location.href="https://www.baidu.com/s?wd="+s_text}
+        if(ssyq=="3"){location.href="https://cn.bing.com/search?q="+s_text}
         
 
     }
