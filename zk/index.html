@@ -10,6 +10,7 @@
 
 </head>
 <script src="./layui/layui.js"></script>
+<script src="https://cdn.staticfile.org/jquery/1.8.3/jquery.min.js"></script>
 
 <body onload="countTime()">
     <ul class="layui-nav" style="text-align: center;">
@@ -19,19 +20,25 @@
         <li class="layui-nav-item" style="text-align: right;margin-right: 0%;" onclick="
         layer.open({
         title: '选项', 
-        type: 2
-        ,content: 'seting.html'
+        type: 1
+        ,content: $('#seting')
         ,area: ['500px', '600px']
         ,maxmin: true
-        });    
+        ,cancel: function(index, layero){ 
+            document.getElementById('seting').style.display = 'none'
+        layer.close(index)
+        }
+   
+}    
+        );    
             ">
             <a><i class="layui-icon layui-icon-more"></i></a>
 
         </li>
         <li class="layui-nav-item">
-            <a >
-                <i class="layui-icon layui-icon-screen-full" onclick="FullScreen()" id="F"></i>   
-                </a>
+            <a>
+                <i class="layui-icon layui-icon-screen-full" onclick="FullScreen()" id="F"></i>
+            </a>
         </li>
     </ul>
 
@@ -40,7 +47,8 @@
             距离中考还有<span id="_d">00</span><span id="_h">00</span><span id="_m">00</span><span id="_s">00</span>
         </div>
     </div>
-    <div id="biaoti" style="text-align: center;font-size: larger;"></div>
+    <div><h1 style="text-align: center;" id="biaoti"></h1></div>
+    
     <div></div>
 
 
@@ -84,39 +92,39 @@
             setTimeout(countTime, 1000);
 
         }
-    //进入全屏
-function FullScreen() {
-    var de =  document.documentElement;
-    if (de.requestFullscreen) {
-        de.requestFullscreen();
-    } else if (de.mozRequestFullScreen) {
-        de.mozRequestFullScreen();
-    } else if (de.webkitRequestFullScreen) {
-        de.webkitRequestFullScreen();
-    }
-    var b=document.getElementById('F')
-    b.onclick=eFullscreen;
-    layer.msg('全屏')
-    b.className='layui-icon layui-icon-screen-restore';
-    
-}
-//退出全屏
-function eFullscreen() {
-    
-    var de =  document.documentElement;
-    if (de.exitFullscreen) {
-        de.exitFullscreen();
-    } else if (de.mozCancelFullScreen) {
-        de.mozCancelFullScreen();
-    } else if (de.webkitCancelFullScreen) {
-        de.webkitCancelFullScreen();
-    }
-    var b=document.getElementById('F')
-    layer.msg('退出全屏')
-    b.onclick=FullScreen;
-    b.className='layui-icon layui-icon-screen-full';
-    
-}
+        //进入全屏
+        function FullScreen() {
+            var de = document.documentElement;
+            if (de.requestFullscreen) {
+                de.requestFullscreen();
+            } else if (de.mozRequestFullScreen) {
+                de.mozRequestFullScreen();
+            } else if (de.webkitRequestFullScreen) {
+                de.webkitRequestFullScreen();
+            }
+            var b = document.getElementById('F')
+            b.onclick = eFullscreen;
+            layer.msg('全屏')
+            b.className = 'layui-icon layui-icon-screen-restore';
+
+        }
+        //退出全屏
+        function eFullscreen() {
+
+            var de = document.documentElement;
+            if (de.exitFullscreen) {
+                de.exitFullscreen();
+            } else if (de.mozCancelFullScreen) {
+                de.mozCancelFullScreen();
+            } else if (de.webkitCancelFullScreen) {
+                de.webkitCancelFullScreen();
+            }
+            var b = document.getElementById('F')
+            layer.msg('退出全屏')
+            b.onclick = FullScreen;
+            b.className = 'layui-icon layui-icon-screen-full';
+
+        }
 
     </script>
 
@@ -131,5 +139,90 @@ function eFullscreen() {
 
 
 </body>
+<div>
+    <form class="layui-form" action="" onsubmit="return false" id="seting" style="display: none;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">背景</label>
+            <div class="layui-input-block">
+                <select name="mbtg" lay-verify="required" lay-search>
+                    <option value="1">每日一图</option>
+                    <option value="0">无（黑）</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">考试时间源</label>
+            <div class="layui-input-block" >
+                <input type="radio" name="irmdw" value="xy" title="现有"  >
+                <input type="radio" name="irmdw" value="zdy" title="自定义"  >
+            </div>
+        </div>
+        <div class="layui-form-item" id="xysjy">
+            <label class="layui-form-label">数据源</label>
+            <div class="layui-input-block">
+                <select name="5rldg" lay-verify="required" lay-search>
+                    <option value="gd">广东 6/26-6/28</option>
+                    <option>没找到？ 由于作者帮助没有时间，你可以帮助作者 邮箱：mc081208@163.com</option>
+
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" id="zdysjy">
+            <label class="layui-form-label">自定义</label>
+            <div class="layui-input-block">
+                <input type="text" name="g194c" lay-verify="" placeholder="请输入时间 格式 XX（月）/XX（日）-XX（月）/XX（日）"
+                    autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="469fs" lay-skin="switch">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">内容</label>
+            <div class="layui-input-block">
+                <input id="btnr" type="text" name="6rftn" lay-verify="" placeholder="请输入输入框内容" autocomplete="off"
+                    class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">日程表</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="dj59f" lay-skin="switch">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">内容</label>
+            <div class="layui-input-block">
+                <textarea name="83gk" placeholder="格式 XX:XX-XX:XX/内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="c()">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        
+    
+
+        function c() {
+
+         
+            layer.msg('tjz')
+            var bt = document.getElementById("btnr").value;
+            document.getElementById('biaoti').innerHTML=bt
+
+            layer.msg('ok')
+
+
+
+        }
+    </script>
+</div>
 
 </html>
