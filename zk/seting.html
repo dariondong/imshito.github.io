@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="./layui/css/layui.css">
+<script src="./layui/layui.js"></script>
+
+<form class="layui-form" action="" onsubmit="return false">
+  <div class="layui-form-item">
+    <label class="layui-form-label">背景</label>
+    <div class="layui-input-block">
+      <select name="mbtg" lay-verify="required" lay-search>
+        <option value="1">每日一图</option>
+        <option value="0">无（黑）</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">考试时间源</label>
+    <div class="layui-input-block">
+      <input type="radio" name="irmdw" value="xy" title="现有">
+      <input type="radio" name="irmdw" value="zdy" title="自定义">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">数据源</label>
+    <div class="layui-input-block">
+      <select name="5rldg" lay-verify="required" lay-search>
+        <option value="gd">广东 6/26-6/28</option>
+        <option>没找到？ 由于作者帮助没有时间，你可以帮助作者 邮箱：mc081208@163.com</option>
+
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">自定义</label>
+    <div class="layui-input-block">
+      <input type="text" name="g194c" lay-verify="" placeholder="请输入时间 格式 XX（月）/XX（日）-XX（月）/XX（日）" autocomplete="off"
+        class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">标题</label>
+    <div class="layui-input-block">
+      <input type="checkbox" name="469fs" lay-skin="switch">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">内容</label>
+    <div class="layui-input-block">
+      <input id="btnr" type="text" name="6rftn" lay-verify="" placeholder="请输入输入框内容" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">日程表</label>
+    <div class="layui-input-block">
+      <input type="checkbox" name="dj59f" lay-skin="switch">
+    </div>
+  </div>
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">内容</label>
+    <div class="layui-input-block">
+      <textarea name="83gk" placeholder="格式 XX:XX-XX:XX/内容" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" onclick="c()">提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+<script>
+  function c() {
+    layer.msg('tjz')
+    var bt = document.getElementById("btnr").value;
+    layer.msg(bt)
+    top.window.func(); 
+    top.window.document.getElementById('biaoti').innerHTML=bt;
+    layer.msg ('ok')
+
+
+
+  }
+</script>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <link rel="stylesheet" href="./layui/css/layui.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[中考]倒计时|加油</title>
+
+</head>
+<script src="./layui/layui.js"></script>
+
+<body onload="countTime()">
+    <ul class="layui-nav" style="text-align: center;">
+        <li class="layui-nav-item">
+            <a href=""><span id="nowtime"></span></a>
+        </li>
+        <li class="layui-nav-item" style="text-align: right;margin-right: 0%;" onclick="
+        layer.open({
+        title: '选项', 
+        type: 2
+        ,content: 'seting.html'
+        ,area: ['500px', '600px']
+        ,maxmin: true
+        });    
+            ">
+            <a><i class="layui-icon layui-icon-more"></i></a>
+
+        </li>
+        <li class="layui-nav-item">
+            <a >
+                <i class="layui-icon layui-icon-screen-full" onclick="FullScreen()" id="F"></i>   
+                </a>
+        </li>
+    </ul>
+
+    <div style="text-align: center;margin-top: 200px;">
+        <div style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-size: 35px;">
+            距离中考还有<span id="_d">00</span><span id="_h">00</span><span id="_m">00</span><span id="_s">00</span>
+        </div>
+    </div>
+    <div id="biaoti" style="text-align: center;font-size: larger;"></div>
+    <div></div>
+
+
+
+
+
+
+
+    <script type="text/javascript">
+        function countTime() {
+            //获取当前时间
+            var date = new Date();
+            var now = date.getTime();
+
+            nowh = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            nowm = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            nows = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+            console.log(date);
+            document.getElementById("nowtime").innerHTML = nowh + "时" + nowm + "分" + nows + "秒";
+            //设置截止时间
+            var str = "2023/6/26 00:00:00";
+            var endDate = new Date(str);
+            var end = endDate.getTime();
+
+            //时间差
+            var leftTime = end - now;
+            //定义变量 d,h,m,s保存倒计时的时间
+            var d, h, m, s;
+            if (leftTime >= 0) {
+                d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
+                m = Math.floor(leftTime / 1000 / 60 % 60);
+                s = Math.floor(leftTime / 1000 % 60);
+            }
+            //将倒计时赋值到div中
+            document.getElementById("_d").innerHTML = d + "天";
+            document.getElementById("_h").innerHTML = h + "时";
+            document.getElementById("_m").innerHTML = m + "分";
+            document.getElementById("_s").innerHTML = s + "秒";
+            //递归每秒调用countTime方法，显示动态时间效果
+            setTimeout(countTime, 1000);
+
+        }
+    //进入全屏
+function FullScreen() {
+    var de =  document.documentElement;
+    if (de.requestFullscreen) {
+        de.requestFullscreen();
+    } else if (de.mozRequestFullScreen) {
+        de.mozRequestFullScreen();
+    } else if (de.webkitRequestFullScreen) {
+        de.webkitRequestFullScreen();
+    }
+    var b=document.getElementById('F')
+    b.onclick=eFullscreen;
+    layer.msg('全屏')
+    b.className='layui-icon layui-icon-screen-restore';
+    
+}
+//退出全屏
+function eFullscreen() {
+    
+    var de =  document.documentElement;
+    if (de.exitFullscreen) {
+        de.exitFullscreen();
+    } else if (de.mozCancelFullScreen) {
+        de.mozCancelFullScreen();
+    } else if (de.webkitCancelFullScreen) {
+        de.webkitCancelFullScreen();
+    }
+    var b=document.getElementById('F')
+    layer.msg('退出全屏')
+    b.onclick=FullScreen;
+    b.className='layui-icon layui-icon-screen-full';
+    
+}
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
