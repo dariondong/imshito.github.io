@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head >
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="wedtitle"></title>
+    <link rel="stylesheet" href="./layui/css/layui.css">
+    <script src="./layui/layui.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.8.3/jquery.min.js"></script>
+</head>
+
+<body onload="countTime()">
+    <ul class="layui-nav layui-bg-cyan" id="dhl">
+        <!-- //导航栏 -->
+        <li class="layui-nav-item">
+            <a href=""><i class="layui-icon layui-icon-home"></i></a>
+        </li>
+        <li class="layui-nav-item">
+            <a onclick="layer.open({type: 1,content: $('#moreplayer')  
+            ,cancel: function(index, layero){ 
+                document.getElementById('moreplayer').style.display='none'
+                endday = document.getElementById('time').value
+                console.log(endday);
+                xiangmu=document.getElementById('xmxz').value
+                if (xiangmu=='自定义'){
+                    xiangmu=document.getElementById('zdyxm').value
+                }
+                layer.close(index)
+              }    });">
+              <i class="layui-icon layui-icon-more"></i>
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a onclick="layer.open({type: 1 ,content:'2.0超级更新 2023/3/36'})"><i class="layui-icon layui-icon-tips"></i></a>
+        </li>
+
+        <li class="layui-nav-item">
+            <a onclick="layer.open({type: 1 ,content:'加入我们？不可能的（暂时）'})"><i class="layui-icon layui-icon-flag"></i></a>
+        </li>
+        <li class="layui-nav-item">
+            <a ><i class="layui-icon layui-icon-layer"></i></a>
+            <dl class="layui-nav-child">
+                <dd><a onclick="document.documentElement.exitFullscreen();document.getElementById('dhl').style.display='block' ">标准模式</a></dd>
+                <dd><a onclick="layer.msg('进入专注模式') ,document.documentElement.requestFullscreen();document.getElementById('dhl').style.display='none'">专注模式</a></dd>
+            </dl>
+        </li>
+
+    </ul>
+    <!-- //结束导航栏 -->
+
+    <div><!-- //主体开始 -->
+
+        <div><!-- 倒计时模式 -->
+            <div style="margin-top: 250px;text-align: center;"><!-- //倒计时主体 -->
+
+                <h1><span id="倒计时内容"></span></h1>
+            </div><!-- //END -->
+
+            <div><!-- //副标题 -->
+
+
+            </div><!-- //END -->
+
+            <div><!-- //附加（不知道要干什么） -->
+
+
+            </div>
+        </div>
+
+        <!-- =========分割线========== -->
+
+    
+
+
+    </div><!-- //主体结束 -->
+
+</body>
+
+<!-- 弹窗区 -->
+<!-- 选项弹窗 -->
+<form class="layui-form" id="moreplayer" action="" onsubmit="return false" style="display: none;">
+    <div class="layui-form-item">   
+        <label class="layui-form-label">日期选择器</label>
+        <input type="text" id="time" class="layui-input">
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择框</label>
+        <div class="layui-input-inline">
+            <select name="0u3k" lay-verify="required" lay-search id="xmxz">
+                <option value="中考">中考</option>
+                <option value="高考">高考</option>
+                <option value="考研">考研</option>
+                <option value="自定义">自定义</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">输入框</label>
+        <div class="layui-input-inline">
+            <input id="zdyxm" type="text" name="m85p4" required lay-verify="required" placeholder="请输入输入框内容" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+</form>
+<!--  -->
+
+<!-- 弹窗区END -->
+
+<script>//JS代码
+    // 声明区
+    xiangmu = '{项目}';
+    endday = [0000, 00, 00]
+    // END
+
+
+
+
+// 日期选择器
+    layui.use('laydate', function(){
+  var laydate = layui.laydate;
+  laydate.render({
+    elem: '#time' //指定元素
+    ,type: 'datetime'
+  });
+});
+// 倒计时主体
+function countTime() {
+            //获取当前时间
+
+            var date = new Date();
+            var now = date.getTime();
+            nowY = date.getFullYear()
+            nowM = date.getMonth()+1
+            nowD = date.getDate()
+            nowh = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            nowm = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            nows = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+            console.log(date);
+            //设置截止时间
+            var endDate = new Date(endday);
+            var end = endDate.getTime();
+            //时间差
+            var leftTime = end - now;
+            //定义变量 d,h,m,s保存倒计时的时间
+            var d, h, m, s;
+            if (endday=='0'){
+                layer.msg('请设置时间')
+            }
+            if (leftTime<0 && endday!='0') {
+                document.getElementById("倒计时内容").innerHTML = xiangmu+'结束，感谢有你。'
+                document.getElementById("wedtitle").innerHTML = xiangmu+'结束，感谢有你。'
+            }
+            if (leftTime >= 0) {
+                d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
+                m = Math.floor(leftTime / 1000 / 60 % 60);
+                s = Math.floor(leftTime / 1000 % 60);
+                document.getElementById('wedtitle').innerHTML='距离'+xiangmu+'还有'+d+'天'
+                document.getElementById('倒计时内容').innerHTML='距离'+xiangmu+'还有'+d+'天'+h+'小时'+m+'分钟'+s+'秒'
+            }
+            
+            setTimeout(countTime, 1000);
+            //将倒计时赋值到div中
+            //递归每秒调用countTime方法，显示动态时间效果
+
+
+
+        }
+</script>
+
+</html>
