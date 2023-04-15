@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="wow/animate.css">
     <meta name="KEYWords" contect="石鼓一中">
     <meta name="KEYWords" contect="imshito">
-    <meta name="msvalidate.01" content="A10C9AF6F0DAC9E3BF451E4DC575DC4E" />
     <meta name="KEYWords" contect="高州石鼓">
     <link rel="stylesheet" href="style.css">
 
@@ -24,7 +23,8 @@
     function OpeanSendEmail(){
         layer.open({
   type: 2, 
-  content:  'email.html'
+  content:  'email.html',
+  area: ['500px', '300px']
 }); 
     }
 </script>
@@ -34,10 +34,16 @@
         style="background-image: url(index1.jpg);background-size: cover;background-position: center center;background-repeat: no-repeat;background-attachment: fixed;">
         <ul class="layui-nav layui-bg-cyan" id="dhl">
             <!-- //导航栏 -->
+            <li class="layui-nav-item" > 
+                <img src="logo.png" alt="" height="50px">
+            </li>
             <li class="layui-nav-item">
                 <a href="">石鼓第一中学</a>
             </li>
             <li class="layui-nav-item"><a href="">首页</a> </li>
+            <li class="layui-nav-item" >
+                <a href="tieba.html">帖子<span class="layui-badge">新</span></a>
+            </li>
             <li class="layui-nav-item">
                 <a>更多</a>
                 <dl class="layui-nav-child">
@@ -45,7 +51,7 @@
                     <dd><a href="">待开发</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">关于作者</a></li>
+            <li class="layui-nav-item"><a href="aboutme.html">关于作者</a></li>
         </ul>
         <!-- -------------- -->
         <div>
