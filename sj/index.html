@@ -47,6 +47,7 @@
         <div class="layui-panel">
             <div class="layui-card">
                 <div class="layui-card-header">天苍苍，野茫茫，风吹草低见牛羊。<span class="layui-btn-sm" onclick="
+                    if (localStorage.getItem('adminkey'==prompt('输入管理员密码'))){
                     layer.open({
                       type: 2,
                       offset: 'r',
@@ -56,7 +57,11 @@
                       shadeClose: true,
                       id: 'ID-demo-layer-direction-r',
                       content: ['set.html', 'yes']
-                    });
+                    });}
+                    else{
+                        layer.msg('错误')
+                    }
+                    
                   "><a>设置名单</a></span> <span class="layui-btn-sm" onclick="
                   layer.open({
                       type: 2,
@@ -101,7 +106,7 @@
             <div class="layui-card-body">
               <div class="layui-panel">
                 <blockquote class="layui-elem-quote" style="text-align: center">
-                <h1 id="mz" style="margin:auto,0;">名字</h1>
+                <h1 id="mz" style="margin:auto,0;">mz</h1>
                 <div class="layui-btn-group" style="margin-top: 150px;width: 205px;" id="btngroup">
                     
                     <button class="layui-btn" id="btnpt" onclick="ptc()">普通摇</button>
