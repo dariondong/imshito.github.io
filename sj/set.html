@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="layui/layui.js"></script>
+</head>
+<body>
+    <form class="layui-form" action="" onsubmit="return false">
+        <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">名单</label>
+          <div class="layui-input-block">
+            <textarea id="biao" name="2z9a" placeholder="{名字}{分隔符}{名字}{分隔符}" class="layui-textarea"></textarea>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">分隔符（用于分隔上面名单）</label>
+          <div class="layui-input-block">
+            <input id="fgf" type="text" name="pgbd9" required  lay-verify="required" placeholder="请输入输入框内容" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo" onclick="c()">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+</body>
+<script>
+    window.onload=function (){
+        document.getElementById('biao').value=localStorage.getItem('list')
+        document.getElementById('fgf').value=localStorage.getItem('fgf')
+    }
+
+
+
+    
+
+    function c(){
+        localStorage.setItem("list",document.getElementById('biao').value) 
+        localStorage.setItem('fgf',document.getElementById('fgf').value)
+        layer.msg('保存成功!')        }       
+</script>
+</html>
