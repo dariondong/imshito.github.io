@@ -58,7 +58,7 @@ function ptc(){
         //清除定时器
         clearInterval(times);
         // 停止以后，也要修改span的状态和文字
-        document.getElementById('btngroup').innerHTML="<button class=\"layui-btn\" id=\"btnpt\" onclick=\"ptc()\">普通摇</button> <button class="layui-btn" id="btnpt"><a href="/sj/index.html">刷新</a></button>"
+        document.getElementById('btngroup').innerHTML="<button class=\"layui-btn\" id=\"btnpt\" onclick=\"ptc()\">普通摇</button> <button class=\"layui-btn\" id=\"btnpt\"><a href=\"/sj/index.html\">刷新</a></button>"
        
         status1 = true;
     }
