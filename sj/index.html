@@ -1,201 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
     <head>
+       
         <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>逐星飞行工作室</title>
-    </head>
-    <style>
-    nav{
-        
-        overflow: hidden;
-        margin: 0px;
-        border-radius: 8px;
-        
+        <title>摇号2.0Plus</title>
+       
       
-    }
-    nav:hover{
-        background-color: rgba(73, 73, 73, 0.596);
-        overflow: hidden;
-        margin: 0px;
-        border-radius: 8px;
-    }
-    nav ul{
-        list-style-type: none;
-        margin: 0px;
-        padding: 0%;
-    }
-    nav ul li{
-        float: left;
-        margin: 10px;
-            }
-    nav ul li a {
-        color: #FFFFFF;
-        display: block;
-        text-decoration: none;
-        text-align: center;
-        padding: 14px 16px;
-    }
-    nav ul li a:hover {
-        color: #ffffffaf;
-    }
-h2{
-    color: #212121;
-}
-h3{
-    color: #757575;
-}
-h5{
-    color: #757575;
-}
+        <script src="layui/notify.js"></script>
+        <script src="layui/layui.js"></script>
+       <script src="main.js"></script>
+       
+         
+    </head>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <body><br>
+      <br>
+        <div class="layui-panel">
+            <div class="layui-card">
+                <div class="layui-card-header"><span class="layui-btn-sm" onclick="
+                    if (localStorage.getItem('adminkey')==prompt('输入管理员密码')){
+                    layer.open({
+                      type: 2,
+                      offset: 'r',
+                      anim: 'slideLeft', // 从右往左
+                      area: ['320px', '100%'],
+                      shade: 0.1,
+                      shadeClose: true,
+                      id: 'ID-demo-layer-direction-r',
+                      content: ['set.html', 'yes']
+                    });}
+                    else{
+                        layer.msg('错误')
+                    }
+                    
+                  "><a>设置名单</a></span> <span class="layui-btn-sm" onclick="
+                  layer.open({
+                      type: 2,
+                      offset: 'r',
+                      anim: 'slideLeft', // 从右往左
+                      area: ['320px', '100%'],
+                      shade: 0.1,
+                      shadeClose: true,
+                      id: 'ID-demo-layer-direction-r',
+                      content: ['watch.html', 'yes']
+                    });"><a>查看名单</a></span>
+                    <span class="layui-btn-sm"
+                    onclick="
+                    if (localStorage.getItem('adminkey')==null){
+                        localStorage.setItem('adminkey','0000')
+                    }
+                        
+                      
+                    if (localStorage.getItem('adminkey')==prompt('原来的密码(初始密码0000)')){
+                        localStorage.setItem('adminkey',prompt('新的密码'))
+                    }
+                    else{
+                        alert('密码错误')
+                    }
+                    
+                    
+                    
+                    
+                    "
+                    
+                    ><a href="">更改/建新管理员密码</a>
+                        </span>
+              
+                            <span class="layui-btn-sm" onclick=" layer.open({
+                                type: 2,
+                                offset: 'r',
+                                anim: 'slideLeft', // 从右往左
+                                area: ['320px', '100%'],
+                                shade: 0.1,
+                                shadeClose: true,
+                                id: 'ID-demo-layer-direction-r',
+                                content: ['userbook.html', 'yes']
+                              });"><a>用户手册</a></span>
+                            <span class="layui-btn-sm" ><a href="https://www.github.com/dariondong">Github</a></span>
+                            <span class="layui-btn-sm" ><a href="https://gzsgyz.github.io/sj">回到旧版</a></span>
+                            <span class="layui-btn-sm" ><a href="https://imshito.eu.org">作者主页</a></span>
 
-ul{
-        list-style-type: none;
-        margin: 0px;
-        padding: 0%;
-    }
-
-.mainpage{
-    background-color: #ffffffaf;
-    margin-top: 30px;
-    border-color: #75757500;
-    border: 2px;
-    border-style: solid;
-    border-radius: 8px;
-    
-    box-shadow: 4px 4px 10px rgba(128, 128, 128, 0.356);
-
-
-}
-.main{
-        margin: 20px;
-    }
-
-
-
-</style>
-    <script src="./vue.js"></script>
-    <body>
-        <div style="background-image:
-            url('https://bing.img.run/rand.php');max-width: 100%;height:
-            auto;background-repeat:no-repeat;height: 700px;border-radius: 8px;">
-            <nav>
-                <ul>
-                    <li><a href="#"><strong>逐星飞行工作室</strong></a></li>
-                    <li><a href="#">首页</a></li>
-                    <li><a href="https://imshito.wordpress.com">博客</a></li>
-                </ul>
-            </nav>
-
-            <div style="margin:auto auto ; text-align: center; ">
-                <div>
-                    <h1 style="color: white;margin-top: 250px;">
-                        相信美好的事物,即将发生！
-                    </h1>
-                    <h5 style="color: white;">
-                        FollowStar 逐星飞行工作室
-                    </h5>
+                       </div>
+              </div>
+            </div>
+           
+        </div>
+       
+        <br>
+        <hr>
+        <br>
+        <div class="layui-card">
+            
+            <div class="layui-card-body" style="height: 100vh;">
+              <div class="layui-panel">
+                <div style="text-align: center">
+                <h1 id="mz" style="margin:auto,0;margin-top: 200px;font-size: 80px;">点击开始</h1>
+                <div class="layui-btn-group" style="margin-top: 150px;width: 205px;" id="btngroup">
+                    
+                    <button class="layui-btn" id="btnpt" onclick="ptc()" style="background-color: rgb(0, 214, 0);">开始</button>
+                    <a href="./index.html"><button class="layui-btn" style="background-color: rgb(255, 94, 0);" >刷新摇号盒</button></a>
+                    <br>
+                    <br>
                 </div>
+                <script> 
+                  layer = layui.layer;
+                  util = layui.util;
+                  $ = layui.$;
+                  window.onload=load()    
+                  </script>
+                </div>
+              </div>
             </div>
         </div>
-        <div>
-            <div>
-               
-
-
-            </div>
-            <div class="mainpage">
-                <div class="main">
-                    <h2>近期</h2>
-                    <h3>前往博客了解发生了什么 <a href="https://imshito.wordpress.com/blog"
-                            style="color: #1976D2;">点我</a>!!</h3>
-
-                </div>
-            </div>
-            <div class="mainpage">
-                <div class="main">
-                    <h2>全新摇号系统上线</h2>
-                    <h3>前往下载！！ <a href="https://github.com/dariondong/MaBuYaoHaoNEXT/releases/tag/%E6%AD%A3%E5%BC%8F%E7%89%88"
-                            style="color: #1976D2;">点我</a>!!</h3>
-
-                </div>
-            </div>
-
-            <div class="mainpage">
-                <div class="main">
-                    <h2>开源项目</h2>
-                    <h3>前往Github <a href="https://github.com/imshito"
-                            style="color: #1976D2;">点我</a>!!</h3>
-                    <h5>目前暂时没有</h5>
-
-                </div>
-            </div>
-            <div class="mainpage">
-                <div class="main">
-                    <h2>Supper Link</h2>
-                    <h3>网站项目</h3>
-                    <ul>
-                        <h5>
-                            <li><a href="/ct" style="color: #1976D2;">计时器</a></li>
-                        </h5>
-                    </ul>
-                    <h3>其他链接</h3>
-                    <ul>
-                        <h5>
-
-                            <li><a href="https://github.com/imshito"
-                                    style="color: #1976D2;">Github</a></li>
-                            <li><a href="https://imshito.wordpress.com"
-                                    style="color: #1976D2;">博客</a></li>
-                            <li><a href=" https://space.bilibili.com/1799847757"
-                                    style="color: #1976D2;">BiliBili</a></li>
-                        </h5>
-                    </ul>
-
-
-                </div>
-            </div>
-
-
-
-            <div class="mainpage">
-                <div class="main">
-                    <h2>联系我们</h2>
-
-                    <h5>QQ:3421016150 <br>邮箱:imshito@imshito.eu.org</h5>
-
-                </div>
-            </div>
-
-
-
-            <div class="mainpage">
-                <div class="main">
-                    <h2>关于我们</h2>
-                    <h3>IMSHITO TEAM 现已改名为MixMind TEAM</h3>
-                    <h5>
-                        <p>
-                            MixMind
-                            TEAM是一个充满活力和创造力的小型团队，专注于软件工程和相关领域的创新与突破。虽然规模不大，在MixMind
-                            TEAM。我们相互支持，共享成功和困难，共同成长。我们以用户需求为导向，通过技术手段解决实际问题。我们的工作范围涵盖了软件工程的全流程，从需求分析、设计、开发到测试和维护。我们善于利用有限的资源，发挥无限的创意，以小团队的灵活性和创新。MixMind
-                            TEAM不断学习和进步。我们紧跟科技发展的步伐，持续创新和改进。我们相信，只有不断超越自己，才能走向成功。
-                            (胡编)
-                        </p>
-                    </h5>
-                </div>
-
-            </div>
-
-            <div>
-
-            </div>
-
-        </div>
-        <h6 style="text-align: center;">FollowStar Studio Ver:4.0.0 UPDATE:20240609
-            imshito.eu.org</h6>
-
     </body>
-    <script>
-    
-    </script>
 </html>
