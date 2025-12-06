@@ -3,16 +3,16 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>逐星飞行工作室</title>
+        <title>Darion | Wedsite</title>
     </head>
     <style>
+    /* 基础样式保持不变 */
     nav{
-        
         overflow: hidden;
         margin: 0px;
         border-radius: 8px;
-        
-      
+        transition: all 0.3s ease;
+        background-color: rgba(0, 0, 0, 0.3);
     }
     nav:hover{
         background-color: rgba(73, 73, 73, 0.596);
@@ -28,73 +28,235 @@
     nav ul li{
         float: left;
         margin: 10px;
-            }
+    }
     nav ul li a {
         color: #FFFFFF;
         display: block;
         text-decoration: none;
         text-align: center;
         padding: 14px 16px;
+        transition: all 0.3s ease;
+        border-radius: 4px;
     }
     nav ul li a:hover {
         color: #ffffffaf;
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
     }
-h2{
-    color: #212121;
-}
-h3{
-    color: #757575;
-}
-h5{
-    color: #757575;
-}
-
-ul{
+    h2{
+        color: #212121;
+        transition: all 0.3s ease;
+    }
+    h3{
+        color: #757575;
+        transition: all 0.3s ease;
+    }
+    h5{
+        color: #757575;
+        transition: all 0.3s ease;
+    }
+    ul{
         list-style-type: none;
         margin: 0px;
         padding: 0%;
     }
-
-.mainpage{
-    background-color: #ffffffaf;
-    margin-top: 30px;
-    border-color: #75757500;
-    border: 2px;
-    border-style: solid;
-    border-radius: 8px;
-    
-    box-shadow: 4px 4px 10px rgba(128, 128, 128, 0.356);
-
-
-}
-.main{
+    /* 卡片动画效果 */
+    .mainpage{
+        background-color: #ffffffaf;
+        margin-top: 30px;
+        border-color: #75757500;
+        border: 2px;
+        border-style: solid;
+        border-radius: 8px;
+        box-shadow: 4px 4px 10px rgba(128, 128, 128, 0.356);
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease forwards;
+    }
+    /* 为每个卡片添加延迟动画 */
+    .mainpage:nth-child(1) { animation-delay: 0.1s; }
+    .mainpage:nth-child(2) { animation-delay: 0.2s; }
+    .mainpage:nth-child(3) { animation-delay: 0.3s; }
+    .mainpage:nth-child(4) { animation-delay: 0.4s; }
+    .mainpage:nth-child(5) { animation-delay: 0.5s; }
+    .mainpage:nth-child(6) { animation-delay: 0.6s; }
+    /* 卡片悬停效果 */
+    .mainpage:hover{
+        transform: translateY(-5px);
+        box-shadow: 8px 8px 20px rgba(128, 128, 128, 0.5);
+    }
+    .main{
         margin: 20px;
     }
-
-
-
-</style>
+    /* 链接动画效果 */
+    a {
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    a:hover {
+        opacity: 0.8;
+    }
+    /* 英雄区域文字动画 */
+    .hero-text {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.8s ease forwards 0.5s;
+    }
+    /* 全局动画定义 */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes fadeInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    @keyframes fadeInRight {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    @keyframes zoomIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    /* 平滑滚动 */
+    html {
+        scroll-behavior: smooth;
+    }
+    /* 页面加载动画 */
+    body {
+        opacity: 0;
+        animation: fadeIn 1s ease forwards;
+    }
+    /* 导航栏载入动画 */
+    nav {
+        opacity: 0;
+        transform: translateY(-20px);
+        animation: fadeInUp 0.8s ease forwards 0.2s;
+    }
+    /* 英雄区域背景载入动画 */
+    .hero-bg {
+        opacity: 0;
+        animation: fadeIn 1.5s ease forwards;
+    }
+    /* 页脚载入动画 */
+    h6 {
+        opacity: 0;
+        animation: fadeInUp 0.8s ease forwards 1.5s;
+    }
+    /* 内容卡片内部元素载入动画 */
+    .main h2 {
+        opacity: 0;
+        animation: fadeInUp 0.6s ease forwards;
+    }
+    .main h3 {
+        opacity: 0;
+        animation: fadeInUp 0.6s ease forwards 0.2s;
+    }
+    .main h5 {
+        opacity: 0;
+        animation: fadeInUp 0.6s ease forwards 0.4s;
+    }
+    .main p {
+        opacity: 0;
+        animation: fadeInUp 0.6s ease forwards 0.6s;
+    }
+    .main ul {
+        opacity: 0;
+        animation: fadeInUp 0.6s ease forwards 0.8s;
+    }
+    .main li {
+        opacity: 0;
+        animation: fadeInLeft 0.6s ease forwards;
+    }
+    /* 为列表项添加延迟动画 */
+    .main li:nth-child(1) { animation-delay: 1s; }
+    .main li:nth-child(2) { animation-delay: 1.1s; }
+    .main li:nth-child(3) { animation-delay: 1.2s; }
+    .main li:nth-child(4) { animation-delay: 1.3s; }
+    .main li:nth-child(5) { animation-delay: 1.4s; }
+    /* 标题动画效果 */
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #1976D2;
+        transition: width 0.3s ease;
+    }
+    .mainpage:hover h2::after {
+        width: 60px;
+    }
+    h2 {
+        position: relative;
+        display: inline-block;
+    }
+    </style>
     <script src="./vue.js"></script>
     <body>
-        <div style="background-image:
+        <div class="hero-bg" style="background-image:
             url('https://uapis.cn/api/bing?rand=true');max-width: 100%;height:
             auto;background-repeat:no-repeat;height: 700px;border-radius: 8px;">
             <nav>
                 <ul>
-                    <li><a href="#"><strong>逐星飞行工作室</strong></a></li>
+                    <li><a href="#"><strong>Darion</strong></a></li>
                     <li><a href="#">首页</a></li>
                     <li><a href="https://imshito.wordpress.com">博客</a></li>
                 </ul>
             </nav>
 
             <div style="margin:auto auto ; text-align: center; ">
-                <div>
-                    <h1 style="color: white;margin-top: 250px;">
+                <div class="hero-text">
+
+                    <h1 style="color: white;margin-top: 250px; font-size: 3rem; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5); padding: 20px; ; border-radius: 12px; display: inline-block; letter-spacing: 2px; font-weight: 700;">
                         相信美好的事物,即将发生！
                     </h1>
-                    <h5 style="color: white;">
-                        FollowStar 逐星飞行工作室
-                    </h5>
+               
                 </div>
             </div>
         </div>
@@ -171,15 +333,17 @@ ul{
 
             <div class="mainpage">
                 <div class="main">
-                    <h2>关于我们</h2>
-                    <h3>IMSHITO TEAM 现已改名为MixMind TEAM</h3>
+                    <h2>关于我</h2>
+                    <h3>我是 Darion</h3>
                     <h5>
                         <p>
-                            MixMind
-                            TEAM是一个充满活力和创造力的小型团队，专注于软件工程和相关领域的创新与突破。虽然规模不大，在MixMind
-                            TEAM。我们相互支持，共享成功和困难，共同成长。我们以用户需求为导向，通过技术手段解决实际问题。我们的工作范围涵盖了软件工程的全流程，从需求分析、设计、开发到测试和维护。我们善于利用有限的资源，发挥无限的创意，以小团队的灵活性和创新。MixMind
-                            TEAM不断学习和进步。我们紧跟科技发展的步伐，持续创新和改进。我们相信，只有不断超越自己，才能走向成功。
-                            (胡编)
+                            你好，我是Darion，一个热爱技术和创新的开发者。我专注于软件工程和相关领域的学习与实践，不断探索和突破自己的技术边界。
+                        </p>
+                        <p>
+                            我擅长前端开发、后端开发以及移动应用开发，喜欢将创意转化为实际的产品。我相信技术的力量可以改变世界，因此我不断学习新的技术和工具，以适应快速变化的科技环境。
+                        </p>
+                        <p>
+                            在我的博客和开源项目中，我分享我的学习经验和技术见解，希望能够帮助更多的开发者。如果你有任何合作机会或想法，欢迎随时联系我！
                         </p>
                     </h5>
                 </div>
