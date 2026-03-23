@@ -1,365 +1,1063 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Darion | Wedsite</title>
+        <title>Darion | 相信美好的事物即将发生</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
     <style>
-    /* 基础样式保持不变 */
-    nav{
-        overflow: hidden;
-        margin: 0px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        background-color: rgba(0, 0, 0, 0.3);
-    }
-    nav:hover{
-        background-color: rgba(73, 73, 73, 0.596);
-        overflow: hidden;
-        margin: 0px;
-        border-radius: 8px;
-    }
-    nav ul{
-        list-style-type: none;
-        margin: 0px;
-        padding: 0%;
-    }
-    nav ul li{
-        float: left;
-        margin: 10px;
-    }
-    nav ul li a {
-        color: #FFFFFF;
-        display: block;
-        text-decoration: none;
-        text-align: center;
-        padding: 14px 16px;
-        transition: all 0.3s ease;
-        border-radius: 4px;
-    }
-    nav ul li a:hover {
-        color: #ffffffaf;
-        background-color: rgba(255, 255, 255, 0.1);
-        transform: translateY(-2px);
-    }
-    h2{
-        color: #212121;
-        transition: all 0.3s ease;
-    }
-    h3{
-        color: #757575;
-        transition: all 0.3s ease;
-    }
-    h5{
-        color: #757575;
-        transition: all 0.3s ease;
-    }
-    ul{
-        list-style-type: none;
-        margin: 0px;
-        padding: 0%;
-    }
-    /* 卡片动画效果 */
-    .mainpage{
-        background-color: #ffffffaf;
-        margin-top: 30px;
-        border-color: #75757500;
-        border: 2px;
-        border-style: solid;
-        border-radius: 8px;
-        box-shadow: 4px 4px 10px rgba(128, 128, 128, 0.356);
-        transition: all 0.3s ease;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInUp 0.6s ease forwards;
-    }
-    /* 为每个卡片添加延迟动画 */
-    .mainpage:nth-child(1) { animation-delay: 0.1s; }
-    .mainpage:nth-child(2) { animation-delay: 0.2s; }
-    .mainpage:nth-child(3) { animation-delay: 0.3s; }
-    .mainpage:nth-child(4) { animation-delay: 0.4s; }
-    .mainpage:nth-child(5) { animation-delay: 0.5s; }
-    .mainpage:nth-child(6) { animation-delay: 0.6s; }
-    /* 卡片悬停效果 */
-    .mainpage:hover{
-        transform: translateY(-5px);
-        box-shadow: 8px 8px 20px rgba(128, 128, 128, 0.5);
-    }
-    .main{
-        margin: 20px;
-    }
-    /* 链接动画效果 */
-    a {
-        transition: all 0.3s ease;
-        position: relative;
-    }
-    a:hover {
-        opacity: 0.8;
-    }
-    /* 英雄区域文字动画 */
-    .hero-text {
-        opacity: 0;
-        transform: translateY(30px);
-        animation: fadeInUp 0.8s ease forwards 0.5s;
-    }
-    /* 全局动画定义 */
-    @keyframes fadeInUp {
-        from {
+        :root {
+            --primary-color: #ffffff;
+            --secondary-color: #888888;
+            --accent-color: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --glass-blur: blur(20px);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.5);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .video-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            transition: opacity 0.8s var(--ease-out-expo), transform 8s ease-out;
+        }
+
+        .video-container.scrolled .video-bg {
+            opacity: 0.3;
+            transform: scale(1.05);
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(0, 0, 0, 0.7) 50%,
+                rgba(0, 0, 0, 0.9) 100%
+            );
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .video-container.scrolled .video-overlay {
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.6) 0%,
+                rgba(0, 0, 0, 0.85) 100%
+            );
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.6s var(--ease-out-expo);
+        }
+
+        nav.scrolled {
+            padding: 0.8rem 3rem;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-logo {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color 0.4s var(--ease-out-expo);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: var(--text-primary);
+            transition: all 0.4s var(--ease-out-expo);
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 700px;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(40px);
+            animation: heroEnter 1.2s var(--ease-out-expo) forwards;
+            animation-delay: 0.3s;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+
+        @keyframes heroEnter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-    }
-    @keyframes fadeInLeft {
-        from {
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 3px;
+            margin-bottom: 2.5rem;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 300;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: 4px;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 2;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .typing-text {
+            display: inline-block;
+            border-right: 1px solid var(--text-primary);
+            animation: blink 1s step-end infinite;
+            min-width: 2ch;
+        }
+
+        @keyframes blink {
+            0%, 50% { border-color: var(--text-primary); }
+            51%, 100% { border-color: transparent; }
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 2px;
+            font-weight: 400;
+            text-decoration: none;
+            transition: all 0.5s var(--ease-out-expo);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: #000000;
+            border: 1px solid var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-glass {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
             opacity: 0;
-            transform: translateX(-20px);
+            animation: fadeIn 1s ease forwards 1.5s;
         }
-        to {
-            opacity: 1;
-            transform: translateX(0);
+
+        .scroll-indicator::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            width: 1px;
+            height: 30px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3));
         }
-    }
-    @keyframes fadeInRight {
-        from {
-            opacity: 0;
-            transform: translateX(20px);
+
+        .scroll-indicator i {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            animation: scrollBounce 2s ease-in-out infinite;
         }
-        to {
-            opacity: 1;
-            transform: translateX(0);
+
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(8px); opacity: 1; }
         }
-    }
-    @keyframes zoomIn {
-        from {
-            opacity: 0;
-            transform: scale(0.95);
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
-        to {
-            opacity: 1;
-            transform: scale(1);
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
         }
-    }
-    @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
+
+        .section {
+            padding: 8rem 0;
+            position: relative;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1));
         }
-    }
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 5rem;
         }
-        to {
-            opacity: 1;
+
+        .section-title h2 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 4px;
+            color: var(--text-primary);
         }
-    }
-    /* 平滑滚动 */
-    html {
-        scroll-behavior: smooth;
-    }
-    /* 页面加载动画 */
-    body {
-        opacity: 0;
-        animation: fadeIn 1s ease forwards;
-    }
-    /* 导航栏载入动画 */
-    nav {
-        opacity: 0;
-        transform: translateY(-20px);
-        animation: fadeInUp 0.8s ease forwards 0.2s;
-    }
-    /* 英雄区域背景载入动画 */
-    .hero-bg {
-        opacity: 0;
-        animation: fadeIn 1.5s ease forwards;
-    }
-    /* 页脚载入动画 */
-    h6 {
-        opacity: 0;
-        animation: fadeInUp 0.8s ease forwards 1.5s;
-    }
-    /* 内容卡片内部元素载入动画 */
-    .main h2 {
-        opacity: 0;
-        animation: fadeInUp 0.6s ease forwards;
-    }
-    .main h3 {
-        opacity: 0;
-        animation: fadeInUp 0.6s ease forwards 0.2s;
-    }
-    .main h5 {
-        opacity: 0;
-        animation: fadeInUp 0.6s ease forwards 0.4s;
-    }
-    .main p {
-        opacity: 0;
-        animation: fadeInUp 0.6s ease forwards 0.6s;
-    }
-    .main ul {
-        opacity: 0;
-        animation: fadeInUp 0.6s ease forwards 0.8s;
-    }
-    .main li {
-        opacity: 0;
-        animation: fadeInLeft 0.6s ease forwards;
-    }
-    /* 为列表项添加延迟动画 */
-    .main li:nth-child(1) { animation-delay: 1s; }
-    .main li:nth-child(2) { animation-delay: 1.1s; }
-    .main li:nth-child(3) { animation-delay: 1.2s; }
-    .main li:nth-child(4) { animation-delay: 1.3s; }
-    .main li:nth-child(5) { animation-delay: 1.4s; }
-    /* 标题动画效果 */
-    h2::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background-color: #1976D2;
-        transition: width 0.3s ease;
-    }
-    .mainpage:hover h2::after {
-        width: 60px;
-    }
-    h2 {
-        position: relative;
-        display: inline-block;
-    }
+
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 2.5rem;
+            transition: all 0.6s var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s var(--ease-out-expo);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .card:hover .card-icon {
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .card-link:hover {
+            color: var(--text-primary);
+            gap: 0.8rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.4s var(--ease-out-expo);
+            font-size: 1rem;
+        }
+
+        .social-link:hover {
+            background: var(--text-primary);
+            color: #000000;
+            border-color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: var(--text-primary);
+        }
+
+        .contact-item i {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            line-height: 2;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        footer {
+            padding: 4rem 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: var(--text-secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-copy {
+            width: 100%;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            nav.scrolled {
+                padding: 0.8rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .wechat-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .wechat-modal.show {
+            display: flex;
+        }
+
+        .wechat-modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .wechat-modal-content img {
+            width: 200px;
+            height: 200px;
+            border-radius: 8px;
+        }
+
+        .wechat-modal-content p {
+            color: #333;
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+
+        .wechat-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
     </style>
     <script src="./vue.js"></script>
+
+    <div class="video-container" id="videoContainer">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="./taikongdianti.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <div class="wechat-modal" id="wechatModal">
+        <span class="wechat-modal-close" id="wechatModalClose">&times;</span>
+        <div class="wechat-modal-content">
+            <img src="./THEEZ.png" alt="微信公众号二维码">
+            <p>扫码关注微信公众号</p>
+        </div>
+    </div>
+
     <body>
-        <div class="hero-bg" style="background-image:
-            url('https://uapis.cn/api/bing?rand=true');max-width: 100%;height:
-            auto;background-repeat:no-repeat;height: 700px;border-radius: 8px;">
-            <nav>
-                <ul>
-                    <li><a href="#"><strong>Darion</strong></a></li>
-                    <li><a href="#">首页</a></li>
-                    <li><a href="https://imshito.wordpress.com">博客</a></li>
-                </ul>
-            </nav>
+        <nav id="navbar">
+            <div class="nav-logo">DARION</div>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#updates">动态</a></li>
+                <li><a href="#projects">项目</a></li>
+                <li><a href="#links">链接</a></li>
+                <li><a href="#contact">联系</a></li>
+                <li><a href="#about">关于</a></li>
+            </ul>
+        </nav>
 
-            <div style="margin:auto auto ; text-align: center; ">
-                <div class="hero-text">
-
-                    <h1 style="color: white;margin-top: 250px; font-size: 3rem; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5); padding: 20px; ; border-radius: 12px; display: inline-block; letter-spacing: 2px; font-weight: 700;">
-                        相信美好的事物,即将发生！
-                    </h1>
-               
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    Welcome to Darion's World
+                </div>
+                <h1 class="hero-title">相信美好的事物<br><span class="typing-text"></span></h1>
+                <p class="hero-subtitle">
+                    你好，我是 Darion，一个热爱技术与创新的开发者<br>
+                    专注于软件工程，探索无限可能
+                </p>
+                <div class="hero-buttons">
+                    <a href="#about" class="btn btn-primary">
+                        关于我
+                    </a>
                 </div>
             </div>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </section>
+
+        <div class="container">
+            <section class="section" id="updates">
+                <div class="section-title">
+                    <h2>动态</h2>
+                    <p>LATEST UPDATES</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h3>近期更新</h3>
+                        <p>点击查看公众号了解更多</p>
+                        <a href="javascript:;" class="card-link" id="blogToWechat">
+                            阅读更多 <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <h3>学校工作必备！全自动水印生成器</h3>
+                        <p>支持自定义校徽/日期，一次配置，永久免费！老师/家委会的"救命稻草"</p>
+                        <a href="https://mp.weixin.qq.com/s/Zv-vXFcQp74Ceb-Ii4GqtA" class="card-link" target="_blank">
+                            阅读更多 <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3>ETBOX Server 更新日志</h3>
+                        <p>ETBOX Server Beta 0.2.2 版本发布，优化日志与配置文件相关设置</p>
+                        <a href="https://mp.weixin.qq.com/s/XgZuyFGJnYujQjdPW4litw" class="card-link" target="_blank">
+                            阅读更多 <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                     <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3>让我想想</h3>
+                        <p>这是占位符！</p>
+                        <a href="" class="card-link" target="_blank">
+                            阅读更多 <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="projects">
+                <div class="section-title">
+                    <h2>项目</h2>
+                    <p>PROJECTS</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <h3>GitHub</h3>
+                        <p>查看我在 GitHub 上的所有开源项目</p>
+                        <a href="https://github.com/dariondong" class="card-link" target="_blank">
+                            访问 GitHub <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>GitCode</h3>
+                        <p>查看我在 GitCode 上的开源项目</p>
+                        <a href="https://gitcode.com/DarionDong" class="card-link" target="_blank">
+                            访问 GitCode <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fab fa-git-square"></i>
+                        </div>
+                        <h3>Gitee</h3>
+                        <p>查看我在 Gitee 上的开源项目</p>
+                        <a href="https://gitee.com/dariondong" class="card-link" target="_blank">
+                            访问 Gitee <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="links">
+                <div class="section-title">
+                    <h2>链接</h2>
+                    <p>QUICK LINKS</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-stopwatch"></i>
+                        </div>
+                        <h3>在线工具</h3>
+                        <p>实用的在线工具集合</p>
+                        <a href="/ct" class="card-link">
+                            计时器 <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <h3>社交媒体</h3>
+                        <p>在以下平台关注我</p>
+                        <div class="social-links">
+                            <a href="https://github.com/dariondong" class="social-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://gitcode.com/DarionDong" class="social-link" target="_blank">
+                                <i class="fas fa-code"></i>
+                            </a>
+                            <a href="https://gitee.com/dariondong" class="social-link" target="_blank">
+                                <i class="fab fa-git-square"></i>
+                            </a>
+                            <a href="https://space.bilibili.com/1799847757" class="social-link" target="_blank">
+                                <i class="fab fa-bilibili"></i>
+                            </a>
+                            <a href="javascript:;" class="social-link" title="微信公众号: THEEZ">
+                                <i class="fab fa-weixin"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="contact">
+                <div class="section-title">
+                    <h2>联系</h2>
+                    <p>CONTACT</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>联系方式</h3>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fab fa-weixin"></i>
+                                <span>THEEZ</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-qq"></i>
+                                <span>3421016150</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>imshito@imshito.eu.org</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="about">
+                <div class="section-title">
+                    <h2>关于</h2>
+                    <p>ABOUT</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card" style="grid-column: span 2;">
+                        <div class="about-content">
+                            <div class="about-text">
+                                <h3>我是 Darion</h3>
+                                <p>
+                                    你好！我是 Darion，一个热爱技术和创新的开发者。我专注于软件工程和相关领域的学习与实践，不断探索和突破自己的技术边界。
+                                </p>
+                                <p>
+                                    我擅长前端开发、后端开发以及移动应用开发，喜欢将创意转化为实际的产品。我相信技术的力量可以改变世界，因此我不断学习新的技术和工具，以适应快速变化的科技环境。
+                                </p>
+                                <p>
+                                    在我的博客和开源项目中，我分享我的学习经验和技术见解，希望能够帮助更多的开发者。如果你有任何合作机会或想法，欢迎随时联系我！
+                                </p>
+                            </div>
+                            <div class="about-stats">
+                                <div class="stat-item">
+                                    <div class="stat-number">5+</div>
+                                    <div class="stat-label">年开发经验</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">10+</div>
+                                    <div class="stat-label">完成项目</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">∞</div>
+                                    <div class="stat-label">学习热情</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">24/7</div>
+                                    <div class="stat-label">在线时间</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-        <div>
-            <div>
-               
 
-
-            </div>
-            <div class="mainpage">
-                <div class="main">
-                    <h2>近期</h2>
-                    <h3>前往博客了解发生了什么 <a href="https://imshito.wordpress.com/blog"
-                            style="color: #1976D2;">点我</a>!!</h3>
-
-                </div>
-            </div>
-            <div class="mainpage">
-                <div class="main">
-                    <h2>全新摇号系统上线</h2>
-                    <h3>前往下载！！ <a href="https://github.com/dariondong/MaBuYaoHaoNEXT/releases/tag/%E6%AD%A3%E5%BC%8F%E7%89%88"
-                            style="color: #1976D2;">点我</a>!!</h3>
-
-                </div>
-            </div>
-
-            <div class="mainpage">
-                <div class="main">
-                    <h2>开源项目</h2>
-                    <h3>前往Github <a href="https://github.com/imshito"
-                            style="color: #1976D2;">点我</a>!!</h3>
-                    <h5>目前暂时没有</h5>
-
-                </div>
-            </div>
-            <div class="mainpage">
-                <div class="main">
-                    <h2>Supper Link</h2>
-                    <h3>网站项目</h3>
-                    <ul>
-                        <h5>
-                            <li><a href="/ct" style="color: #1976D2;">计时器</a></li>
-                        </h5>
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">DARION</div>
+                    <ul class="footer-links">
+                        <li><a href="#home">首页</a></li>
+                        <li><a href="#about">关于</a></li>
+                        <li><a href="https://github.com/dariondong">GitHub</a></li>
+                        <li><a href="https://gitcode.com/DarionDong">GitCode</a></li>
+                        <li><a href="https://gitee.com/dariondong">Gitee</a></li>
                     </ul>
-                    <h3>其他链接</h3>
-                    <ul>
-                        <h5>
-
-                            <li><a href="https://github.com/imshito"
-                                    style="color: #1976D2;">Github</a></li>
-                            <li><a href="https://imshito.wordpress.com"
-                                    style="color: #1976D2;">博客</a></li>
-                            <li><a href=" https://space.bilibili.com/1799847757"
-                                    style="color: #1976D2;">BiliBili</a></li>
-                        </h5>
-                    </ul>
-
-
+                </div>
+                <div class="footer-copy">
+                    VERSION 6.0.0 — © 2026 DARION — IMSHITO.EU.ORG Built 20260323
                 </div>
             </div>
+        </footer>
 
+        <script>
+            const navbar = document.getElementById('navbar');
+            const videoContainer = document.getElementById('videoContainer');
 
+            window.addEventListener('scroll', function() {
+                const scrollY = window.scrollY;
+                
+                if (scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                    videoContainer.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                    videoContainer.classList.remove('scrolled');
+                }
+            });
 
-            <div class="mainpage">
-                <div class="main">
-                    <h2>联系我们</h2>
+            function typeWriter() {
+                const text = "即将发生";
+                const element = document.querySelector('.typing-text');
+                let index = 0;
 
-                    <h5>QQ:3421016150 <br>邮箱:imshito@imshito.eu.org</h5>
+                function type() {
+                    if (index < text.length) {
+                        element.textContent = text.substring(0, index + 1);
+                        index++;
+                        setTimeout(type, 150);
+                    }
+                }
 
-                </div>
-            </div>
+                setTimeout(type, 1200);
+            }
 
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
 
+            document.addEventListener('DOMContentLoaded', function() {
+                typeWriter();
 
-            <div class="mainpage">
-                <div class="main">
-                    <h2>关于我</h2>
-                    <h3>我是 Darion</h3>
-                    <h5>
-                        <p>
-                            你好，我是Darion，一个热爱技术和创新的开发者。我专注于软件工程和相关领域的学习与实践，不断探索和突破自己的技术边界。
-                        </p>
-                        <p>
-                            我擅长前端开发、后端开发以及移动应用开发，喜欢将创意转化为实际的产品。我相信技术的力量可以改变世界，因此我不断学习新的技术和工具，以适应快速变化的科技环境。
-                        </p>
-                        <p>
-                            在我的博客和开源项目中，我分享我的学习经验和技术见解，希望能够帮助更多的开发者。如果你有任何合作机会或想法，欢迎随时联系我！
-                        </p>
-                    </h5>
-                </div>
+                const wechatModal = document.getElementById('wechatModal');
+                const wechatModalClose = document.getElementById('wechatModalClose');
+                const wechatItems = document.querySelectorAll('.contact-item');
 
-            </div>
+                wechatItems.forEach(item => {
+                    const icon = item.querySelector('i');
+                    if (icon && icon.classList.contains('fa-weixin')) {
+                        item.addEventListener('click', () => {
+                            wechatModal.classList.add('show');
+                        });
+                    }
+                });
 
-            <div>
+                const socialWechat = document.querySelector('.social-link[title*="微信"]');
+                if (socialWechat) {
+                    socialWechat.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        wechatModal.classList.add('show');
+                    });
+                }
 
-            </div>
+                const blogToWechat = document.getElementById('blogToWechat');
+                if (blogToWechat) {
+                    blogToWechat.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        wechatModal.classList.add('show');
+                    });
+                }
 
-        </div>
-        <h6 style="text-align: center;">FollowStar Studio Ver:4.0.0 UPDATE:20240609
-            imshito.eu.org</h6>
+                wechatModalClose.addEventListener('click', () => {
+                    wechatModal.classList.remove('show');
+                });
 
+                wechatModal.addEventListener('click', (e) => {
+                    if (e.target === wechatModal) {
+                        wechatModal.classList.remove('show');
+                    }
+                });
+            });
+        </script>
     </body>
-    <script>
-    
-    </script>
 </html>
