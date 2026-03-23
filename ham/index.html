@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>业余无线电 | BG7LZQ - Darion</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <style>
+        :root {
+            --primary-color: #ffffff;
+            --secondary-color: #888888;
+            --accent-color: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --glass-blur: blur(20px);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.5);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .video-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            transition: opacity 0.8s var(--ease-out-expo), transform 8s ease-out;
+        }
+
+        .video-container.scrolled .video-bg {
+            opacity: 0.3;
+            transform: scale(1.05);
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(0, 0, 0, 0.7) 50%,
+                rgba(0, 0, 0, 0.9) 100%
+            );
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.6s var(--ease-out-expo);
+        }
+
+        nav.scrolled {
+            padding: 0.8rem 3rem;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-logo {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: 6px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color 0.4s var(--ease-out-expo);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: var(--text-primary);
+            transition: all 0.4s var(--ease-out-expo);
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 700px;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: heroEnter 1.2s var(--ease-out-expo) forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes heroEnter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 3px;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 300;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: 4px;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 2;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .callsign {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 8px;
+            color: var(--text-primary);
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1));
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 4px;
+            color: var(--text-primary);
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 2rem;
+            transition: all 0.6s var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s var(--ease-out-expo);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .card:hover .card-icon {
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .contact-item i {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .info-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .info-item .label {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-item .value {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: all 0.4s var(--ease-out-expo);
+            margin-bottom: 2rem;
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+            gap: 0.8rem;
+        }
+
+        footer {
+            padding: 3rem 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: var(--text-secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-copy {
+            width: 100%;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .qrz-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            transition: all 0.3s ease;
+        }
+
+        .qrz-link:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            nav.scrolled {
+                padding: 0.8rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .callsign {
+                font-size: 1.8rem;
+                letter-spacing: 4px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+
+    <div class="video-container" id="videoContainer">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="../taikongdianti.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <body>
+        <nav id="navbar">
+            <a href="../index.html" class="nav-logo">DARION</a>
+            <ul class="nav-links">
+                <li><a href="../index.html#home">首页</a></li>
+                <li><a href="../index.html#updates">动态</a></li>
+                <li><a href="../index.html#projects">项目</a></li>
+                <li><a href="../index.html#links">链接</a></li>
+                <li><a href="#">无线电</a></li>
+                <li><a href="../index.html#contact">联系</a></li>
+                <li><a href="../index.html#about">关于</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    Amateur Radio
+                </div>
+                <h1 class="hero-title">BG7LZQ</h1>
+                <p class="hero-subtitle">
+                    A级业余无线电操作员<br>
+                    追求通联的乐趣，期待空中相遇
+                </p>
+                <a href="https://www.qrz.com/db/BG7LZQ" class="callsign" target="_blank">BG7LZQ</a>
+            </div>
+        </section>
+
+        <div class="container">
+            <a href="../index.html#ham" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                返回主站
+            </a>
+
+            <section class="section">
+                <div class="section-title">
+                    <h2>电台信息</h2>
+                    <p>STATION INFO</p>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="label">呼号</div>
+                        <div class="value">BG7LZQ</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">操作员等级</div>
+                        <div class="value">A级</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">CQ分区</div>
+                        <div class="value">CQ Zone 24</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">ITU分区</div>
+                        <div class="value">ITU Zone 44</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">网格坐标</div>
+                        <div class="value">OL51</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">所在地区</div>
+                        <div class="value">广东 茂名</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-title">
+                    <h2>通联频段</h2>
+                    <p>OPERATING BANDS</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                        <h3>UV 段</h3>
+                        <p>常用频段，适合本地通联</p>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-frequency"></i>
+                                <span>144 MHz / 430 MHz</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-wifi"></i>
+                                <span>UHF / VHF</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-broadcast-tower"></i>
+                        </div>
+                        <h3>短波</h3>
+                        <p>远程通信，探索电离层</p>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-wave-square"></i>
+                                <span>HF Bands</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-globe-americas"></i>
+                                <span>DX 通联</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-title">
+                    <h2>常用频率</h2>
+                    <p>COMMON FREQUENCIES</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-tower-broadcast"></i>
+                        </div>
+                        <h3>高州中继</h3>
+                        <p>高州业余无线电中继台</p>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>上行: 434.125 MHz</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>下行: 439.125 MHz</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-minus"></i>
+                                <span>亚音: 88.5 Hz</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <h3>粤西业余无线电链路</h3>
+                        <p>模拟链路覆盖粤西地区</p>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-wave-square"></i>
+                                <span>常在模拟链路</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-walkie-talkie"></i>
+                        </div>
+                        <h3>公网对讲</h3>
+                        <p>全国范围覆盖</p>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-network-wired"></i>
+                                <span>南山对讲</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-mountain"></i>
+                                <span>深圳梧桐山</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-title">
+                    <h2>设备电台</h2>
+                    <p>EQUIPMENT</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-radio"></i>
+                        </div>
+                        <h3>手台</h3>
+                        <p>便携移动通信</p>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-walkie-talkie"></i>
+                                <span>深海克斯 8600PRO</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-walkie-talkie"></i>
+                                <span>泉盛 UVK6</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                   
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-satellite-dish"></i>
+                        </div>
+                        <h3>天线</h3>
+                        <p>接收与发射配置</p>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-broadcast-tower"></i>
+                                <span>老鹰 771</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-broadcast-tower"></i>
+                                <span>屋顶五单元八木天线 × 2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">DARION</div>
+                    <ul class="footer-links">
+                        <li><a href="../index.html#home">首页</a></li>
+                        <li><a href="../index.html#about">关于</a></li>
+                        <li><a href="https://github.com/dariondong">GitHub</a></li>
+                        <li><a href="https://gitcode.com/DarionDong">GitCode</a></li>
+                        <li><a href="https://gitee.com/dariondong">Gitee</a></li>
+                    </ul>
+                </div>
+                <div class="footer-copy">
+                    © 2026 DARION — IMSHITO.EU.ORG
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            const navbar = document.getElementById('navbar');
+            const videoContainer = document.getElementById('videoContainer');
+
+            window.addEventListener('scroll', function() {
+                const scrollY = window.scrollY;
+                
+                if (scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                    videoContainer.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                    videoContainer.classList.remove('scrolled');
+                }
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
