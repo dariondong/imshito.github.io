@@ -687,8 +687,58 @@
             font-size: 2rem;
             cursor: pointer;
         }
+
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s var(--ease-out-expo), visibility 0.8s;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--text-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+        }
     </style>
     <script src="./vue.js"></script>
+
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">LOADING</div>
+        </div>
+    </div>
 
     <div class="video-container" id="videoContainer">
         <video class="video-bg" autoplay muted loop playsinline>
@@ -1061,6 +1111,12 @@
             });
 
             document.addEventListener('DOMContentLoaded', function() {
+                const pageLoader = document.getElementById('pageLoader');
+                
+                setTimeout(function() {
+                    pageLoader.classList.add('hidden');
+                }, 800);
+
                 typeWriter();
 
                 const wechatModal = document.getElementById('wechatModal');
