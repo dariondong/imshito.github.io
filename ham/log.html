@@ -496,6 +496,22 @@
             color: var(--text-secondary);
         }
 
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .loading i {
+            font-size: 1.5rem;
+            animation: fa-spin 2s infinite linear;
+        }
+
+        @keyframes fa-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .page-loader {
             position: fixed;
             top: 0;
@@ -651,6 +667,11 @@
                     </button>
                 </div>
 
+                <div class="loading" id="loading">
+                    <i class="fas fa-circle-notch"></i>
+                    <p style="margin-top: 1rem;">加载中...</p>
+                </div>
+
                 <table class="log-table">
                     <thead>
                         <tr>
@@ -693,13 +714,6 @@
         <script>
             const navbar = document.getElementById('navbar');
             const videoContainer = document.getElementById('videoContainer');
-            const pageLoader = document.getElementById('pageLoader');
-
-            window.addEventListener('load', function() {
-                setTimeout(function() {
-                    pageLoader.classList.add('hidden');
-                }, 800);
-            });
 
             window.addEventListener('scroll', function() {
                 const scrollY = window.scrollY;
@@ -716,6 +730,10 @@
             let allLogs = [];
 
             async function loadLogs() {
+                document.getElementById('pageLoader').classList.add('hidden');
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('noData').style.display = 'none';
+                
                 try {
                     const timestamp = new Date().getTime();
                     const response = await fetch(`log.csv?t=${timestamp}`);
@@ -743,8 +761,10 @@
                     
                     updateStats();
                     renderTable(allLogs);
+                    document.getElementById('loading').style.display = 'none';
                 } catch (error) {
                     console.error('加载日志失败:', error);
+                    document.getElementById('loading').style.display = 'none';
                     document.getElementById('noData').style.display = 'block';
                 }
             }
