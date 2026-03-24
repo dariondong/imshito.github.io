@@ -351,6 +351,7 @@
 
         .log-table tr:hover td {
             background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
         }
 
         .log-table tr:last-child td {
@@ -767,8 +768,8 @@
                 }
                 
                 noData.style.display = 'none';
-                tbody.innerHTML = logs.map(log => `
-                    <tr>
+                tbody.innerHTML = logs.map((log, index) => `
+                    <tr onclick="window.location.href='qso.html?date=${encodeURIComponent(log.date)}&time=${encodeURIComponent(log.time)}&callsign=${encodeURIComponent(log.callsign)}&freq=${encodeURIComponent(log.freq)}&mode=${encodeURIComponent(log.mode)}&rst=${encodeURIComponent(log.rst)}&remark=${encodeURIComponent(log.remark)}'">
                         <td>${log.date}</td>
                         <td>${log.time}</td>
                         <td><span class="callsign">${log.callsign}</span></td>
