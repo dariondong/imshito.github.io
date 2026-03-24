@@ -8,6 +8,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.cn/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     </head>
     <style>
         :root {
@@ -271,7 +272,7 @@
 
         .qso-info {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
         }
 
@@ -292,6 +293,40 @@
             color: var(--text-primary);
             font-size: 1rem;
             font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .info-value.power {
+            font-family: 'Space Mono', monospace;
+        }
+
+        .info-full {
+            grid-column: span 3;
+        }
+
+        .qso-qr {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        #qrcode {
+            background: #ffffff;
+            padding: 0.8rem;
+            border-radius: 4px;
+        }
+
+        #qrcode canvas {
+            display: block;
+        }
+
+        .qr-label {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
             letter-spacing: 1px;
         }
 
@@ -451,6 +486,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .info-full {
+                grid-column: span 1;
+            }
+
             .qso-header {
                 align-items: center;
             }
@@ -534,14 +573,34 @@
                         <span class="info-value freq" id="freq">439.125 MHz</span>
                     </div>
                     <div class="info-item">
+                        <span class="info-label">模式</span>
+                        <span class="info-value" id="mode">FM</span>
+                    </div>
+                    <div class="info-item">
                         <span class="info-label">信号报告</span>
                         <span class="info-value rst" id="rst">59</span>
                     </div>
+                    <div class="info-item">
+                        <span class="info-label">功率</span>
+                        <span class="info-value power" id="power">5W</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">设备</span>
+                        <span class="info-value" id="radio">森海克斯8600PRO</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">天线</span>
+                        <span class="info-value" id="antenna">老鹰771</span>
+                    </div>
+                    <div class="info-item info-full">
+                        <span class="info-label">备注</span>
+                        <span class="info-value" id="remark">高州中继测试通联</span>
+                    </div>
                 </div>
 
-                <div class="qso-remark">
-                    <span class="info-label">备注</span>
-                    <span class="info-value" id="remark">高州中继测试通联</span>
+                <div class="qso-qr">
+                    <div id="qrcode"></div>
+                    <span class="qr-label">扫码分享</span>
                 </div>
             </div>
         </div>
@@ -593,12 +652,25 @@
             }
 
             document.getElementById('callsign').textContent = getQueryParam('callsign') || '-';
-            document.getElementById('mode').textContent = getQueryParam('mode') || '-';
+            document.getElementById('mode').textContent = getQueryParam('mode') || 'FM';
             document.getElementById('date').textContent = getQueryParam('date') || '-';
             document.getElementById('time').textContent = getQueryParam('time') || '-';
             document.getElementById('freq').textContent = getQueryParam('freq') || '-';
             document.getElementById('rst').textContent = getQueryParam('rst') || '-';
+            document.getElementById('power').textContent = getQueryParam('power') || '-';
+            document.getElementById('radio').textContent = getQueryParam('radio') || '-';
+            document.getElementById('antenna').textContent = getQueryParam('antenna') || '-';
             document.getElementById('remark').textContent = getQueryParam('remark') || '-';
+
+            const shareUrl = window.location.href;
+            new QRCode(document.getElementById("qrcode"), {
+                text: shareUrl,
+                width: 120,
+                height: 120,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.L
+            });
         </script>
     </body>
 </html>

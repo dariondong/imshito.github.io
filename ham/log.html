@@ -557,12 +557,15 @@
             }
 
             .log-table {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
+                overflow-x: auto;
+                white-space: nowrap;
             }
 
             .log-table th,
             .log-table td {
                 padding: 0.6rem;
+                min-width: 80px;
             }
 
             .stats-bar {
@@ -652,12 +655,10 @@
                     <thead>
                         <tr>
                             <th>日期</th>
-                            <th>时间</th>
                             <th>呼号</th>
                             <th>频率</th>
                             <th>模式</th>
                             <th>信号</th>
-                            <th>备注</th>
                         </tr>
                     </thead>
                     <tbody id="logTableBody">
@@ -720,12 +721,10 @@
                     const text = await response.text();
                     const lines = text.trim().split('\n');
                     
-                    const headers = lines[0].split(',');
-                    
                     allLogs = [];
                     for (let i = 1; i < lines.length; i++) {
                         const values = lines[i].split(',');
-                        if (values.length >= 7) {
+                        if (values.length >= 10) {
                             allLogs.push({
                                 date: values[0],
                                 time: values[1],
@@ -733,7 +732,10 @@
                                 freq: values[3],
                                 mode: values[4],
                                 rst: values[5],
-                                remark: values[6]
+                                power: values[6],
+                                radio: values[7],
+                                antenna: values[8],
+                                remark: values[9]
                             });
                         }
                     }
@@ -769,14 +771,12 @@
                 
                 noData.style.display = 'none';
                 tbody.innerHTML = logs.map((log, index) => `
-                    <tr onclick="window.location.href='qso.html?date=${encodeURIComponent(log.date)}&time=${encodeURIComponent(log.time)}&callsign=${encodeURIComponent(log.callsign)}&freq=${encodeURIComponent(log.freq)}&mode=${encodeURIComponent(log.mode)}&rst=${encodeURIComponent(log.rst)}&remark=${encodeURIComponent(log.remark)}'">
+                    <tr onclick="window.location.href='qso.html?date=${encodeURIComponent(log.date)}&time=${encodeURIComponent(log.time)}&callsign=${encodeURIComponent(log.callsign)}&freq=${encodeURIComponent(log.freq)}&mode=${encodeURIComponent(log.mode)}&rst=${encodeURIComponent(log.rst)}&power=${encodeURIComponent(log.power)}&radio=${encodeURIComponent(log.radio)}&antenna=${encodeURIComponent(log.antenna)}&remark=${encodeURIComponent(log.remark)}'">
                         <td>${log.date}</td>
-                        <td>${log.time}</td>
                         <td><span class="callsign">${log.callsign}</span></td>
                         <td>${log.freq}</td>
                         <td><span class="mode-tag">${log.mode}</span></td>
                         <td><span class="signal-rst">${log.rst}</span></td>
-                        <td>${log.remark}</td>
                     </tr>
                 `).join('');
             }
