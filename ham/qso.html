@@ -309,9 +309,36 @@
             flex-direction: column;
             align-items: center;
             gap: 0.8rem;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             padding-top: 1.5rem;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .qso-link {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .qso-link .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .qso-link .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
         }
 
         #qrcode {
@@ -598,6 +625,13 @@
                     </div>
                 </div>
 
+                <div class="qso-link">
+                    <a href="https://www.qrz.com/db/" id="qrzLink" class="btn btn-glass" target="_blank">
+                        <i class="fas fa-external-link-alt"></i>
+                        在 QRZ 查看
+                    </a>
+                </div>
+
                 <div class="qso-qr">
                     <div id="qrcode"></div>
                     <span class="qr-label">扫码分享</span>
@@ -661,6 +695,11 @@
             document.getElementById('radio').textContent = getQueryParam('radio') || '-';
             document.getElementById('antenna').textContent = getQueryParam('antenna') || '-';
             document.getElementById('remark').textContent = getQueryParam('remark') || '-';
+
+            const callsign = getQueryParam('callsign');
+            if (callsign) {
+                document.getElementById('qrzLink').href = 'https://www.qrz.com/db/' + callsign;
+            }
 
             const shareUrl = window.location.href;
             new QRCode(document.getElementById("qrcode"), {

@@ -225,6 +225,101 @@
             background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1));
         }
 
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 2.5rem;
+            transition: all 0.6s var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s var(--ease-out-expo);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .card:hover .card-icon {
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .card-link:hover {
+            color: var(--text-primary);
+            gap: 0.8rem;
+        }
+
         .section-title {
             text-align: center;
             margin-bottom: 2rem;
@@ -639,6 +734,19 @@
             </a>
 
             <section class="section">
+                <div class="cards-grid" style="margin-bottom: 2rem;">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-external-link-alt"></i>
+                        </div>
+                        <h3>QRZ 日志</h3>
+                        <p>查看 BG7LZQ 官方 QRZ 日志</p>
+                        <a href="https://www.qrz.com/db/BG7LZQ" class="card-link" target="_blank">
+                            前往 QRZ <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
                 <div class="stats-bar" id="statsBar">
                     <div class="stat-card">
                         <div class="stat-number" id="totalQsos">0</div>
