@@ -698,7 +698,7 @@
     </div>
 
     <div class="video-container" id="videoContainer">
-        <video class="video-bg" autoplay muted loop playsinline id="bgVideo">
+        <video class="video-bg" muted loop playsinline id="bgVideo" preload="none">
             <source src="../taikongdianti.mp4" type="video/mp4">
         </video>
         <div class="video-overlay"></div>
@@ -822,6 +822,14 @@
         <script>
             const navbar = document.getElementById('navbar');
             const videoContainer = document.getElementById('videoContainer');
+            const pageLoader = document.getElementById('pageLoader');
+            const bgVideo = document.getElementById('bgVideo');
+
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    bgVideo.play();
+                }, 800);
+            });
 
             window.addEventListener('scroll', function() {
                 const scrollY = window.scrollY;

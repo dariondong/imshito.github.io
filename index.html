@@ -741,7 +741,7 @@
     </div>
 
     <div class="video-container" id="videoContainer">
-        <video class="video-bg" autoplay muted loop playsinline id="bgVideo">
+        <video class="video-bg" muted loop playsinline id="bgVideo" preload="none">
             <source src="./taikongdianti.mp4" type="video/mp4">
         </video>
         <div class="video-overlay"></div>
@@ -1133,9 +1133,11 @@
 
             document.addEventListener('DOMContentLoaded', function() {
                 const pageLoader = document.getElementById('pageLoader');
+                const bgVideo = document.getElementById('bgVideo');
                 
                 setTimeout(function() {
                     pageLoader.classList.add('hidden');
+                    bgVideo.play();
                 }, 800);
 
                 typeWriter();
