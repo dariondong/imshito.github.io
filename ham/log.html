@@ -876,8 +876,13 @@
                     }
                     
                     allLogs.sort((a, b) => {
-                        const dateA = new Date(a.date + ' ' + a.time);
-                        const dateB = new Date(b.date + ' ' + b.time);
+                        const parseDate = (d, t) => {
+                            const [y, m, day] = d.split('/');
+                            const [h, min] = t.split(':');
+                            return new Date(y, m - 1, day, h, min);
+                        };
+                        const dateA = parseDate(a.date, a.time);
+                        const dateB = parseDate(b.date, b.time);
                         return dateB - dateA;
                     });
                     
