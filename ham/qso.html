@@ -350,6 +350,10 @@
             border-color: rgba(255, 255, 255, 0.4);
         }
 
+        .share-btn {
+            display: none !important;
+        }
+
         .share-output {
             margin-top: 1.5rem;
             padding: 1rem;
@@ -680,9 +684,20 @@
                         <i class="fas fa-external-link-alt"></i>
                         在 QRZ 查看该呼号
                     </a>
+                    <button class="btn share-btn" onclick="toggleShare()">
+                        <i class="fas fa-share-alt"></i>
+                        分享格式
+                    </button>
                     <button class="btn" id="imgBtn" onclick="generateImage()">
                         <i class="fas fa-image"></i>
                         生成分享图
+                    </button>
+                </div>
+
+                <div class="share-output" id="shareOutput" style="display: none;">
+                    <textarea id="shareText" readonly></textarea>
+                    <button class="copy-btn" onclick="copyShare()">
+                        <i class="fas fa-copy"></i> 复制
                     </button>
                 </div>
 
@@ -771,13 +786,13 @@
 
             function toggleShare() {
                 const output = document.getElementById('shareOutput');
-                const btn = document.getElementById('shareBtn');
-                if (output.classList.contains('show')) {
-                    output.classList.remove('show');
+                const btn = document.querySelector('.share-btn');
+                if (output.style.display === 'block') {
+                    output.style.display = 'none';
                     btn.classList.remove('active');
                 } else {
                     document.getElementById('shareText').value = generateShareText();
-                    output.classList.add('show');
+                    output.style.display = 'block';
                     btn.classList.add('active');
                 }
             }
