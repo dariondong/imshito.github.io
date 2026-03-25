@@ -808,6 +808,10 @@
             function generateImage() {
                 const qrContainer = document.getElementById('qrContainer');
                 const shareUrl = window.location.href;
+                const imgBtn = document.getElementById('imgBtn');
+                
+                imgBtn.disabled = true;
+                imgBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 生成中...';
                 
                 qrContainer.style.display = 'flex';
                 document.getElementById('qrcode').innerHTML = '';
@@ -824,25 +828,34 @@
                 const card = document.getElementById('qsoCard');
                 const buttons = card.querySelector('.qso-link');
                 const shareOutput = document.getElementById('shareOutput');
-                const qr = document.getElementById('qrContainer');
                 
                 buttons.style.display = 'none';
                 shareOutput.style.display = 'none';
 
-                html2canvas(card, {
-                    backgroundColor: '#000000',
-                    scale: 2,
-                    useCORS: true,
-                    logging: false
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = 'QSO_' + (getQueryParam('callsign') || 'BG7LZQ') + '.png';
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
+                setTimeout(() => {
+                    html2canvas(card, {
+                        backgroundColor: '#000000',
+                        scale: 2,
+                        useCORS: true,
+                        logging: false
+                    }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = 'QSO_' + (getQueryParam('callsign') || 'BG7LZQ') + '.png';
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
 
-                    buttons.style.display = 'flex';
-                    qrContainer.style.display = 'none';
-                });
+                        buttons.style.display = 'flex';
+                        qrContainer.style.display = 'none';
+                        imgBtn.disabled = false;
+                        imgBtn.innerHTML = '<i class="fas fa-image"></i> 生成分享图';
+                    }).catch(err => {
+                        console.error('生成图片失败:', err);
+                        buttons.style.display = 'flex';
+                        qrContainer.style.display = 'none';
+                        imgBtn.disabled = false;
+                        imgBtn.innerHTML = '<i class="fas fa-image"></i> 生成分享图';
+                    });
+                }, 500);
             }
 
             window.generateImage = generateImage;
