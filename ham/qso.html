@@ -9,6 +9,7 @@
         <link href="https://fonts.googleapis.cn/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     </head>
     <style>
         :root {
@@ -317,7 +318,9 @@
         .qso-link {
             display: flex;
             justify-content: center;
+            gap: 1rem;
             margin-top: 1.5rem;
+            flex-wrap: wrap;
         }
 
         .qso-link .btn {
@@ -333,12 +336,59 @@
             font-size: 0.85rem;
             letter-spacing: 1px;
             transition: all 0.4s var(--ease-out-expo);
+            cursor: pointer;
         }
 
         .qso-link .btn:hover {
             background: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.4);
             transform: translateY(-2px);
+        }
+
+        .qso-link .btn.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .share-output {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .share-output.show {
+            display: block;
+        }
+
+        .share-output textarea {
+            width: 100%;
+            min-height: 80px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            resize: vertical;
+            outline: none;
+        }
+
+        .copy-btn {
+            margin-top: 0.8rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         #qrcode {
@@ -577,7 +627,7 @@
                 返回日志列表
             </a>
 
-            <div class="qso-card">
+            <div class="qso-card" id="qsoCard">
                 <div class="qso-header">
                     <div class="qso-header-main">
                         <span class="qso-callsign" id="callsign">BG7LZQ</span>
@@ -626,13 +676,28 @@
                 </div>
 
                 <div class="qso-link">
-                    <a href="https://www.qrz.com/db/" id="qrzLink" class="btn btn-glass" target="_blank">
+                    <a href="https://www.qrz.com/db/" id="qrzLink" class="btn" target="_blank">
                         <i class="fas fa-external-link-alt"></i>
                         在 QRZ 查看该呼号
                     </a>
+                    <button class="btn" id="shareBtn" onclick="toggleShare()">
+                        <i class="fas fa-share-alt"></i>
+                        分享格式
+                    </button>
+                    <button class="btn" id="imgBtn" onclick="generateImage()">
+                        <i class="fas fa-image"></i>
+                        生成分享图
+                    </button>
                 </div>
 
-                <div class="qso-qr">
+                <div class="share-output" id="shareOutput">
+                    <textarea id="shareText" readonly></textarea>
+                    <button class="copy-btn" onclick="copyShare()">
+                        <i class="fas fa-copy"></i> 复制
+                    </button>
+                </div>
+
+                <div class="qso-qr" id="qrContainer" style="display: none;">
                     <div id="qrcode"></div>
                     <span class="qr-label">扫码分享</span>
                 </div>
@@ -701,15 +766,86 @@
                 document.getElementById('qrzLink').href = 'https://www.qrz.com/db/' + callsign;
             }
 
-            const shareUrl = window.location.href;
-            new QRCode(document.getElementById("qrcode"), {
-                text: shareUrl,
-                width: 120,
-                height: 120,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.L
-            });
+            function generateShareText() {
+                const date = getQueryParam('date') || '-';
+                const time = getQueryParam('time') || '-';
+                const callsign = getQueryParam('callsign') || '-';
+                const freq = getQueryParam('freq') || '-';
+                const mode = getQueryParam('mode') || 'FM';
+                const rst = getQueryParam('rst') || '-';
+                const power = getQueryParam('power') || '-';
+                const remark = getQueryParam('remark') || '-';
+                return `QSO with ${callsign}\nDate: ${date} ${time}\nFreq: ${freq}\nMode: ${mode}\nRST: ${rst}\nPower: ${power}\nQTH: BG7LZQ\n73!`;
+            }
+
+            function toggleShare() {
+                const output = document.getElementById('shareOutput');
+                const btn = document.getElementById('shareBtn');
+                if (output.classList.contains('show')) {
+                    output.classList.remove('show');
+                    btn.classList.remove('active');
+                } else {
+                    document.getElementById('shareText').value = generateShareText();
+                    output.classList.add('show');
+                    btn.classList.add('active');
+                }
+            }
+
+            function copyShare() {
+                const text = document.getElementById('shareText');
+                text.select();
+                document.execCommand('copy');
+                const btn = document.querySelector('.copy-btn');
+                btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                }, 2000);
+            }
+
+            window.toggleShare = toggleShare;
+            window.copyShare = copyShare;
+
+            function generateImage() {
+                const qrContainer = document.getElementById('qrContainer');
+                const shareUrl = window.location.href;
+                
+                qrContainer.style.display = 'flex';
+                document.getElementById('qrcode').innerHTML = '';
+                
+                new QRCode(document.getElementById("qrcode"), {
+                    text: shareUrl,
+                    width: 100,
+                    height: 100,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.L
+                });
+
+                const card = document.getElementById('qsoCard');
+                const buttons = card.querySelector('.qso-link');
+                const shareOutput = document.getElementById('shareOutput');
+                const qr = document.getElementById('qrContainer');
+                
+                buttons.style.display = 'none';
+                shareOutput.style.display = 'none';
+
+                html2canvas(card, {
+                    backgroundColor: '#000000',
+                    scale: 2,
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'QSO_' + (getQueryParam('callsign') || 'BG7LZQ') + '.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    buttons.style.display = 'flex';
+                    qrContainer.style.display = 'none';
+                });
+            }
+
+            window.generateImage = generateImage;
         </script>
     </body>
 </html>
