@@ -888,8 +888,11 @@
                         };
                         const dateA = parseDate(a.date, a.time);
                         const dateB = parseDate(b.date, b.time);
+                        console.log('排序:', a.date, a.time, '=', dateA, '|', b.date, b.time, '=', dateB, '|', dateB - dateA);
                         return dateB - dateA;
                     });
+                    
+                    console.log('排序后:', allLogs.map(l => l.date + ' ' + l.time));
                     
                     updateStats();
                     renderTable(allLogs);
