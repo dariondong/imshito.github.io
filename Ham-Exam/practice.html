@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>业余无线电 A 类考试系统 - 顺序练习</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: #1a1a1a;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .navbar-btn {
+            padding: 8px 16px;
+            border: 2px solid #444;
+            background: transparent;
+            color: #999;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .navbar-btn:hover {
+            border-color: #666;
+            color: #ccc;
+        }
+
+        .main-card {
+            max-width: 1000px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .filter-bar {
+            padding: 20px 30px;
+            background: #fafafa;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .filter-select {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            background: white;
+            cursor: pointer;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: #e8e8e8;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 25px 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .question-area {
+            padding: 40px 30px;
+        }
+
+        .question-header {
+            margin-bottom: 25px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #1a1a1a;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.35em;
+            line-height: 1.7;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 20px;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .option:hover:not(.disabled) {
+            border-color: #1a1a1a;
+            background: #fafafa;
+        }
+
+        .option.selected {
+            border-color: #1a1a1a;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .option.selected .option-letter {
+            background: white;
+            color: #1a1a1a;
+        }
+
+        .option.correct {
+            border-color: #2d2d2d;
+            background: #2d2d2d;
+            color: white;
+        }
+
+        .option.correct .option-letter {
+            background: white;
+            color: #2d2d2d;
+        }
+
+        .option.incorrect {
+            border-color: #999;
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .option.incorrect .option-letter {
+            background: #999;
+            color: white;
+        }
+
+        .option.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: #f0f0f0;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .question-type-tag {
+            display: inline-block;
+            background: #666;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .question-type-tag.multi {
+            background: #e67700;
+        }
+
+        .feedback {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #ebfbee;
+            border: 2px solid #40c057;
+            color: #2b8a3e;
+        }
+
+        .feedback.incorrect {
+            background: #fff5f5;
+            border: 2px solid #ff6b6b;
+            color: #c92a2a;
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            background: #fafafa;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: 2px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 8px;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: #1a1a1a;
+            color: #1a1a1a;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            flex: 1;
+            margin: 0 30px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .progress-track {
+            height: 8px;
+            background: #e8e8e8;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #1a1a1a;
+            transition: width 0.3s ease;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .progress-section {
+                margin: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">HAM EXAM - 顺序练习</div>
+            <a href="index.html" class="navbar-btn">← 返回主页</a>
+        </div>
+    </div>
+
+    <div class="main-card">
+        <div class="filter-bar">
+            <select id="chapterSelect" class="filter-select" onchange="filterByChapter()">
+                <option value="">全部章节</option>
+            </select>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="totalQuestions">0</div>
+                <div class="stat-label">总题数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="currentNumber">0</div>
+                <div class="stat-label">当前题号</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="correctCount">0</div>
+                <div class="stat-label">正确数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="accuracy">0%</div>
+                <div class="stat-label">正确率</div>
+            </div>
+        </div>
+
+        <div class="question-area">
+            <div class="question-header">
+                <div>
+                    <div class="question-number" id="questionNumber">第 1 题</div>
+                    <span class="question-type-tag" id="questionType">单选</span>
+                </div>
+                <div class="question-text" id="questionText">题目加载中...</div>
+            </div>
+            <div class="options" id="optionsContainer"></div>
+            <div class="feedback" id="feedback"></div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="previousQuestion()">← 上一题</button>
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span>学习进度</span>
+                    <span id="progressText">0 / 0</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+            <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">下一题 →</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Design By BG7LZQ</p>
+        <p>鸣谢 高州市业余无线电协会</p>
+    </div>
+
+    <script>
+        let questions = [];
+        let filteredQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let correctAnswers = {};
+        let wrongQuestions = JSON.parse(localStorage.getItem('hamExamWrongQuestions')) || [];
+
+        // 解析 CSV
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const questions = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i];
+                const values = parseCSVLine(line);
+                
+                if (values.length >= 8) {
+                    questions.push({
+                        id: values[0],
+                        uniqueId: `${values[0]}_${values[2]}`,
+                        chapter: values[1],
+                        code: values[2],
+                        question: values[3],
+                        answer: values[4],
+                        optionA: values[5],
+                        optionB: values[6],
+                        optionC: values[7],
+                        optionD: values[8] || ''
+                    });
+                }
+            }
+
+            return questions;
+        }
+
+        function parseCSVLine(line) {
+            const values = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    values.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            values.push(current.trim());
+            return values;
+        }
+
+        // 加载题库
+        async function loadQuestions() {
+            try {
+                const response = await fetch('业余无线电 A 类.csv');
+                const csvText = await response.text();
+                questions = parseCSV(csvText);
+                filteredQuestions = [...questions];
+                
+                // 加载进度
+                const saved = localStorage.getItem('practiceProgress');
+                if (saved) {
+                    const progress = JSON.parse(saved);
+                    userAnswers = progress.userAnswers || {};
+                    correctAnswers = progress.correctAnswers || {};
+                    currentQuestionIndex = progress.currentQuestionIndex || 0;
+                }
+                
+                populateChapterFilter();
+                showQuestion(currentQuestionIndex);
+                updateStats();
+            } catch (error) {
+                console.error('加载失败:', error);
+                document.getElementById('questionText').textContent = '题库加载失败';
+            }
+        }
+
+        function populateChapterFilter() {
+            const chapterSelect = document.getElementById('chapterSelect');
+            const chapters = [...new Set(questions.map(q => q.chapter))].sort();
+            
+            chapters.forEach(chapter => {
+                const option = document.createElement('option');
+                option.value = chapter;
+                option.textContent = chapter;
+                chapterSelect.appendChild(option);
+            });
+        }
+
+        function filterByChapter() {
+            const selectedChapter = document.getElementById('chapterSelect').value;
+            
+            if (selectedChapter) {
+                filteredQuestions = questions.filter(q => q.chapter === selectedChapter);
+            } else {
+                filteredQuestions = [...questions];
+            }
+
+            currentQuestionIndex = 0;
+            showQuestion(currentQuestionIndex);
+            updateStats();
+        }
+
+        function showQuestion(index) {
+            if (filteredQuestions.length === 0) {
+                document.getElementById('questionText').textContent = '暂无题目';
+                document.getElementById('optionsContainer').innerHTML = '';
+                return;
+            }
+
+            const question = filteredQuestions[index];
+            const isMultiple = question.answer.length > 1;
+            
+            document.getElementById('questionNumber').textContent = `第 ${index + 1} 题 / 共 ${filteredQuestions.length} 题`;
+            document.getElementById('questionText').textContent = question.question;
+            
+            const typeTag = document.getElementById('questionType');
+            typeTag.textContent = isMultiple ? '多选' : '单选';
+            typeTag.className = 'question-type-tag' + (isMultiple ? ' multi' : '');
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            const options = [
+                { letter: 'A', text: question.optionA },
+                { letter: 'B', text: question.optionB },
+                { letter: 'C', text: question.optionC },
+                { letter: 'D', text: question.optionD }
+            ].filter(opt => opt.text);
+
+            options.forEach((option, idx) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.onclick = () => handleOptionClick(option.letter);
+                optionDiv.innerHTML = `
+                    <div class="option-letter">${option.letter}</div>
+                    <div class="option-text">${option.text}</div>
+                `;
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').style.display = 'none';
+
+            // 恢复答案
+            if (userAnswers[question.uniqueId] !== undefined) {
+                const savedAnswer = userAnswers[question.uniqueId];
+                if (isMultiple && Array.isArray(savedAnswer)) {
+                    savedAnswer.forEach(letter => applyOptionSelection(letter, true));
+                } else if (!isMultiple && savedAnswer) {
+                    applyOptionSelection(savedAnswer, true);
+                }
+            }
+
+            // 如果已经答过，显示结果
+            if (correctAnswers[question.uniqueId] !== undefined) {
+                showResult(question, userAnswers[question.uniqueId], correctAnswers[question.uniqueId]);
+            }
+
+            updateProgress();
+            updateStats();
+            updateNavButtons();
+        }
+
+        function applyOptionSelection(letter, isSelected) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                const optLetter = opt.querySelector('.option-letter').textContent;
+                if (optLetter === letter) {
+                    opt.classList.toggle('selected', isSelected);
+                }
+            });
+        }
+
+        function handleOptionClick(letter) {
+            const question = filteredQuestions[currentQuestionIndex];
+            const isMultiple = question.answer.length > 1;
+            
+            // 如果已经答过，不允许再选择
+            if (correctAnswers[question.uniqueId] !== undefined) {
+                return;
+            }
+            
+            if (isMultiple) {
+                // 多选题处理 - 允许反复选择/取消选择，不立即判断
+                if (!userAnswers[question.uniqueId]) {
+                    userAnswers[question.uniqueId] = [];
+                }
+                const currentAnswers = userAnswers[question.uniqueId];
+                const index = currentAnswers.indexOf(letter);
+                if (index > -1) {
+                    // 取消选择
+                    currentAnswers.splice(index, 1);
+                    applyOptionSelection(letter, false);
+                } else {
+                    // 添加选择
+                    currentAnswers.push(letter);
+                    currentAnswers.sort();
+                    applyOptionSelection(letter, true);
+                }
+                saveProgress();
+            } else {
+                // 单选题处理
+                const options = document.querySelectorAll('.option');
+                options.forEach(opt => {
+                    opt.classList.remove('selected');
+                    if (opt.querySelector('.option-letter').textContent === letter) {
+                        opt.classList.add('selected');
+                    }
+                });
+                userAnswers[question.uniqueId] = letter;
+                saveProgress();
+                // 单选题选择后立即判断
+                autoCheckAnswer();
+            }
+            
+            updateStats();
+        }
+
+        function autoCheckAnswer() {
+            const question = filteredQuestions[currentQuestionIndex];
+            const userAnswer = userAnswers[question.uniqueId];
+            
+            // 判断是否正确：多选题需要将数组转为字符串比较
+            let isCorrect = false;
+            if (Array.isArray(userAnswer)) {
+                isCorrect = userAnswer.join('') === question.answer;
+            } else {
+                isCorrect = userAnswer === question.answer;
+            }
+            
+            correctAnswers[question.uniqueId] = isCorrect;
+            
+            showResult(question, userAnswer, isCorrect);
+            
+            if (!isCorrect && !wrongQuestions.includes(question.uniqueId)) {
+                wrongQuestions.push(question.uniqueId);
+                localStorage.setItem('hamExamWrongQuestions', JSON.stringify(wrongQuestions));
+            }
+            
+            saveProgress();
+            updateStats();
+        }
+
+        function showResult(question, userAnswer, isCorrect) {
+            const feedback = document.getElementById('feedback');
+            const isMultiple = question.answer.length > 1;
+            
+            feedback.className = 'feedback show';
+            feedback.style.display = 'block';
+            
+            let userAnswerText = userAnswer || '未作答';
+            if (isMultiple && Array.isArray(userAnswer)) {
+                userAnswerText = userAnswer.join('');
+            }
+            
+            // 判断是否正确
+            const actuallyCorrect = userAnswer === question.answer || 
+                (Array.isArray(userAnswer) && userAnswer.join('') === question.answer);
+            
+            feedback.innerHTML = `
+                <div class="feedback-title">${actuallyCorrect ? '✓ 回答正确' : '✗ 回答错误'}</div>
+                ${!actuallyCorrect ? `你的答案：${userAnswerText}<br>` : ''}正确答案：${question.answer}
+            `;
+
+            const options = document.querySelectorAll('.option');
+            const correctAnswersArr = question.answer.split('');
+            
+            options.forEach(opt => {
+                const letter = opt.querySelector('.option-letter').textContent;
+                
+                // 正确答案标记为绿色
+                if (correctAnswersArr.includes(letter)) {
+                    opt.classList.add('correct');
+                }
+                // 用户选择的错误答案标记为红色
+                else if (userAnswer) {
+                    const userAnswersArr = isMultiple && Array.isArray(userAnswer) ? userAnswer : [userAnswer];
+                    if (userAnswersArr.includes(letter) && !correctAnswersArr.includes(letter)) {
+                        opt.classList.add('incorrect');
+                    }
+                }
+                
+                // 禁用所有选项
+                opt.classList.add('disabled');
+            });
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        function nextQuestion() {
+            // 如果当前题目已答但未判断，先判断并显示答案，但不切换
+            const question = filteredQuestions[currentQuestionIndex];
+            if (question && userAnswers[question.uniqueId] !== undefined && correctAnswers[question.uniqueId] === undefined) {
+                autoCheckAnswer();
+                // 显示答案后不切换，等用户再次点击下一题
+                return;
+            }
+            
+            if (currentQuestionIndex < filteredQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        function updateNavButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            document.getElementById('nextBtn').disabled = currentQuestionIndex === filteredQuestions.length - 1;
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / filteredQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `${currentQuestionIndex + 1} / ${filteredQuestions.length}`;
+        }
+
+        function updateStats() {
+            document.getElementById('totalQuestions').textContent = filteredQuestions.length;
+            document.getElementById('currentNumber').textContent = currentQuestionIndex + 1;
+            
+            let correct = 0;
+            let answered = 0;
+            filteredQuestions.forEach(q => {
+                if (correctAnswers[q.uniqueId]) {
+                    correct++;
+                }
+                if (userAnswers[q.uniqueId] !== undefined) {
+                    answered++;
+                }
+            });
+
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('accuracy').textContent = answered > 0 ? 
+                `${Math.round((correct / answered) * 100)}%` : '0%';
+        }
+
+        function saveProgress() {
+            const progress = {
+                userAnswers: userAnswers,
+                correctAnswers: correctAnswers,
+                currentQuestionIndex: currentQuestionIndex,
+                totalQuestions: questions.length,
+                answeredCount: Object.keys(userAnswers).length
+            };
+            localStorage.setItem('practiceProgress', JSON.stringify(progress));
+            localStorage.setItem('hamExamProgress', JSON.stringify(progress));
+        }
+
+        window.onload = loadQuestions;
+    </script>
+</body>
+</html>
