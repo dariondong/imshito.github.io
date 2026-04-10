@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>业余无线电 A 类考试系统 - 模拟考试</title>
+    <title>业余无线电 B 类考试系统 - 模拟考试</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -99,14 +99,13 @@
             transition: all 0.2s ease;
             background: white;
         }
-        .option:hover:not(.disabled) { border-color: #1a1a1a; background: #fafafa; }
+        .option:hover { border-color: #1a1a1a; background: #fafafa; }
         .option.selected {
             border-color: #1a1a1a;
             background: #1a1a1a;
             color: white;
         }
         .option.selected .option-letter { background: white; color: #1a1a1a; }
-        .option.disabled { pointer-events: none; opacity: 0.7; }
         .option-letter {
             width: 32px;
             height: 32px;
@@ -132,42 +131,6 @@
             vertical-align: middle;
         }
         .question-type-tag.multi { background: #e67700; }
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 30px;
-            background: #fafafa;
-            border-top: 1px solid #e8e8e8;
-        }
-        .nav-btn {
-            padding: 12px 25px;
-            border: 2px solid #ddd;
-            background: white;
-            color: #666;
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 8px;
-        }
-        .nav-btn:hover:not(:disabled) { border-color: #1a1a1a; color: #1a1a1a; }
-        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .progress-section { flex: 1; margin: 0 30px; }
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-            color: #666;
-        }
-        .progress-track {
-            height: 8px;
-            background: #e8e8e8;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .progress-bar { height: 100%; background: #1a1a1a; transition: width 0.3s ease; }
         .result-area { padding: 60px 30px; text-align: center; display: none; }
         .result-area.show { display: block; }
         .result-icon { font-size: 5em; margin-bottom: 20px; }
@@ -204,6 +167,61 @@
             line-height: 1.6;
             color: #333;
         }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .result-card {
+            padding: 25px;
+            background: #fafafa;
+            border-radius: 10px;
+            border: 1px solid #e8e8e8;
+        }
+        .result-card-value { font-size: 2.5em; font-weight: 700; color: #1a1a1a; line-height: 1.2; }
+        .result-card-label { font-size: 0.85em; color: #666; margin-top: 10px; }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            background: #fafafa;
+            border-top: 1px solid #e8e8e8;
+        }
+        .nav-btn {
+            padding: 12px 25px;
+            border: 2px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 8px;
+        }
+        .nav-btn:hover:not(:disabled) { border-color: #1a1a1a; color: #1a1a1a; }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .progress-section { flex: 1; margin: 0 30px; }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .progress-track {
+            height: 8px;
+            background: #e8e8e8;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar { height: 100%; background: #1a1a1a; transition: width 0.3s ease; }
+        .footer { text-align: center; padding: 30px 20px; color: #666; font-size: 0.9em; }
+        .footer p { margin: 5px 0; }
+        .hidden { display: none !important; }
+        
+        /* Export Modal */
         .export-modal {
             display: none;
             position: fixed;
@@ -291,23 +309,7 @@
             border-color: #1a1a1a;
             color: #1a1a1a;
         }
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 40px 0;
-        }
-        .result-card {
-            padding: 25px;
-            background: #fafafa;
-            border-radius: 10px;
-            border: 1px solid #e8e8e8;
-        }
-        .result-card-value { font-size: 2.5em; font-weight: 700; color: #1a1a1a; line-height: 1.2; }
-        .result-card-label { font-size: 0.85em; color: #666; margin-top: 10px; }
-        .footer { text-align: center; padding: 30px 20px; color: #666; font-size: 0.9em; }
-        .footer p { margin: 5px 0; }
-        .hidden { display: none !important; }
+        
         @media (max-width: 768px) {
             .navbar-content { flex-direction: column; gap: 10px; text-align: center; }
             .stats-bar { grid-template-columns: repeat(2, 1fr); }
@@ -320,43 +322,43 @@
 <body>
     <div class="navbar">
         <div class="navbar-content">
-            <div class="navbar-brand">HAM EXAM - 模拟考试</div>
+            <div class="navbar-brand">HAM EXAM - B 类模拟考试</div>
             <div>
                 <button class="navbar-btn" onclick="showExportMenu()">📥 导出试卷</button>
                 <button class="navbar-btn submit" id="submitExamBtn" onclick="submitExam()">📤 交卷</button>
                 <a href="index.html" class="navbar-btn">← 返回主页</a>
             </div>
         </div>
-        </div>
+    </div>
 
-        <div class="export-modal" id="exportModal">
-            <div class="export-modal-content">
-                <div class="export-modal-title">📥 导出试卷</div>
-                <div class="export-modal-desc">请选择您要导出的文件格式</div>
-                <div class="export-options">
-                    <div class="export-option" onclick="exportToWord()">
-                        <div class="export-option-icon">📄</div>
-                        <div class="export-option-info">
-                            <div class="export-option-name">Word 文档</div>
-                            <div class="export-option-desc">.doc 格式，可用 Word 编辑和打印</div>
-                        </div>
-                    </div>
-                    <div class="export-option" onclick="exportToTxt()">
-                        <div class="export-option-icon">📝</div>
-                        <div class="export-option-info">
-                            <div class="export-option-name">TXT 文本</div>
-                            <div class="export-option-desc">.txt 格式，简单快捷</div>
-                        </div>
+    <div class="export-modal" id="exportModal">
+        <div class="export-modal-content">
+            <div class="export-modal-title">📥 导出试卷</div>
+            <div class="export-modal-desc">请选择您要导出的文件格式</div>
+            <div class="export-options">
+                <div class="export-option" onclick="exportToWord()">
+                    <div class="export-option-icon">📄</div>
+                    <div class="export-option-info">
+                        <div class="export-option-name">Word 文档</div>
+                        <div class="export-option-desc">.doc 格式，可用 Word 编辑和打印</div>
                     </div>
                 </div>
-                <button class="export-modal-close" onclick="closeExportModal()">取消</button>
+                <div class="export-option" onclick="exportToTxt()">
+                    <div class="export-option-icon">📝</div>
+                    <div class="export-option-info">
+                        <div class="export-option-name">TXT 文本</div>
+                        <div class="export-option-desc">.txt 格式，简单快捷</div>
+                    </div>
+                </div>
             </div>
+            <button class="export-modal-close" onclick="closeExportModal()">取消</button>
         </div>
+    </div>
 
-        <div class="main-card">
+    <div class="main-card">
         <div class="stats-bar">
             <div class="stat-item">
-                <div class="stat-value" id="totalQuestions">40</div>
+                <div class="stat-value" id="totalQuestions">60</div>
                 <div class="stat-label">总题数</div>
             </div>
             <div class="stat-item">
@@ -368,7 +370,7 @@
                 <div class="stat-label">已答题</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="unansweredCount">40</div>
+                <div class="stat-value" id="unansweredCount">60</div>
                 <div class="stat-label">未答题</div>
             </div>
         </div>
@@ -387,7 +389,7 @@
         <div class="result-area" id="resultArea">
             <div class="result-icon">🎯</div>
             <h2 class="result-title">考试完成</h2>
-            <div class="result-score" id="finalScore">0/40</div>
+            <div class="result-score" id="finalScore">0/60</div>
             <div class="result-status" id="resultStatus"></div>
             <div class="result-grid">
                 <div class="result-card">
@@ -404,8 +406,8 @@
                 </div>
             </div>
             <div class="exam-rules">
-                <p><strong>合格标准：</strong>答对 30 题为合格（正确率 75%）</p>
-                <p><strong>试卷结构：</strong>单选题 32 题 + 多选题 8 题，共 40 题</p>
+                <p><strong>合格标准：</strong>答对 45 题为合格（正确率 75%）</p>
+                <p><strong>试卷结构：</strong>单选题 45 题 + 多选题 15 题，共 60 题</p>
                 <p><strong>答题说明：</strong>多选题必须与标准答案完全一致，不得多选或少选</p>
             </div>
             <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
@@ -420,7 +422,7 @@
             <div class="progress-section">
                 <div class="progress-header">
                     <span>考试进度</span>
-                    <span id="progressText">0 / 40</span>
+                    <span id="progressText">0 / 60</span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-bar" id="progressBar" style="width: 0%"></div>
@@ -436,6 +438,15 @@
     </div>
 
     <script>
+        // B 类考试配置
+        const EXAM_CONFIG = {
+            TOTAL_QUESTIONS: 60,      // 总题数 60 题
+            SINGLE_CHOICE: 45,        // 单选题 45 题
+            MULTIPLE_CHOICE: 15,      // 多选题 15 题
+            DURATION_MINUTES: 60,     // 考试时间 60 分钟
+            PASS_SCORE: 45            // 合格线 45 题（75%）
+        };
+
         let questions = [];
         let filteredQuestions = [];
         let currentQuestionIndex = 0;
@@ -480,18 +491,9 @@
             return values;
         }
 
-        // A 类考试配置
-        const EXAM_CONFIG = {
-            TOTAL_QUESTIONS: 40,      // 总题数 40 题
-            SINGLE_CHOICE: 32,        // 单选题 32 题
-            MULTIPLE_CHOICE: 8,       // 多选题 8 题
-            DURATION_MINUTES: 40,     // 考试时间 40 分钟
-            PASS_SCORE: 30            // 合格线 30 题（75%）
-        };
-
         async function loadQuestions() {
             try {
-                const response = await fetch('业余无线电 A 类.csv');
+                const response = await fetch('业余无线电 B 类.csv');
                 const csvText = await response.text();
                 questions = parseCSV(csvText);
                 startNewExam();
@@ -505,7 +507,7 @@
             userAnswers = {};
             isSubmitted = false;
             
-            // 按照官方标准组卷：32 道单选 + 8 道多选
+            // 按照官方标准组卷：45 道单选 + 15 道多选
             const singleChoice = questions.filter(q => q.answer.length === 1);
             const multipleChoice = questions.filter(q => q.answer.length > 1);
             
@@ -677,7 +679,7 @@
             let answered = 0;
             Object.keys(userAnswers).forEach(key => {
                 const val = userAnswers[key];
-                if (Array.isArray(val) ? val.length > 0 : val) {
+                if (val) {
                     answered++;
                 }
             });
@@ -724,7 +726,7 @@
 
         function showExamResult() {
             let correct = 0;
-            const wrongQuestions = JSON.parse(localStorage.getItem('hamExamWrongQuestions')) || [];
+            const wrongQuestions = JSON.parse(localStorage.getItem('hamExamWrongQuestions_B') || '[]');
             
             filteredQuestions.forEach(q => {
                 const userAnswer = userAnswers[q.uniqueId];
@@ -747,14 +749,14 @@
                 }
             });
             
-            localStorage.setItem('hamExamWrongQuestions', JSON.stringify(wrongQuestions));
+            localStorage.setItem('hamExamWrongQuestions_B', JSON.stringify(wrongQuestions));
             
-            // 保存考试记录供 review-exam.html 使用
+            // 保存考试记录
             const examProgress = {
                 questions: filteredQuestions.map(q => ({ uniqueId: q.uniqueId })),
                 userAnswers: userAnswers
             };
-            localStorage.setItem('examProgress', JSON.stringify(examProgress));
+            localStorage.setItem('examProgress_B', JSON.stringify(examProgress));
             
             const score = Math.round((correct / filteredQuestions.length) * 100);
             const passed = correct >= EXAM_CONFIG.PASS_SCORE;
@@ -779,7 +781,7 @@
 
         function reviewExam() {
             if (confirm('查看解析将显示所有题目的正确答案。\n\n确定要继续吗？')) {
-                location.href = 'review-exam.html';
+                location.href = 'b_review_exam.html';
             }
         }
 
@@ -797,7 +799,7 @@
         }
 
         function exportToTxt() {
-            let content = '业余无线电 A 类考试模拟试卷\n';
+            let content = '业余无线电 B 类考试模拟试卷\n';
             content += '================================\n\n';
             content += `考试时间：${EXAM_CONFIG.DURATION_MINUTES} 分钟\n`;
             content += `总题数：${filteredQuestions.length} 题\n`;
@@ -836,7 +838,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `业余无线电 A 类模拟试卷_${new Date().getTime()}.txt`;
+            a.download = `业余无线电 B 类模拟试卷_${new Date().getTime()}.txt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -861,7 +863,7 @@
             html += '</style>';
             html += '</head><body>';
             
-            html += '<h1>业余无线电 A 类考试模拟试卷</h1>';
+            html += '<h1>业余无线电 B 类考试模拟试卷</h1>';
             
             html += '<div class="info">';
             html += `<p><strong>考试时间：</strong>${EXAM_CONFIG.DURATION_MINUTES} 分钟</p>`;
@@ -905,7 +907,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `业余无线电 A 类模拟试卷_${new Date().getTime()}.doc`;
+            a.download = `业余无线电 B 类模拟试卷_${new Date().getTime()}.doc`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);

@@ -88,8 +88,8 @@ def parse_txt_to_csv(input_file, output_file):
 
 if __name__ == '__main__':
     import os
-    input_file = r'C:\Users\admin\Desktop\Ham-Exam\a.txt'
-    output_file = r'C:\Users\admin\Desktop\Ham-Exam\业余无线电 A 类.csv'
+    input_file = r'C:\Users\admin\Desktop\Ham-Exam\b.txt'
+    output_file = r'C:\Users\admin\Desktop\Ham-Exam\业余无线电 B 类.csv'
     print(f"输入文件：{input_file}")
     print(f"输出文件：{output_file}")
     parse_txt_to_csv(input_file, output_file)

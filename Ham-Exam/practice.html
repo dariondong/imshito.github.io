@@ -186,6 +186,64 @@
             background: #f5f5f5;
             color: #666;
         }
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .feedback {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback.correct {
+            background: #ebfbee;
+            border-color: #40c057;
+        }
+        .feedback.incorrect {
+            background: #fff5f5;
+            border-color: #ff6b6b;
+        }
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .feedback-title.correct { color: #2b8a3e; }
+        .feedback-title.incorrect { color: #c92a2a; }
+        .feedback-text { color: #333; line-height: 1.6; }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            background: #fafafa;
+            border-top: 1px solid #e8e8e8;
+        }
+        .nav-btn {
+            padding: 12px 25px;
+            border: 2px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 8px;
+        }
+        .nav-btn:hover:not(:disabled) { border-color: #1a1a1a; color: #1a1a1a; }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .nav-btn.submit {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: white;
+        }
+        .nav-btn.submit:hover { background: #333; border-color: #333; }
+        .progress-section { flex: 1; margin: 0 30px; }
 
         .option.incorrect .option-letter {
             background: #999;
@@ -363,7 +421,7 @@
         </div>
     </div>
 
-    <div class="main-card">
+    <div class="main-card" id="mainCard">
         <div class="filter-bar">
             <select id="chapterSelect" class="filter-select" onchange="filterByChapter()">
                 <option value="">全部章节</option>
@@ -398,7 +456,7 @@
                 <div class="question-text" id="questionText">题目加载中...</div>
             </div>
             <div class="options" id="optionsContainer"></div>
-            <div class="feedback" id="feedback"></div>
+            <div id="feedbackArea"></div>
         </div>
 
         <div class="navigation">
@@ -412,7 +470,7 @@
                     <div class="progress-bar" id="progressBar" style="width: 0%"></div>
                 </div>
             </div>
-            <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">下一题 →</button>
+            <button class="nav-btn submit" id="actionBtn" onclick="submitAnswer()">提交 →</button>
         </div>
     </div>
 
@@ -428,6 +486,11 @@
         let userAnswers = {};
         let correctAnswers = {};
         let wrongQuestions = JSON.parse(localStorage.getItem('hamExamWrongQuestions')) || [];
+        let hasSubmitted = false;
+        
+        // 移动端滑动支持
+        let touchStartX = 0;
+        let touchEndX = 0;
 
         // 解析 CSV
         function parseCSV(csvText) {
@@ -498,9 +561,39 @@
                 populateChapterFilter();
                 showQuestion(currentQuestionIndex);
                 updateStats();
+                initSwipe();
             } catch (error) {
                 console.error('加载失败:', error);
                 document.getElementById('questionText').textContent = '题库加载失败';
+            }
+        }
+
+        function initSwipe() {
+            const mainCard = document.getElementById('mainCard');
+            if (!mainCard) return;
+            
+            mainCard.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            
+            mainCard.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+        }
+
+        function handleSwipe() {
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) { // 滑动距离大于 50 才触发
+                if (diff > 0) {
+                    // 左滑 - 下一题（仅在已提交后）
+                    if (hasSubmitted) {
+                        nextQuestion();
+                    }
+                } else {
+                    // 右滑 - 上一题
+                    previousQuestion();
+                }
             }
         }
 
@@ -546,6 +639,10 @@
             const typeTag = document.getElementById('questionType');
             typeTag.textContent = isMultiple ? '多选' : '单选';
             typeTag.className = 'question-type-tag' + (isMultiple ? ' multi' : '');
+            
+            // 清除反馈区域
+            document.getElementById('feedbackArea').innerHTML = '';
+            hasSubmitted = false;
             
             const optionsContainer = document.getElementById('optionsContainer');
             optionsContainer.innerHTML = '';
@@ -605,8 +702,8 @@
             const question = filteredQuestions[currentQuestionIndex];
             const isMultiple = question.answer.length > 1;
             
-            // 如果已经答过，不允许再选择
-            if (correctAnswers[question.uniqueId] !== undefined) {
+            // 如果已经答过或已提交，不允许再选择
+            if (correctAnswers[question.uniqueId] !== undefined || hasSubmitted) {
                 return;
             }
             
@@ -639,11 +736,9 @@
                 });
                 userAnswers[question.uniqueId] = letter;
                 saveProgress();
-                // 单选题选择后立即判断
-                autoCheckAnswer();
             }
             
-            updateStats();
+            updateNavButtons();
         }
 
         function autoCheckAnswer() {
@@ -659,6 +754,7 @@
             }
             
             correctAnswers[question.uniqueId] = isCorrect;
+            hasSubmitted = true;
             
             showResult(question, userAnswer, isCorrect);
             
@@ -669,6 +765,7 @@
             
             saveProgress();
             updateStats();
+            updateNavButtons();
         }
 
         function showResult(question, userAnswer, isCorrect) {
@@ -718,31 +815,53 @@
         function previousQuestion() {
             if (currentQuestionIndex > 0) {
                 currentQuestionIndex--;
+                hasSubmitted = false;
                 showQuestion(currentQuestionIndex);
             }
         }
 
         function nextQuestion() {
-            // 如果当前题目已答但未判断，先判断并显示答案
-            const question = filteredQuestions[currentQuestionIndex];
-            if (question && userAnswers[question.uniqueId] !== undefined && correctAnswers[question.uniqueId] === undefined) {
-                autoCheckAnswer();
-                // 如果是最后一题，显示答案后不切换
-                if (currentQuestionIndex === filteredQuestions.length - 1) {
-                    return;
-                }
-            }
-            
-            // 不是最后一题才切换
             if (currentQuestionIndex < filteredQuestions.length - 1) {
                 currentQuestionIndex++;
+                hasSubmitted = false;
                 showQuestion(currentQuestionIndex);
             }
         }
 
+        function submitAnswer() {
+            const question = filteredQuestions[currentQuestionIndex];
+            const userAnswer = userAnswers[question.uniqueId];
+            
+            if (!userAnswer) {
+                alert('请先选择答案！');
+                return;
+            }
+            
+            autoCheckAnswer();
+        }
+
         function updateNavButtons() {
+            const actionBtn = document.getElementById('actionBtn');
+            const question = filteredQuestions[currentQuestionIndex];
+            const hasAnswered = question && userAnswers[question.uniqueId] !== undefined;
+            const hasChecked = question && correctAnswers[question.uniqueId] !== undefined;
+            
             document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-            document.getElementById('nextBtn').disabled = currentQuestionIndex === filteredQuestions.length - 1;
+            
+            // 如果已提交，显示"下一题"，否则显示"提交"
+            if (hasSubmitted || hasChecked) {
+                actionBtn.textContent = '下一题 →';
+                actionBtn.className = 'nav-btn';
+                actionBtn.onclick = nextQuestion;
+                // 最后一题时禁用
+                actionBtn.disabled = currentQuestionIndex === filteredQuestions.length - 1;
+            } else {
+                actionBtn.textContent = '提交 →';
+                actionBtn.className = 'nav-btn submit';
+                actionBtn.onclick = submitAnswer;
+                // 未答题时禁用
+                actionBtn.disabled = !hasAnswered;
+            }
         }
 
         function updateProgress() {

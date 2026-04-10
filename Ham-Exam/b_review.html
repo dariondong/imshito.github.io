@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>业余无线电 A 类考试系统 - 错题回顾</title>
+    <title>业余无线电 B 类考试系统 - 错题回顾</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -14,7 +14,7 @@
             line-height: 1.6;
         }
         .navbar {
-            background: #1a1a1a;
+            background: #0064c8;
             color: white;
             padding: 20px 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -30,9 +30,9 @@
         .navbar-brand { font-size: 1.5em; font-weight: 700; }
         .navbar-btn {
             padding: 8px 16px;
-            border: 2px solid #444;
+            border: 2px solid rgba(255,255,255,0.3);
             background: transparent;
-            color: #999;
+            color: white;
             font-size: 0.85em;
             font-weight: 600;
             cursor: pointer;
@@ -40,7 +40,7 @@
             border-radius: 6px;
             text-decoration: none;
         }
-        .navbar-btn:hover { border-color: #666; color: #ccc; }
+        .navbar-btn:hover { border-color: white; color: white; }
         .main-card {
             max-width: 1000px;
             margin: 30px auto;
@@ -73,7 +73,7 @@
         .question-header { margin-bottom: 25px; }
         .question-number {
             display: inline-block;
-            background: #1a1a1a;
+            background: #0064c8;
             color: white;
             padding: 6px 14px;
             border-radius: 6px;
@@ -99,26 +99,29 @@
             transition: all 0.2s ease;
             background: white;
         }
-        .option:hover:not(.disabled) { border-color: #1a1a1a; background: #fafafa; }
+        .option:hover { border-color: #0064c8; background: #f0f7ff; }
         .option.selected {
-            border-color: #1a1a1a;
-            background: #1a1a1a;
+            border-color: #0064c8;
+            background: #0064c8;
             color: white;
         }
-        .option.selected .option-letter { background: white; color: #1a1a1a; }
+        .option.selected .option-letter { background: white; color: #0064c8; }
         .option.correct {
-            border-color: #2d2d2d;
-            background: #2d2d2d;
+            border-color: #40c057;
+            background: #ebfbee;
+        }
+        .option.correct .option-letter {
+            background: #40c057;
             color: white;
         }
-        .option.correct .option-letter { background: white; color: #2d2d2d; }
         .option.incorrect {
-            border-color: #999;
-            background: #f5f5f5;
-            color: #666;
+            border-color: #ff6b6b;
+            background: #fff5f5;
         }
-        .option.incorrect .option-letter { background: #999; color: white; }
-        .option.disabled { pointer-events: none; opacity: 0.7; }
+        .option.incorrect .option-letter {
+            background: #ff6b6b;
+            color: white;
+        }
         .option-letter {
             width: 32px;
             height: 32px;
@@ -145,23 +148,27 @@
         }
         .question-type-tag.multi { background: #e67700; }
         .feedback {
-            margin-top: 30px;
+            margin-top: 25px;
             padding: 20px;
-            border-radius: 8px;
-            display: none;
+            border-radius: 10px;
+            border: 2px solid;
         }
-        .feedback.show { display: block; }
         .feedback.correct {
             background: #ebfbee;
-            border: 2px solid #40c057;
-            color: #2b8a3e;
+            border-color: #40c057;
         }
         .feedback.incorrect {
             background: #fff5f5;
-            border: 2px solid #ff6b6b;
-            color: #c92a2a;
+            border-color: #ff6b6b;
         }
-        .feedback-title { font-weight: 700; font-size: 1.1em; margin-bottom: 8px; }
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .feedback-title.correct { color: #2b8a3e; }
+        .feedback-title.incorrect { color: #c92a2a; }
+        .feedback-text { color: #333; line-height: 1.6; }
         .navigation {
             display: flex;
             justify-content: space-between;
@@ -181,7 +188,7 @@
             transition: all 0.2s;
             border-radius: 8px;
         }
-        .nav-btn:hover:not(:disabled) { border-color: #1a1a1a; color: #1a1a1a; }
+        .nav-btn:hover:not(:disabled) { border-color: #0064c8; color: #0064c8; }
         .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .progress-section { flex: 1; margin: 0 30px; }
         .progress-header {
@@ -197,23 +204,11 @@
             border-radius: 4px;
             overflow: hidden;
         }
-        .progress-bar { height: 100%; background: #1a1a1a; transition: width 0.3s ease; }
-        .empty-state {
-            padding: 80px 30px;
-            text-align: center;
-        }
-        .empty-state h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-            color: #666;
-        }
-        .empty-state p {
-            color: #999;
-            margin-bottom: 30px;
-        }
+        .progress-bar { height: 100%; background: #0064c8; transition: width 0.3s ease; }
         .footer { text-align: center; padding: 30px 20px; color: #666; font-size: 0.9em; }
         .footer p { margin: 5px 0; }
         .hidden { display: none !important; }
+        
         @media (max-width: 768px) {
             .navbar-content { flex-direction: column; gap: 10px; text-align: center; }
             .stats-bar { grid-template-columns: repeat(2, 1fr); }
@@ -225,20 +220,21 @@
 <body>
     <div class="navbar">
         <div class="navbar-content">
-            <div class="navbar-brand">HAM EXAM - 错题回顾</div>
-            <a href="index.html" class="navbar-btn">← 返回主页</a>
+            <div class="navbar-brand">HAM EXAM - B 类错题回顾</div>
+            <div>
+                <a href="index.html" class="navbar-btn">← 返回主页</a>
+            </div>
         </div>
     </div>
 
     <div class="main-card">
         <div class="info-bar">
-            📝 当前为错题回顾模式，专门练习之前做错的题目
+            <strong>💡 提示：</strong>答对的题目将自动从错题本中移除
         </div>
-
         <div class="stats-bar">
             <div class="stat-item">
                 <div class="stat-value" id="totalQuestions">0</div>
-                <div class="stat-label">错题数</div>
+                <div class="stat-label">错题总数</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value" id="currentNumber">0</div>
@@ -250,7 +246,7 @@
             </div>
             <div class="stat-item">
                 <div class="stat-value" id="remainingCount">0</div>
-                <div class="stat-label">待加强</div>
+                <div class="stat-label">待掌握</div>
             </div>
         </div>
 
@@ -263,13 +259,7 @@
                 <div class="question-text" id="questionText">题目加载中...</div>
             </div>
             <div class="options" id="optionsContainer"></div>
-            <div class="feedback" id="feedback"></div>
-        </div>
-
-        <div class="empty-state hidden" id="emptyState">
-            <h2>🎉 太棒了！</h2>
-            <p>目前没有错题记录，或者所有错题都已掌握</p>
-            <a href="index.html" class="nav-btn">返回主页</a>
+            <div id="feedbackArea"></div>
         </div>
 
         <div class="navigation" id="navigation">
@@ -299,6 +289,7 @@
         let userAnswers = {};
         let correctAnswers = {};
         let wrongQuestions = [];
+        let masteredCount = 0;
 
         function parseCSV(csvText) {
             const lines = csvText.trim().split('\n');
@@ -340,20 +331,24 @@
 
         async function loadQuestions() {
             try {
-                const response = await fetch('业余无线电 A 类.csv');
+                const response = await fetch('业余无线电 B 类.csv');
                 const csvText = await response.text();
                 questions = parseCSV(csvText);
                 
-                wrongQuestions = JSON.parse(localStorage.getItem('hamExamWrongQuestions')) || [];
+                wrongQuestions = JSON.parse(localStorage.getItem('hamExamBWrongQuestions') || '[]');
                 
-                if (wrongQuestions.length === 0) {
-                    document.getElementById('questionArea').classList.add('hidden');
+                filteredQuestions = questions.filter(q => wrongQuestions.includes(q.uniqueId));
+                
+                if (filteredQuestions.length === 0) {
+                    document.getElementById('questionText').textContent = '🎉 太棒了！错题本中没有题目，继续加油！';
+                    document.getElementById('optionsContainer').innerHTML = '';
                     document.getElementById('navigation').classList.add('hidden');
-                    document.getElementById('emptyState').classList.remove('hidden');
+                    document.getElementById('totalQuestions').textContent = '0';
+                    document.getElementById('remainingCount').textContent = '0';
                     return;
                 }
                 
-                filteredQuestions = questions.filter(q => wrongQuestions.includes(q.uniqueId));
+                loadProgress();
                 showQuestion(currentQuestionIndex);
                 updateStats();
             } catch (error) {
@@ -362,9 +357,20 @@
             }
         }
 
-        function showQuestion(index) {
-            if (filteredQuestions.length === 0) return;
+        function loadProgress() {
+            const savedAnswers = localStorage.getItem('hamExamBReview_answers');
+            const savedCorrect = localStorage.getItem('hamExamBReview_correct');
+            
+            if (savedAnswers) userAnswers = JSON.parse(savedAnswers);
+            if (savedCorrect) correctAnswers = JSON.parse(savedCorrect);
+        }
 
+        function saveProgress() {
+            localStorage.setItem('hamExamBReview_answers', JSON.stringify(userAnswers));
+            localStorage.setItem('hamExamBReview_correct', JSON.stringify(correctAnswers));
+        }
+
+        function showQuestion(index) {
             const question = filteredQuestions[index];
             const isMultiple = question.answer.length > 1;
             
@@ -374,6 +380,9 @@
             const typeTag = document.getElementById('questionType');
             typeTag.textContent = isMultiple ? '多选' : '单选';
             typeTag.className = 'question-type-tag' + (isMultiple ? ' multi' : '');
+            
+            // 清除反馈区域
+            document.getElementById('feedbackArea').innerHTML = '';
             
             const optionsContainer = document.getElementById('optionsContainer');
             optionsContainer.innerHTML = '';
@@ -396,10 +405,13 @@
                 optionsContainer.appendChild(optionDiv);
             });
 
-            document.getElementById('feedback').className = 'feedback';
-            document.getElementById('feedback').style.display = 'none';
-
-            if (userAnswers[question.uniqueId] !== undefined) {
+            if (correctAnswers[question.uniqueId] !== undefined) {
+                const userAnswer = userAnswers[question.uniqueId];
+                const isCorrect = Array.isArray(userAnswer) 
+                    ? userAnswer.join('') === question.answer 
+                    : userAnswer === question.answer;
+                showResult(question, userAnswer, isCorrect);
+            } else if (userAnswers[question.uniqueId] !== undefined) {
                 const savedAnswer = userAnswers[question.uniqueId];
                 if (isMultiple && Array.isArray(savedAnswer)) {
                     savedAnswer.forEach(letter => applyOptionSelection(letter, true));
@@ -408,13 +420,7 @@
                 }
             }
 
-            // 如果已经答过，显示结果
-            if (correctAnswers[question.uniqueId] !== undefined) {
-                showResult(question, userAnswers[question.uniqueId], correctAnswers[question.uniqueId]);
-            }
-
             updateProgress();
-            updateStats();
             updateNavButtons();
         }
 
@@ -432,30 +438,25 @@
             const question = filteredQuestions[currentQuestionIndex];
             const isMultiple = question.answer.length > 1;
             
-            // 如果已经答过，不允许再选择
             if (correctAnswers[question.uniqueId] !== undefined) {
                 return;
             }
             
             if (isMultiple) {
-                // 多选题处理 - 允许反复选择/取消选择，不立即判断
                 if (!userAnswers[question.uniqueId]) {
                     userAnswers[question.uniqueId] = [];
                 }
                 const currentAnswers = userAnswers[question.uniqueId];
                 const index = currentAnswers.indexOf(letter);
                 if (index > -1) {
-                    // 取消选择
                     currentAnswers.splice(index, 1);
                     applyOptionSelection(letter, false);
                 } else {
-                    // 添加选择
                     currentAnswers.push(letter);
                     currentAnswers.sort();
                     applyOptionSelection(letter, true);
                 }
             } else {
-                // 单选题处理
                 const options = document.querySelectorAll('.option');
                 options.forEach(opt => {
                     opt.classList.remove('selected');
@@ -464,10 +465,10 @@
                     }
                 });
                 userAnswers[question.uniqueId] = letter;
-                // 单选题选择后立即判断
                 autoCheckAnswer();
             }
             
+            saveProgress();
             updateStats();
         }
 
@@ -475,7 +476,6 @@
             const question = filteredQuestions[currentQuestionIndex];
             const userAnswer = userAnswers[question.uniqueId];
             
-            // 判断是否正确：多选题需要将数组转为字符串比较
             let isCorrect = false;
             if (Array.isArray(userAnswer)) {
                 isCorrect = userAnswer.join('') === question.answer;
@@ -491,54 +491,51 @@
                 const index = wrongQuestions.indexOf(question.uniqueId);
                 if (index > -1) {
                     wrongQuestions.splice(index, 1);
-                    localStorage.setItem('hamExamWrongQuestions', JSON.stringify(wrongQuestions));
+                    localStorage.setItem('hamExamBWrongQuestions', JSON.stringify(wrongQuestions));
+                    masteredCount++;
                 }
             }
             
+            saveProgress();
             updateStats();
         }
 
         function showResult(question, userAnswer, isCorrect) {
-            const feedback = document.getElementById('feedback');
-            const isMultiple = question.answer.length > 1;
+            const feedbackArea = document.getElementById('feedbackArea');
             
-            feedback.className = 'feedback show';
-            feedback.style.display = 'block';
-            
-            let userAnswerText = userAnswer || '未作答';
-            if (isMultiple && Array.isArray(userAnswer)) {
+            let userAnswerText = '';
+            if (Array.isArray(userAnswer)) {
                 userAnswerText = userAnswer.join('');
+            } else {
+                userAnswerText = userAnswer || '未答';
             }
             
-            // 判断是否正确
-            const actuallyCorrect = userAnswer === question.answer || 
-                (Array.isArray(userAnswer) && userAnswer.join('') === question.answer);
-            
-            feedback.innerHTML = `
-                <div class="feedback-title">${actuallyCorrect ? '✓ 回答正确' : '✗ 回答错误'}</div>
-                ${!actuallyCorrect ? `你的答案：${userAnswerText}<br>` : ''}正确答案：${question.answer}
+            feedbackArea.innerHTML = `
+                <div class="feedback ${isCorrect ? 'correct' : 'incorrect'}">
+                    <div class="feedback-title ${isCorrect ? 'correct' : 'incorrect'}">
+                        ${isCorrect ? '✓ 回答正确' : '✗ 回答错误'}
+                    </div>
+                    <div class="feedback-text">
+                        ${!isCorrect ? `<div>你的答案：${userAnswerText}</div>` : ''}
+                        <div>正确答案：${question.answer}</div>
+                    </div>
+                </div>
             `;
-
-            const options = document.querySelectorAll('.option');
-            const correctAnswersArr = question.answer.split('');
             
+            const options = document.querySelectorAll('.option');
             options.forEach(opt => {
-                const letter = opt.querySelector('.option-letter').textContent;
+                const optLetter = opt.querySelector('.option-letter').textContent;
+                opt.classList.remove('correct', 'incorrect');
                 
-                // 正确答案标记为绿色
-                if (correctAnswersArr.includes(letter)) {
+                if (optLetter === question.answer) {
                     opt.classList.add('correct');
                 }
-                // 用户选择的错误答案标记为红色
-                else if (userAnswer) {
-                    const userAnswersArr = isMultiple && Array.isArray(userAnswer) ? userAnswer : [userAnswer];
-                    if (userAnswersArr.includes(letter) && !correctAnswersArr.includes(letter)) {
-                        opt.classList.add('incorrect');
-                    }
-                }
                 
-                // 禁用所有选项
-                opt.classList.add('disabled');
+                if (!isCorrect && Array.isArray(userAnswer) && userAnswer.includes(optLetter)) {
+                    opt.classList.add('incorrect');
+                } else if (!isCorrect && userAnswer === optLetter) {
+                    opt.classList.add('incorrect');
+                }
             });
         }
 
@@ -550,11 +547,11 @@
         }
 
         function nextQuestion() {
-            // 如果当前题目已答但未判断，先判断并显示答案
+            // 修复：如果当前题目已答但未判断，先判断并显示答案
             const question = filteredQuestions[currentQuestionIndex];
             if (question && userAnswers[question.uniqueId] !== undefined && correctAnswers[question.uniqueId] === undefined) {
                 autoCheckAnswer();
-                // 如果是最后一题，显示答案后不切换
+                // 如果是最后一题，显示答案后不切换，让用户查看答案
                 if (currentQuestionIndex === filteredQuestions.length - 1) {
                     return;
                 }
@@ -594,13 +591,11 @@
             document.getElementById('totalQuestions').textContent = filteredQuestions.length;
             document.getElementById('currentNumber').textContent = currentQuestionIndex + 1;
             
-            let correct = 0;
-            filteredQuestions.forEach(q => {
-                if (correctAnswers[q.uniqueId]) {
-                    correct++;
-                }
+            let correct = masteredCount;
+            Object.values(correctAnswers).forEach(val => {
+                if (val) correct++;
             });
-
+            
             document.getElementById('correctCount').textContent = correct;
             document.getElementById('remainingCount').textContent = filteredQuestions.length - correct;
         }

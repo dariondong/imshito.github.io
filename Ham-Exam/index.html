@@ -144,6 +144,51 @@
             background: linear-gradient(135deg, rgba(26, 26, 26, 0.02) 0%, rgba(26, 26, 26, 0.05) 100%);
         }
 
+        .mode-card.b-exam {
+            background: linear-gradient(135deg, rgba(0, 100, 200, 0.05) 0%, rgba(0, 100, 200, 0.1) 100%);
+            border-color: #0064c8;
+        }
+        
+        .mode-card.b-exam h2 {
+            color: #0064c8;
+        }
+        
+        .class-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .class-btn {
+            padding: 12px 30px;
+            border: 2px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 8px;
+        }
+        
+        .class-btn:hover {
+            border-color: #1a1a1a;
+            color: #1a1a1a;
+        }
+        
+        .class-btn.active {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: white;
+        }
+        
+        .class-btn.b-active {
+            background: #0064c8;
+            border-color: #0064c8;
+            color: white;
+        }
+
         .stats-preview {
             background: #fafafa;
             border-top: 1px solid #e8e8e8;
@@ -249,7 +294,7 @@
 <body>
     <div class="navbar">
         <div class="navbar-content">
-            <div class="navbar-brand">HAM EXAM <span>A 类</span></div>
+            <div class="navbar-brand">HAM EXAM <span id="classType">A 类</span></div>
             <div class="navbar-info">业余无线电考试系统</div>
         </div>
     </div>
@@ -258,15 +303,21 @@
         <div class="mode-selector">
             <h2>选择练习模式</h2>
             <p>开始您的学习之旅</p>
-            <div class="mode-grid">
+            
+            <div class="class-switcher">
+                <button class="class-btn active" id="classA" onclick="switchClass('A')">📖 A 类</button>
+                <button class="class-btn" id="classB" onclick="switchClass('B')">🎓 B 类</button>
+            </div>
+            
+            <div class="mode-grid" id="modeGrid">
                 <a href="practice.html" class="mode-card practice">
                     <h2>📚 顺序练习</h2>
                     <p>按题库顺序逐题练习，每题答完后立即显示正确答案和解析，适合日常学习和记忆。</p>
                 </a>
 
                 <a href="exam.html" class="mode-card exam">
-                    <h2>📝 模拟考试</h2>
-                    <p>随机抽取 50 道题进行模拟测试，交卷前不显示答案，交卷后显示成绩和解析，模拟真实考试环境。</p>
+                    <h2>📝 A 类模拟考试</h2>
+                    <p>随机抽取 40 道题（单选 32 题 + 多选 8 题），答题时间 40 分钟，答对 30 题为合格，模拟真实考试环境。</p>
                 </a>
 
                 <a href="review.html" class="mode-card review">
@@ -302,31 +353,112 @@
     </div>
 
     <script>
-        function loadStats() {
-            const wrongQuestions = JSON.parse(localStorage.getItem('hamExamWrongQuestions')) || [];
-            const progress = JSON.parse(localStorage.getItem('hamExamProgress')) || {};
+        let currentClass = 'A';
+        
+        function switchClass(cls) {
+            currentClass = cls;
+            
+            // 更新按钮样式
+            document.getElementById('classA').className = cls === 'A' ? 'class-btn active' : 'class-btn';
+            document.getElementById('classB').className = cls === 'B' ? 'class-btn b-active' : 'class-btn';
+            
+            // 更新标题
+            document.getElementById('classType').textContent = cls + '类';
+            
+            // 更新模式卡片
+            const modeGrid = document.getElementById('modeGrid');
+            if (cls === 'A') {
+                modeGrid.innerHTML = `
+                    <a href="practice.html" class="mode-card practice">
+                        <h2>📚 顺序练习</h2>
+                        <p>按题库顺序逐题练习，每题答完后立即显示正确答案和解析，适合日常学习和记忆。</p>
+                    </a>
+
+                    <a href="exam.html" class="mode-card exam">
+                        <h2>📝 A 类模拟考试</h2>
+                        <p>随机抽取 40 道题（单选 32 题 + 多选 8 题），答题时间 40 分钟，答对 30 题为合格，模拟真实考试环境。</p>
+                    </a>
+
+                    <a href="review.html" class="mode-card review">
+                        <h2>❌ 错题回顾</h2>
+                        <p>专门练习之前做错的题目，针对性复习薄弱环节，巩固知识点。</p>
+                    </a>
+                `;
+                loadStats('A');
+            } else {
+                modeGrid.innerHTML = `
+                    <a href="b_practice.html" class="mode-card practice">
+                        <h2>📚 顺序练习</h2>
+                        <p>按题库顺序逐题练习，每题答完后立即显示正确答案和解析，适合日常学习和记忆。</p>
+                    </a>
+
+                    <a href="b_class_exam.html" class="mode-card b-exam">
+                        <h2>🎓 B 类模拟考试</h2>
+                        <p>随机抽取 60 道题（单选 45 题 + 多选 15 题），答题时间 60 分钟，答对 45 题为合格，适合进阶学习。</p>
+                    </a>
+
+                    <a href="b_review.html" class="mode-card review">
+                        <h2>❌ 错题回顾</h2>
+                        <p>专门练习之前做错的题目，针对性复习薄弱环节，巩固知识点。</p>
+                    </a>
+                `;
+                loadStats('B');
+            }
+            
+            // 保存到 localStorage
+            localStorage.setItem('hamExamClass', cls);
+        }
+        
+        function loadStats(cls) {
+            let wrongQuestions = [];
+            let progress = {};
+            
+            if (cls === 'A') {
+                // A 类
+                wrongQuestions = JSON.parse(localStorage.getItem('hamExamWrongQuestions') || '[]');
+                progress = JSON.parse(localStorage.getItem('practiceProgress') || '{}');
+            } else {
+                // B 类
+                wrongQuestions = JSON.parse(localStorage.getItem('hamExamBWrongQuestions') || '[]');
+                progress = JSON.parse(localStorage.getItem('hamExamBProgress_answers') || '{}');
+            }
             
             document.getElementById('totalWrong').textContent = wrongQuestions.length;
-            document.getElementById('totalQuestions').textContent = progress.totalQuestions || 0;
+            document.getElementById('totalQuestions').textContent = cls === 'A' ? '40' : '60';
             
-            const answered = progress.answeredCount || 0;
-            const total = progress.totalQuestions || 1;
-            const rate = Math.round((answered / total) * 100);
+            const answered = progress.answeredCount || Object.keys(progress.userAnswers || {}).length || 0;
+            const total = cls === 'A' ? 40 : 60;
+            const rate = answered > 0 ? Math.round((answered / total) * 100) : 0;
             document.getElementById('progressRate').textContent = `${rate}%`;
         }
 
         function resetAll() {
             if (confirm('确定要重置所有学习进度吗？\n\n这将清除：\n- 所有答题记录\n- 所有错题本\n- 所有学习统计\n\n此操作不可恢复！')) {
+                // A 类
                 localStorage.removeItem('hamExamProgress');
                 localStorage.removeItem('hamExamWrongQuestions');
                 localStorage.removeItem('practiceProgress');
                 localStorage.removeItem('examProgress');
+                // B 类
+                localStorage.removeItem('hamExamBProgress_index');
+                localStorage.removeItem('hamExamBProgress_answers');
+                localStorage.removeItem('hamExamBProgress_correct');
+                localStorage.removeItem('hamExamBProgress_wrongQuestions');
+                localStorage.removeItem('hamExamBWrongQuestions');
+                localStorage.removeItem('hamExamBReview_answers');
+                localStorage.removeItem('hamExamBReview_correct');
+                localStorage.removeItem('examProgress_B');
+                
                 alert('进度已重置！');
                 location.reload();
             }
         }
 
-        loadStats();
+        // 页面加载时恢复上次的类别
+        window.onload = function() {
+            const savedClass = localStorage.getItem('hamExamClass') || 'A';
+            switchClass(savedClass);
+        };
     </script>
 </body>
 </html>
