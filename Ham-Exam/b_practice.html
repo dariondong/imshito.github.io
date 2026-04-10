@@ -4,228 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>业余无线电 B 类考试系统 - 顺序练习</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-            color: #1a1a1a;
-            line-height: 1.6;
-        }
-        .navbar {
-            background: #0064c8;
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .navbar-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .navbar-brand { font-size: 1.5em; font-weight: 700; }
-        .navbar-btn {
-            padding: 8px 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            background: transparent;
-            color: white;
-            font-size: 0.85em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 6px;
-            text-decoration: none;
-        }
-        .navbar-btn:hover { border-color: white; color: white; }
-        .main-card {
-            max-width: 1000px;
-            margin: 30px auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-        }
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background: #e8e8e8;
-            border-bottom: 1px solid #e8e8e8;
-        }
-        .stat-item {
-            background: white;
-            padding: 25px 15px;
-            text-align: center;
-        }
-        .stat-value { font-size: 2em; font-weight: 700; color: #1a1a1a; }
-        .stat-label { font-size: 0.85em; color: #666; margin-top: 5px; }
-        .question-area { padding: 40px 30px; }
-        .question-header { margin-bottom: 25px; }
-        .question-number {
-            display: inline-block;
-            background: #0064c8;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-        .question-text {
-            font-size: 1.35em;
-            line-height: 1.7;
-            color: #1a1a1a;
-            font-weight: 500;
-        }
-        .options { display: grid; gap: 12px; margin-top: 30px; }
-        .option {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            padding: 20px;
-            border: 2px solid #e8e8e8;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: white;
-        }
-        .option:hover { border-color: #0064c8; background: #f0f7ff; }
-        .option.selected {
-            border-color: #0064c8;
-            background: #0064c8;
-            color: white;
-        }
-        .option.selected .option-letter { background: white; color: #0064c8; }
-        .option.correct {
-            border-color: #40c057;
-            background: #ebfbee;
-        }
-        .option.correct .option-letter {
-            background: #40c057;
-            color: white;
-        }
-        .option.incorrect {
-            border-color: #ff6b6b;
-            background: #fff5f5;
-        }
-        .option.incorrect .option-letter {
-            background: #ff6b6b;
-            color: white;
-        }
-        .option-letter {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            background: #f0f0f0;
-            color: #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-        .option-text { flex: 1; line-height: 1.6; }
-        .question-type-tag {
-            display: inline-block;
-            background: #666;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75em;
-            font-weight: 600;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-        .question-type-tag.multi { background: #e67700; }
-        .feedback {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid;
-            display: none;
-        }
-        .feedback.show {
-            display: block;
-        }
-        .feedback.correct {
-            background: #ebfbee;
-            border-color: #40c057;
-        }
-        .feedback.incorrect {
-            background: #fff5f5;
-            border-color: #ff6b6b;
-        }
-        .feedback-title {
-            font-weight: 700;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
-        .feedback-title.correct { color: #2b8a3e; }
-        .feedback-title.incorrect { color: #c92a2a; }
-        .feedback-text { color: #333; line-height: 1.6; }
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 30px;
-            background: #fafafa;
-            border-top: 1px solid #e8e8e8;
-        }
-        .nav-btn {
-            padding: 12px 25px;
-            border: 2px solid #ddd;
-            background: white;
-            color: #666;
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 8px;
-        }
-        .nav-btn:hover:not(:disabled) { border-color: #0064c8; color: #0064c8; }
-        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .nav-btn.submit {
-            background: #0064c8;
-            border-color: #0064c8;
-            color: white;
-        }
-        .nav-btn.submit:hover { background: #0052a3; border-color: #0052a3; }
-        .progress-section { flex: 1; margin: 0 30px; }
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-            color: #666;
-        }
-        .progress-track {
-            height: 8px;
-            background: #e8e8e8;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .progress-bar { height: 100%; background: #0064c8; transition: width 0.3s ease; }
-        .footer { text-align: center; padding: 30px 20px; color: #666; font-size: 0.9em; }
-        .footer p { margin: 5px 0; }
-        .hidden { display: none !important; }
-        
-        @media (max-width: 768px) {
-            .navbar-content { flex-direction: column; gap: 10px; text-align: center; }
-            .stats-bar { grid-template-columns: repeat(2, 1fr); }
-            .navigation { flex-direction: column; gap: 15px; }
-            .progress-section { margin: 0; width: 100%; }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="theme-b">
     <div class="navbar">
         <div class="navbar-content">
             <div class="navbar-brand">HAM EXAM - B 类顺序练习</div>
             <div>
+                <button class="navbar-btn" id="favoriteBtn" onclick="toggleFavorite()">⭐ 收藏</button>
                 <button class="navbar-btn" onclick="resetProgress()">🔄 重置进度</button>
                 <a href="index.html" class="navbar-btn">← 返回主页</a>
             </div>
@@ -297,6 +83,7 @@
         let userAnswers = {};
         let correctAnswers = {};
         let wrongQuestions = [];
+        let isFavorite = false;
         let hasSubmitted = false; // 当前题是否已提交
 
         // 移动端滑动支持
@@ -304,11 +91,12 @@
         let touchEndX = 0;
 
         function parseCSV(csvText) {
-            const lines = csvText.trim().split('\n');
+            const lines = csvText.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
             const questions = [];
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i];
-                const values = parseCSVLine(line);
+                if (!line || !line.trim()) continue;
+                const values = parseCSVLine(line.trim());
                 if (values.length >= 8) {
                     questions.push({
                         id: values[0],
@@ -347,7 +135,12 @@
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const csvText = await response.text();
+                let csvText = await response.text();
+                
+                if (csvText.charCodeAt(0) === 0xFEFF) {
+                    csvText = csvText.slice(1);
+                }
+                
                 console.log('CSV 加载成功，长度:', csvText.length);
                 
                 questions = parseCSV(csvText);
@@ -369,21 +162,30 @@
 
         function initSwipe() {
             const mainCard = document.getElementById('mainCard');
+            if (!mainCard) return;
+            
+            let touchStartTime = 0;
+            
             mainCard.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
+                touchStartTime = Date.now();
             }, { passive: true });
             
             mainCard.addEventListener('touchend', e => {
                 touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
+                const touchDuration = Date.now() - touchStartTime;
+                // 只有快速滑动（小于 300ms）且距离足够大才触发
+                if (touchDuration < 300) {
+                    handleSwipe();
+                }
             }, { passive: true });
         }
 
         function handleSwipe() {
             const diff = touchStartX - touchEndX;
-            if (Math.abs(diff) > 50) { // 滑动距离大于 50 才触发
+            if (Math.abs(diff) > 80) { // 滑动距离大于 80 才触发
                 if (diff > 0) {
-                    // 左滑 - 下一题
+                    // 左滑 - 下一题（仅在已提交后）
                     if (hasSubmitted) {
                         nextQuestion();
                     }
@@ -516,6 +318,7 @@
             updateProgress();
             updateStats();
             updateNavButtons();
+            loadFavoriteStatus();
         }
 
         function applyOptionSelection(letter, isSelected) {
@@ -703,6 +506,69 @@
             
             const accuracy = answered > 0 ? Math.round((correct / answered) * 100) : 0;
             document.getElementById('accuracy').textContent = `${accuracy}%`;
+        }
+
+        function toggleFavorite() {
+            const question = filteredQuestions[currentQuestionIndex];
+            if (!question) return;
+            
+            isFavorite = !isFavorite;
+            const btn = document.getElementById('favoriteBtn');
+            
+            if (isFavorite) {
+                btn.classList.add('active');
+                btn.textContent = '⭐ 已收藏';
+                saveFavoriteQuestion(question);
+            } else {
+                btn.classList.remove('active');
+                btn.textContent = '⭐ 收藏';
+                removeFavoriteQuestion(question);
+            }
+        }
+
+        function saveFavoriteQuestion(question) {
+            const favorites = JSON.parse(localStorage.getItem('hamExamFavoriteQuestions')) || [];
+            if (!favorites.some(f => f.uniqueId === question.uniqueId)) {
+                favorites.push({
+                    uniqueId: question.uniqueId,
+                    chapter: question.chapter,
+                    code: question.code,
+                    question: question.question,
+                    answer: question.answer,
+                    optionA: question.optionA,
+                    optionB: question.optionB,
+                    optionC: question.optionC,
+                    optionD: question.optionD || '',
+                    classType: 'B'
+                });
+                localStorage.setItem('hamExamFavoriteQuestions', JSON.stringify(favorites));
+                alert('题目已收藏！');
+            }
+        }
+
+        function removeFavoriteQuestion(question) {
+            const favorites = JSON.parse(localStorage.getItem('hamExamFavoriteQuestions')) || [];
+            const updated = favorites.filter(f => f.uniqueId !== question.uniqueId);
+            localStorage.setItem('hamExamFavoriteQuestions', JSON.stringify(updated));
+        }
+
+        function loadFavoriteStatus() {
+            const question = filteredQuestions[currentQuestionIndex];
+            if (!question) return;
+            
+            const favorites = JSON.parse(localStorage.getItem('hamExamFavoriteQuestions')) || [];
+            isFavorite = favorites.some(f => f.uniqueId === question.uniqueId);
+            
+            const btn = document.getElementById('favoriteBtn');
+            if (btn) {
+                if (isFavorite) {
+                    btn.classList.add('active');
+                    btn.textContent = '⭐ 已收藏';
+                } else {
+                    btn.classList.remove('active');
+                    btn.textContent = '⭐ 收藏';
+                }
+            }
         }
 
         window.onload = loadQuestions;

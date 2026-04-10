@@ -4,183 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>业余无线电 B 类考试系统 - 查看解析</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-            color: #1a1a1a;
-            line-height: 1.6;
-        }
-        .navbar {
-            background: #0064c8;
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .navbar-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .navbar-brand { font-size: 1.5em; font-weight: 700; }
-        .navbar-btn {
-            padding: 8px 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            background: transparent;
-            color: white;
-            font-size: 0.85em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 6px;
-            text-decoration: none;
-        }
-        .navbar-btn:hover { border-color: white; color: white; }
-        .main-card {
-            max-width: 1000px;
-            margin: 30px auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-        }
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background: #e8e8e8;
-            border-bottom: 1px solid #e8e8e8;
-        }
-        .stat-item {
-            background: white;
-            padding: 25px 15px;
-            text-align: center;
-        }
-        .stat-value { font-size: 2em; font-weight: 700; color: #1a1a1a; }
-        .stat-label { font-size: 0.85em; color: #666; margin-top: 5px; }
-        .question-area { padding: 40px 30px; }
-        .question-header { margin-bottom: 25px; }
-        .question-number {
-            display: inline-block;
-            background: #0064c8;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-        .question-text {
-            font-size: 1.35em;
-            line-height: 1.7;
-            color: #1a1a1a;
-            font-weight: 500;
-        }
-        .options { display: grid; gap: 12px; margin-top: 30px; }
-        .option {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            padding: 20px;
-            border: 2px solid #e8e8e8;
-            border-radius: 10px;
-            background: white;
-        }
-        .option.correct {
-            border-color: #40c057;
-            background: #ebfbee;
-        }
-        .option.correct .option-letter {
-            background: #40c057;
-            color: white;
-        }
-        .option.incorrect {
-            border-color: #ff6b6b;
-            background: #fff5f5;
-        }
-        .option.incorrect .option-letter {
-            background: #ff6b6b;
-            color: white;
-        }
-        .option-letter {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            background: #f0f0f0;
-            color: #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-        .option-text { flex: 1; line-height: 1.6; }
-        .question-type-tag {
-            display: inline-block;
-            background: #666;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75em;
-            font-weight: 600;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-        .question-type-tag.multi { background: #e67700; }
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 30px;
-            background: #fafafa;
-            border-top: 1px solid #e8e8e8;
-        }
-        .nav-btn {
-            padding: 12px 25px;
-            border: 2px solid #ddd;
-            background: white;
-            color: #666;
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 8px;
-        }
-        .nav-btn:hover:not(:disabled) { border-color: #0064c8; color: #0064c8; }
-        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .progress-section { flex: 1; margin: 0 30px; }
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-            color: #666;
-        }
-        .progress-track {
-            height: 8px;
-            background: #e8e8e8;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .progress-bar { height: 100%; background: #0064c8; transition: width 0.3s ease; }
-        .footer { text-align: center; padding: 30px 20px; color: #666; font-size: 0.9em; }
-        .footer p { margin: 5px 0; }
-        .hidden { display: none !important; }
-        
-        @media (max-width: 768px) {
-            .navbar-content { flex-direction: column; gap: 10px; text-align: center; }
-            .stats-bar { grid-template-columns: repeat(2, 1fr); }
-            .navigation { flex-direction: column; gap: 15px; }
-            .progress-section { margin: 0; width: 100%; }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="theme-b">
     <div class="navbar">
         <div class="navbar-content">
             <div class="navbar-brand">HAM EXAM - B 类考试解析</div>
@@ -293,19 +119,36 @@
                 const csvText = await response.text();
                 questions = parseCSV(csvText);
                 
-                examProgress = JSON.parse(localStorage.getItem('examProgress_B'));
+                // 先检查是否有收藏的试卷数据
+                const favoriteExamData = localStorage.getItem('favoriteExamData');
                 
-                if (!examProgress || !examProgress.questions) {
-                    document.getElementById('questionText').textContent = '未找到考试记录，请先完成一场模拟考试。';
-                    document.getElementById('navigation').classList.add('hidden');
-                    return;
+                if (favoriteExamData) {
+                    const favoriteExam = JSON.parse(favoriteExamData);
+                    userAnswers = favoriteExam.answers || {};
+                    
+                    // 根据题目 ID 找到完整题目信息
+                    filteredQuestions = favoriteExam.questions.map(qId => {
+                        const fullQuestion = questions.find(fq => fq.uniqueId === qId);
+                        return fullQuestion || { uniqueId: qId };
+                    });
+                    
+                    // 清除收藏数据标记
+                    localStorage.removeItem('favoriteExamData');
+                } else {
+                    examProgress = JSON.parse(localStorage.getItem('examProgress_B'));
+                    
+                    if (!examProgress || !examProgress.questions) {
+                        document.getElementById('questionText').textContent = '未找到考试记录，请先完成一场模拟考试。';
+                        document.getElementById('navigation').classList.add('hidden');
+                        return;
+                    }
+                    
+                    filteredQuestions = examProgress.questions.map(q => 
+                        questions.find(qq => qq.uniqueId === q.uniqueId)
+                    ).filter(q => q);
+                    
+                    userAnswers = examProgress.userAnswers || {};
                 }
-                
-                filteredQuestions = examProgress.questions.map(q => 
-                    questions.find(qq => qq.uniqueId === q.uniqueId)
-                ).filter(q => q);
-                
-                userAnswers = examProgress.userAnswers || {};
                 
                 currentQuestionIndex = 0;
                 showQuestion(currentQuestionIndex);

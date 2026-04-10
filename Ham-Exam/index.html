@@ -4,298 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>业余无线电 A 类考试系统</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-            color: #1a1a1a;
-            line-height: 1.6;
-        }
-
-        .navbar {
-            background: #1a1a1a;
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar-brand {
-            font-size: 1.5em;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .navbar-brand span {
-            color: #666;
-        }
-
-        .navbar-info {
-            font-size: 0.9em;
-            color: #999;
-        }
-
-        .navbar-btn {
-            padding: 8px 16px;
-            border: 2px solid #444;
-            background: transparent;
-            color: #999;
-            font-size: 0.85em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 6px;
-            text-decoration: none;
-            margin-left: 10px;
-        }
-
-        .navbar-btn:hover {
-            border-color: #666;
-            color: #ccc;
-        }
-
-        .main-card {
-            max-width: 1000px;
-            margin: 30px auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-        }
-
-        .mode-selector {
-            padding: 60px 30px;
-            text-align: center;
-        }
-
-        .mode-selector h2 {
-            font-size: 2em;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #1a1a1a;
-        }
-
-        .mode-selector p {
-            color: #666;
-            margin-bottom: 50px;
-            font-size: 1.1em;
-        }
-
-        .mode-grid {
-            display: grid;
-            gap: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .mode-card {
-            padding: 40px 30px;
-            border: 2px solid #e8e8e8;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            background: white;
-        }
-
-        .mode-card:hover {
-            border-color: #1a1a1a;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .mode-card h2 {
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            color: #1a1a1a;
-        }
-
-        .mode-card p {
-            color: #666;
-            line-height: 1.8;
-        }
-
-        .mode-card.practice {
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.02) 0%, rgba(26, 26, 26, 0.05) 100%);
-        }
-
-        .mode-card.exam {
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.02) 0%, rgba(26, 26, 26, 0.05) 100%);
-        }
-
-        .mode-card.review {
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.02) 0%, rgba(26, 26, 26, 0.05) 100%);
-        }
-
-        .mode-card.b-exam {
-            background: linear-gradient(135deg, rgba(0, 100, 200, 0.05) 0%, rgba(0, 100, 200, 0.1) 100%);
-            border-color: #0064c8;
-        }
-        
-        .mode-card.b-exam h2 {
-            color: #0064c8;
-        }
-        
-        .class-switcher {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .class-btn {
-            padding: 12px 30px;
-            border: 2px solid #ddd;
-            background: white;
-            color: #666;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 8px;
-        }
-        
-        .class-btn:hover {
-            border-color: #1a1a1a;
-            color: #1a1a1a;
-        }
-        
-        .class-btn.active {
-            background: #1a1a1a;
-            border-color: #1a1a1a;
-            color: white;
-        }
-        
-        .class-btn.b-active {
-            background: #0064c8;
-            border-color: #0064c8;
-            color: white;
-        }
-
-        .stats-preview {
-            background: #fafafa;
-            border-top: 1px solid #e8e8e8;
-            padding: 40px 30px;
-        }
-
-        .stats-preview h3 {
-            font-size: 1.2em;
-            margin-bottom: 25px;
-            color: #1a1a1a;
-            text-align: center;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .stat-item {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            border: 1px solid #e8e8e8;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2.5em;
-            font-weight: 700;
-            color: #1a1a1a;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 8px;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .footer p {
-            margin: 5px 0;
-        }
-
-        .footer button {
-            margin-top: 15px;
-            padding: 10px 25px;
-            border: 2px solid #ddd;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            color: #666;
-            font-size: 0.9em;
-            transition: all 0.2s;
-        }
-
-        .footer button:hover {
-            border-color: #1a1a1a;
-            color: #1a1a1a;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        @media (max-width: 768px) {
-            .navbar-content {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-
-            .mode-selector {
-                padding: 40px 20px;
-            }
-
-            .mode-selector h2 {
-                font-size: 1.6em;
-            }
-
-            .mode-grid {
-                gap: 15px;
-            }
-
-            .mode-card {
-                padding: 30px 20px;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="navbar">
         <div class="navbar-content">
             <div class="navbar-brand">HAM EXAM <span id="classType">A 类</span></div>
             <div class="navbar-info">业余无线电考试系统</div>
+            <div>
+                <a href="favorites.html" class="navbar-btn">⭐ 收藏夹</a>
+            </div>
         </div>
     </div>
 
@@ -355,7 +73,7 @@
     <script>
         let currentClass = 'A';
         
-        function switchClass(cls) {
+        async function switchClass(cls) {
             currentClass = cls;
             
             // 更新按钮样式
@@ -384,7 +102,7 @@
                         <p>专门练习之前做错的题目，针对性复习薄弱环节，巩固知识点。</p>
                     </a>
                 `;
-                loadStats('A');
+                await loadStats('A');
             } else {
                 modeGrid.innerHTML = `
                     <a href="b_practice.html" class="mode-card practice">
@@ -402,34 +120,45 @@
                         <p>专门练习之前做错的题目，针对性复习薄弱环节，巩固知识点。</p>
                     </a>
                 `;
-                loadStats('B');
+                await loadStats('B');
             }
             
             // 保存到 localStorage
             localStorage.setItem('hamExamClass', cls);
         }
         
-        function loadStats(cls) {
+        async function loadStats(cls) {
             let wrongQuestions = [];
-            let progress = {};
+            let answeredCount = 0;
+            let totalQuestions = 0;
+            
+            // 从 CSV 文件获取题库总题数
+            try {
+                const csvFile = cls === 'A' ? '业余无线电 A 类.csv' : '业余无线电 B 类.csv';
+                const response = await fetch(csvFile);
+                const csvText = await response.text();
+                const lines = csvText.trim().split('\n');
+                totalQuestions = lines.length - 1; // 减去标题行
+            } catch (error) {
+                console.error('获取题库失败:', error);
+                totalQuestions = cls === 'A' ? 40 : 60; // 默认值
+            }
             
             if (cls === 'A') {
-                // A 类
+                // A 类 - 从 practiceProgress 读取
                 wrongQuestions = JSON.parse(localStorage.getItem('hamExamWrongQuestions') || '[]');
-                progress = JSON.parse(localStorage.getItem('practiceProgress') || '{}');
+                const progress = JSON.parse(localStorage.getItem('practiceProgress') || '{}');
+                answeredCount = progress.answeredCount || 0;
             } else {
-                // B 类
+                // B 类 - 从 hamExamBProgress_answers 读取
                 wrongQuestions = JSON.parse(localStorage.getItem('hamExamBWrongQuestions') || '[]');
-                progress = JSON.parse(localStorage.getItem('hamExamBProgress_answers') || '{}');
+                const savedAnswers = JSON.parse(localStorage.getItem('hamExamBProgress_answers') || '{}');
+                answeredCount = Object.keys(savedAnswers).length;
             }
             
             document.getElementById('totalWrong').textContent = wrongQuestions.length;
-            document.getElementById('totalQuestions').textContent = cls === 'A' ? '40' : '60';
-            
-            const answered = progress.answeredCount || Object.keys(progress.userAnswers || {}).length || 0;
-            const total = cls === 'A' ? 40 : 60;
-            const rate = answered > 0 ? Math.round((answered / total) * 100) : 0;
-            document.getElementById('progressRate').textContent = `${rate}%`;
+            document.getElementById('totalQuestions').textContent = totalQuestions; // 显示题库总题数
+            document.getElementById('progressRate').textContent = totalQuestions > 0 ? `${Math.round((answeredCount / totalQuestions) * 100)}%` : '0%';
         }
 
         function resetAll() {

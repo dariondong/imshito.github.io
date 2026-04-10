@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的收藏夹 - 业余无线电考试系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">⭐ 我的收藏夹</div>
+            <div>
+                <a href="index.html" class="navbar-btn">← 返回主页</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-card">
+        <div class="favorites-header">
+            <h1 class="favorites-title">我的收藏夹</h1>
+            <p class="favorites-desc">收藏的试卷和题目</p>
+        </div>
+
+        <div class="favorites-list" id="favoritesList">
+            <div class="empty-state">
+                <div class="empty-state-icon">📚</div>
+                <div class="empty-state-text">加载中...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Design By BG7LZQ</p>
+        <p>鸣谢 高州市业余无线电协会</p>
+    </div>
+
+    <script>
+        let allQuestions = [];
+        let favoriteExams = [];
+        let favoriteQuestions = [];
+
+        async function loadQuestions() {
+            try {
+                const [responseA, responseB] = await Promise.all([
+                    fetch('业余无线电 A 类.csv'),
+                    fetch('业余无线电 B 类.csv')
+                ]);
+                const [csvTextA, csvTextB] = await Promise.all([
+                    responseA.text(),
+                    responseB.text()
+                ]);
+                
+                let cleanCsvTextA = csvTextA;
+                let cleanCsvTextB = csvTextB;
+                
+                if (csvTextA.charCodeAt(0) === 0xFEFF) {
+                    cleanCsvTextA = csvTextA.slice(1);
+                }
+                if (csvTextB.charCodeAt(0) === 0xFEFF) {
+                    cleanCsvTextB = csvTextB.slice(1);
+                }
+                
+                allQuestions = [
+                    ...parseCSV(cleanCsvTextA, 'A'),
+                    ...parseCSV(cleanCsvTextB, 'B')
+                ];
+                
+                loadFavorites();
+            } catch (error) {
+                console.error('加载题库失败:', error);
+                document.getElementById('favoritesList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚠️</div>
+                        <div class="empty-state-text">题库加载失败</div>
+                    </div>
+                `;
+            }
+        }
+
+        function parseCSV(csvText, classType) {
+            const lines = csvText.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
+            const questions = [];
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i];
+                if (!line || !line.trim()) continue;
+                const values = parseCSVLine(line.trim());
+                if (values.length >= 8) {
+                    questions.push({
+                        id: values[0],
+                        uniqueId: `${values[0]}_${values[2]}`,
+                        chapter: values[1],
+                        code: values[2],
+                        question: values[3],
+                        answer: values[4],
+                        optionA: values[5],
+                        optionB: values[6],
+                        optionC: values[7],
+                        optionD: values[8] || '',
+                        classType: classType
+                    });
+                }
+            }
+            return questions;
+        }
+
+        function parseCSVLine(line) {
+            const values = [];
+            let current = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') { inQuotes = !inQuotes; }
+                else if (char === ',' && !inQuotes) { values.push(current.trim()); current = ''; }
+                else { current += char; }
+            }
+            values.push(current.trim());
+            return values;
+        }
+
+        function loadFavorites() {
+            const examsA = JSON.parse(localStorage.getItem('hamExamFavorites')) || [];
+            const examsB = JSON.parse(localStorage.getItem('hamExamBFavorites')) || [];
+            favoriteQuestions = JSON.parse(localStorage.getItem('hamExamFavoriteQuestions')) || [];
+            
+            favoriteExams = [
+                ...examsA.map(f => ({ ...f, classType: 'A', type: 'exam' })),
+                ...examsB.map(f => ({ ...f, classType: 'B', type: 'exam' }))
+            ];
+            
+            renderFavorites();
+        }
+
+        function renderFavorites() {
+            const container = document.getElementById('favoritesList');
+            
+            if (favoriteExams.length === 0 && favoriteQuestions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⭐</div>
+                        <div class="empty-state-text">暂无收藏</div>
+                        <a href="index.html" class="btn btn-primary">去练习</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            // 渲染收藏的试卷
+            if (favoriteExams.length > 0) {
+                html += '<h2 style="margin-bottom: 20px; font-size: 1.5em;">📝 收藏的试卷</h2>';
+                html += favoriteExams.map((favorite, index) => {
+                    const questionCount = favorite.questions.length;
+                    const answeredCount = Object.keys(favorite.answers || {}).length;
+                    const date = new Date(favorite.id).toLocaleString();
+                    const globalIndex = index;
+                    
+                    return `
+                        <div class="favorite-item">
+                            <div class="favorite-header">
+                                <div>
+                                    <strong>业余无线电${favorite.classType}类模拟试卷</strong>
+                                    <span class="favorite-date">收藏于：${date}</span>
+                                </div>
+                            </div>
+                            <div class="favorite-info">
+                                <span class="favorite-stat">题目数量：<strong>${questionCount}题</strong></span>
+                                <span class="favorite-stat">已答题数：<strong>${answeredCount}题</strong></span>
+                                <span class="favorite-stat">类别：<strong>${favorite.classType}类</strong></span>
+                            </div>
+                            <div class="favorite-actions">
+                            <button class="btn btn-primary" onclick="startFavoriteExam(${globalIndex})">重新练习</button>
+                            <button class="btn btn-danger" onclick="deleteFavoriteExam(${globalIndex})">删除收藏</button>
+                        </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            // 渲染收藏的题目
+            if (favoriteQuestions.length > 0) {
+                html += '<h2 style="margin-bottom: 20px; font-size: 1.5em; margin-top: 40px;">📚 收藏的题目</h2>';
+                html += favoriteQuestions.map((q, index) => `
+                    <div class="favorite-item">
+                        <div class="favorite-header">
+                            <div>
+                                <strong>${q.chapter} - ${q.code}</strong>
+                                <span class="favorite-date">${q.classType}类</span>
+                            </div>
+                        </div>
+                        <div style="margin: 15px 0;">
+                            <p style="margin-bottom: 10px;"><strong>题目：</strong>${q.question}</p>
+                            <p><strong>答案：</strong>${q.answer}</p>
+                        </div>
+                        <div class="favorite-actions">
+                            <button class="btn btn-danger" onclick="deleteFavoriteQuestion(${index})">删除收藏</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            container.innerHTML = html;
+        }
+
+        function startFavoriteExam(index) {
+            const favorite = favoriteExams[index];
+            const classType = favorite.classType;
+            
+            // 保存收藏的试卷数据
+            localStorage.setItem('favoriteExamData', JSON.stringify(favorite));
+            
+            if (classType === 'A') {
+                // A 类：跳转到模拟考试页面，会自动加载收藏的题目
+                window.location.href = 'exam.html?mode=favorite';
+            } else {
+                // B 类：跳转到模拟考试页面
+                window.location.href = 'b_class_exam.html?mode=favorite';
+            }
+        }
+
+        function deleteFavoriteExam(index) {
+            const favorite = favoriteExams[index];
+            const classType = favorite.classType;
+            
+            if (confirm('确定要删除这个收藏吗？')) {
+                if (classType === 'A') {
+                    let favoritesList = JSON.parse(localStorage.getItem('hamExamFavorites')) || [];
+                    favoritesList.splice(index, 1);
+                    localStorage.setItem('hamExamFavorites', JSON.stringify(favoritesList));
+                } else {
+                    let favoritesList = JSON.parse(localStorage.getItem('hamExamBFavorites')) || [];
+                    favoritesList.splice(index, 1);
+                    localStorage.setItem('hamExamBFavorites', JSON.stringify(favoritesList));
+                }
+                
+                loadFavorites();
+            }
+        }
+
+        function deleteFavoriteQuestion(index) {
+            if (confirm('确定要删除这个题目收藏吗？')) {
+                let favoritesList = JSON.parse(localStorage.getItem('hamExamFavoriteQuestions')) || [];
+                favoritesList.splice(index, 1);
+                localStorage.setItem('hamExamFavoriteQuestions', JSON.stringify(favoritesList));
+                loadFavorites();
+            }
+        }
+
+        window.onload = loadQuestions;
+    </script>
+</body>
+</html>

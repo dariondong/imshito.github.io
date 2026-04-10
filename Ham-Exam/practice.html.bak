@@ -11,6 +11,145 @@
             border-color: #ffd700;
             color: #1a1a1a;
         }
+
+        .option.incorrect .option-letter {
+            background: #999;
+            color: white;
+        }
+
+        .option.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: #f0f0f0;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .question-type-tag {
+            display: inline-block;
+            background: #666;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .question-type-tag.multi {
+            background: #e67700;
+        }
+
+        .feedback {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #ebfbee;
+            border: 2px solid #40c057;
+            color: #2b8a3e;
+        }
+
+        .feedback.incorrect {
+            background: #fff5f5;
+            border: 2px solid #ff6b6b;
+            color: #c92a2a;
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            background: #fafafa;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: 2px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 8px;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: #1a1a1a;
+            color: #1a1a1a;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            flex: 1;
+            margin: 0 30px;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .progress-section {
+                margin: 0;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -18,7 +157,6 @@
         <div class="navbar-content">
             <div class="navbar-brand">HAM EXAM - 顺序练习</div>
             <div>
-                <button class="navbar-btn" onclick="resetProgress()">🔄 重置练习</button>
                 <button class="navbar-btn" id="favoriteBtn" onclick="toggleFavorite()">⭐ 收藏</button>
                 <a href="index.html" class="navbar-btn">← 返回主页</a>
             </div>
@@ -99,13 +237,12 @@
 
         // 解析 CSV
         function parseCSV(csvText) {
-            const lines = csvText.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
+            const lines = csvText.trim().split('\n');
             const questions = [];
 
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i];
-                if (!line || !line.trim()) continue;
-                const values = parseCSVLine(line.trim());
+                const values = parseCSVLine(line);
                 
                 if (values.length >= 8) {
                     questions.push({
@@ -151,12 +288,7 @@
         async function loadQuestions() {
             try {
                 const response = await fetch('业余无线电 A 类.csv');
-                let csvText = await response.text();
-                
-                if (csvText.charCodeAt(0) === 0xFEFF) {
-                    csvText = csvText.slice(1);
-                }
-                
+                const csvText = await response.text();
                 questions = parseCSV(csvText);
                 filteredQuestions = [...questions];
                 
@@ -286,11 +418,8 @@
                 optionsContainer.appendChild(optionDiv);
             });
 
-            const feedback = document.getElementById('feedback');
-            if (feedback) {
-                feedback.className = 'feedback';
-                feedback.style.display = 'none';
-            }
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').style.display = 'none';
 
             // 恢复答案
             if (userAnswers[question.uniqueId] !== undefined) {
@@ -525,20 +654,7 @@
                 answeredCount: Object.keys(userAnswers).length
             };
             localStorage.setItem('practiceProgress', JSON.stringify(progress));
-        }
-
-        function resetProgress() {
-            if (confirm('确定要重置练习吗？\n\n这将清空所有答题记录和正确数统计。\n\n此操作不可恢复！')) {
-                localStorage.removeItem('practiceProgress');
-                localStorage.removeItem('hamExamProgress');
-                userAnswers = {};
-                correctAnswers = {};
-                currentQuestionIndex = 0;
-                showQuestion(0);
-                updateStats();
-                updateProgress();
-                updateNavButtons();
-            }
+            localStorage.setItem('hamExamProgress', JSON.stringify(progress));
         }
 
         function toggleFavorite() {
