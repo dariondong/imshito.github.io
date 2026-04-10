@@ -173,6 +173,124 @@
         .result-icon { font-size: 5em; margin-bottom: 20px; }
         .result-title { font-size: 2em; font-weight: 700; margin-bottom: 15px; color: #1a1a1a; }
         .result-score { font-size: 4em; font-weight: 800; color: #1a1a1a; margin: 30px 0; line-height: 1; }
+        .result-status {
+            font-size: 2em;
+            font-weight: 700;
+            padding: 15px 40px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .result-status.pass {
+            background: #ebfbee;
+            color: #2b8a3e;
+            border: 2px solid #40c057;
+        }
+        .result-status.fail {
+            background: #fff5f5;
+            color: #c92a2a;
+            border: 2px solid #ff6b6b;
+        }
+        .exam-rules {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e8e8e8;
+            margin: 30px 0;
+            text-align: left;
+        }
+        .exam-rules p {
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #333;
+        }
+        .export-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .export-modal.show {
+            display: flex;
+        }
+        .export-modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .export-modal-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .export-modal-desc {
+            color: #666;
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .export-options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .export-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .export-option:hover {
+            border-color: #1a1a1a;
+            background: #fafafa;
+        }
+        .export-option-icon {
+            font-size: 2em;
+        }
+        .export-option-info {
+            flex: 1;
+        }
+        .export-option-name {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #1a1a1a;
+        }
+        .export-option-desc {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .export-modal-close {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 8px;
+        }
+        .export-modal-close:hover {
+            border-color: #1a1a1a;
+            color: #1a1a1a;
+        }
         .result-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -204,16 +322,41 @@
         <div class="navbar-content">
             <div class="navbar-brand">HAM EXAM - 模拟考试</div>
             <div>
+                <button class="navbar-btn" onclick="showExportMenu()">📥 导出试卷</button>
                 <button class="navbar-btn submit" id="submitExamBtn" onclick="submitExam()">📤 交卷</button>
                 <a href="index.html" class="navbar-btn">← 返回主页</a>
             </div>
         </div>
-    </div>
+        </div>
 
-    <div class="main-card">
+        <div class="export-modal" id="exportModal">
+            <div class="export-modal-content">
+                <div class="export-modal-title">📥 导出试卷</div>
+                <div class="export-modal-desc">请选择您要导出的文件格式</div>
+                <div class="export-options">
+                    <div class="export-option" onclick="exportToWord()">
+                        <div class="export-option-icon">📄</div>
+                        <div class="export-option-info">
+                            <div class="export-option-name">Word 文档</div>
+                            <div class="export-option-desc">.doc 格式，可用 Word 编辑和打印</div>
+                        </div>
+                    </div>
+                    <div class="export-option" onclick="exportToTxt()">
+                        <div class="export-option-icon">📝</div>
+                        <div class="export-option-info">
+                            <div class="export-option-name">TXT 文本</div>
+                            <div class="export-option-desc">.txt 格式，简单快捷</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="export-modal-close" onclick="closeExportModal()">取消</button>
+            </div>
+        </div>
+
+        <div class="main-card">
         <div class="stats-bar">
             <div class="stat-item">
-                <div class="stat-value" id="totalQuestions">50</div>
+                <div class="stat-value" id="totalQuestions">40</div>
                 <div class="stat-label">总题数</div>
             </div>
             <div class="stat-item">
@@ -225,7 +368,7 @@
                 <div class="stat-label">已答题</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="unansweredCount">50</div>
+                <div class="stat-value" id="unansweredCount">40</div>
                 <div class="stat-label">未答题</div>
             </div>
         </div>
@@ -244,7 +387,8 @@
         <div class="result-area" id="resultArea">
             <div class="result-icon">🎯</div>
             <h2 class="result-title">考试完成</h2>
-            <div class="result-score" id="finalScore">0 分</div>
+            <div class="result-score" id="finalScore">0/40</div>
+            <div class="result-status" id="resultStatus"></div>
             <div class="result-grid">
                 <div class="result-card">
                     <div class="result-card-value" id="resultCorrect">0</div>
@@ -259,6 +403,11 @@
                     <div class="result-card-label">正确率</div>
                 </div>
             </div>
+            <div class="exam-rules">
+                <p><strong>合格标准：</strong>答对 30 题为合格（正确率 75%）</p>
+                <p><strong>试卷结构：</strong>单选题 32 题 + 多选题 8 题，共 40 题</p>
+                <p><strong>答题说明：</strong>多选题必须与标准答案完全一致，不得多选或少选</p>
+            </div>
             <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
                 <button class="nav-btn" onclick="reviewExam()">📖 查看解析</button>
                 <button class="nav-btn" onclick="location.reload()">🔄 重新考试</button>
@@ -271,7 +420,7 @@
             <div class="progress-section">
                 <div class="progress-header">
                     <span>考试进度</span>
-                    <span id="progressText">0 / 50</span>
+                    <span id="progressText">0 / 40</span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-bar" id="progressBar" style="width: 0%"></div>
@@ -331,6 +480,15 @@
             return values;
         }
 
+        // A 类考试配置
+        const EXAM_CONFIG = {
+            TOTAL_QUESTIONS: 40,      // 总题数 40 题
+            SINGLE_CHOICE: 32,        // 单选题 32 题
+            MULTIPLE_CHOICE: 8,       // 多选题 8 题
+            DURATION_MINUTES: 40,     // 考试时间 40 分钟
+            PASS_SCORE: 30            // 合格线 30 题（75%）
+        };
+
         async function loadQuestions() {
             try {
                 const response = await fetch('业余无线电 A 类.csv');
@@ -346,12 +504,27 @@
         function startNewExam() {
             userAnswers = {};
             isSubmitted = false;
-            filteredQuestions = [...questions].sort(() => Math.random() - 0.5).slice(0, 50);
+            
+            // 按照官方标准组卷：32 道单选 + 8 道多选
+            const singleChoice = questions.filter(q => q.answer.length === 1);
+            const multipleChoice = questions.filter(q => q.answer.length > 1);
+            
+            // 随机抽取
+            const shuffledSingle = singleChoice.sort(() => Math.random() - 0.5);
+            const shuffledMultiple = multipleChoice.sort(() => Math.random() - 0.5);
+            
+            // 单选题在前，多选题在后
+            filteredQuestions = [
+                ...shuffledSingle.slice(0, EXAM_CONFIG.SINGLE_CHOICE),
+                ...shuffledMultiple.slice(0, EXAM_CONFIG.MULTIPLE_CHOICE)
+            ];
+            
             currentQuestionIndex = 0;
             document.getElementById('questionArea').classList.remove('hidden');
             document.getElementById('navigation').classList.remove('hidden');
             document.getElementById('resultArea').classList.remove('show');
             document.getElementById('submitExamBtn').classList.remove('hidden');
+            document.getElementById('totalQuestions').textContent = EXAM_CONFIG.TOTAL_QUESTIONS;
             showQuestion(currentQuestionIndex);
             updateStats();
         }
@@ -575,22 +748,161 @@
             localStorage.setItem('examProgress', JSON.stringify(examProgress));
             
             const score = Math.round((correct / filteredQuestions.length) * 100);
+            const passed = correct >= EXAM_CONFIG.PASS_SCORE;
 
             document.getElementById('questionArea').classList.add('hidden');
             document.getElementById('navigation').classList.add('hidden');
             document.getElementById('submitExamBtn').classList.add('hidden');
             document.getElementById('resultArea').classList.add('show');
 
-            document.getElementById('finalScore').textContent = `${score}分`;
+            document.getElementById('finalScore').textContent = `${correct}/${filteredQuestions.length}`;
             document.getElementById('resultCorrect').textContent = correct;
             document.getElementById('resultWrong').textContent = filteredQuestions.length - correct;
             document.getElementById('resultAccuracy').textContent = `${score}%`;
+            
+            // 显示合格情况
+            const resultStatus = document.getElementById('resultStatus');
+            if (resultStatus) {
+                resultStatus.textContent = passed ? '考试合格' : '未通过';
+                resultStatus.className = passed ? 'pass' : 'fail';
+            }
         }
 
         function reviewExam() {
             if (confirm('查看解析将显示所有题目的正确答案。\n\n确定要继续吗？')) {
                 location.href = 'review-exam.html';
             }
+        }
+
+        function showExportMenu() {
+            if (!filteredQuestions || filteredQuestions.length === 0) {
+                alert('当前没有可导出的试卷');
+                return;
+            }
+            
+            document.getElementById('exportModal').classList.add('show');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.remove('show');
+        }
+
+        function exportToTxt() {
+            let content = '业余无线电 A 类考试模拟试卷\n';
+            content += '================================\n\n';
+            content += `考试时间：${EXAM_CONFIG.DURATION_MINUTES} 分钟\n`;
+            content += `总题数：${filteredQuestions.length} 题\n`;
+            content += `合格标准：答对 ${EXAM_CONFIG.PASS_SCORE} 题为合格\n\n`;
+            
+            // 单选题部分
+            const singleChoice = filteredQuestions.filter(q => q.answer.length === 1);
+            content += `【单选题】共 ${singleChoice.length} 题\n`;
+            content += '================================\n\n';
+            
+            singleChoice.forEach((q, index) => {
+                content += `${index + 1}. ${q.question}\n`;
+                content += `   A. ${q.optionA}\n`;
+                content += `   B. ${q.optionB}\n`;
+                if (q.optionC) content += `   C. ${q.optionC}\n`;
+                if (q.optionD) content += `   D. ${q.optionD}\n`;
+                content += '\n';
+            });
+            
+            // 多选题部分
+            const multipleChoice = filteredQuestions.filter(q => q.answer.length > 1);
+            content += `【多选题】共 ${multipleChoice.length} 题\n`;
+            content += '================================\n\n';
+            
+            multipleChoice.forEach((q, index) => {
+                content += `${index + 1}. ${q.question}\n`;
+                content += `   A. ${q.optionA}\n`;
+                content += `   B. ${q.optionB}\n`;
+                if (q.optionC) content += `   C. ${q.optionC}\n`;
+                if (q.optionD) content += `   D. ${q.optionD}\n`;
+                content += '\n';
+            });
+            
+            // 创建下载
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `业余无线电 A 类模拟试卷_${new Date().getTime()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            closeExportModal();
+        }
+
+        function exportToWord() {
+            let html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ';
+            html += 'xmlns:w="urn:schemas-microsoft-com:office:word" ';
+            html += 'xmlns="http://www.w3.org/TR/REC-html40">';
+            html += '<head><meta charset="utf-8">';
+            html += '<style>';
+            html += 'body { font-family: "Microsoft YaHei", "SimSun", sans-serif; font-size: 12pt; line-height: 1.6; }';
+            html += 'h1 { font-size: 18pt; font-weight: bold; text-align: center; margin-bottom: 20px; }';
+            html += 'h2 { font-size: 14pt; font-weight: bold; margin-top: 20px; margin-bottom: 10px; border-bottom: 2px solid #000; padding-bottom: 5px; }';
+            html += '.info { margin: 15px 0; padding: 10px; background-color: #f5f5f5; border-left: 4px solid #333; }';
+            html += '.question { margin: 15px 0; page-break-inside: avoid; }';
+            html += '.question-number { font-weight: bold; }';
+            html += '.option { margin-left: 20px; }';
+            html += '</style>';
+            html += '</head><body>';
+            
+            html += '<h1>业余无线电 A 类考试模拟试卷</h1>';
+            
+            html += '<div class="info">';
+            html += `<p><strong>考试时间：</strong>${EXAM_CONFIG.DURATION_MINUTES} 分钟</p>`;
+            html += `<p><strong>总题数：</strong>${filteredQuestions.length} 题</p>`;
+            html += `<p><strong>合格标准：</strong>答对 ${EXAM_CONFIG.PASS_SCORE} 题为合格（正确率 75%）</p>`;
+            html += `<p><strong>试卷结构：</strong>单选题 ${EXAM_CONFIG.SINGLE_CHOICE} 题 + 多选题 ${EXAM_CONFIG.MULTIPLE_CHOICE} 题</p>`;
+            html += '</div>';
+            
+            // 单选题部分
+            const singleChoice = filteredQuestions.filter(q => q.answer.length === 1);
+            html += '<h2>【单选题】（共 ' + singleChoice.length + ' 题）</h2>';
+            
+            singleChoice.forEach((q, index) => {
+                html += '<div class="question">';
+                html += `<div class="question-number">${index + 1}. ${q.question}</div>`;
+                html += '<div class="option">A. ' + q.optionA + '</div>';
+                html += '<div class="option">B. ' + q.optionB + '</div>';
+                if (q.optionC) html += '<div class="option">C. ' + q.optionC + '</div>';
+                if (q.optionD) html += '<div class="option">D. ' + q.optionD + '</div>';
+                html += '</div>';
+            });
+            
+            // 多选题部分
+            const multipleChoice = filteredQuestions.filter(q => q.answer.length > 1);
+            html += '<h2>【多选题】（共 ' + multipleChoice.length + ' 题）</h2>';
+            
+            multipleChoice.forEach((q, index) => {
+                html += '<div class="question">';
+                html += `<div class="question-number">${index + 1}. ${q.question}</div>`;
+                html += '<div class="option">A. ' + q.optionA + '</div>';
+                html += '<div class="option">B. ' + q.optionB + '</div>';
+                if (q.optionC) html += '<div class="option">C. ' + q.optionC + '</div>';
+                if (q.optionD) html += '<div class="option">D. ' + q.optionD + '</div>';
+                html += '</div>';
+            });
+            
+            html += '</body></html>';
+            
+            // 创建下载
+            const blob = new Blob([html], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `业余无线电 A 类模拟试卷_${new Date().getTime()}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            closeExportModal();
         }
 
         window.onload = loadQuestions;

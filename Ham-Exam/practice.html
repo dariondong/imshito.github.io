@@ -723,14 +723,17 @@
         }
 
         function nextQuestion() {
-            // 如果当前题目已答但未判断，先判断并显示答案，但不切换
+            // 如果当前题目已答但未判断，先判断并显示答案
             const question = filteredQuestions[currentQuestionIndex];
             if (question && userAnswers[question.uniqueId] !== undefined && correctAnswers[question.uniqueId] === undefined) {
                 autoCheckAnswer();
-                // 显示答案后不切换，等用户再次点击下一题
-                return;
+                // 如果是最后一题，显示答案后不切换
+                if (currentQuestionIndex === filteredQuestions.length - 1) {
+                    return;
+                }
             }
             
+            // 不是最后一题才切换
             if (currentQuestionIndex < filteredQuestions.length - 1) {
                 currentQuestionIndex++;
                 showQuestion(currentQuestionIndex);
