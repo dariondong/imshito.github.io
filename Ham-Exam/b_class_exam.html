@@ -784,6 +784,25 @@
                 content += '\n';
             });
             
+            // 添加答案部分
+            content += '================================\n';
+            content += '【参考答案】\n';
+            content += '================================\n\n';
+            
+            content += '单选题答案：\n';
+            singleChoice.forEach((q, index) => {
+                content += `${index + 1}. ${q.answer}  `;
+                if ((index + 1) % 5 === 0) content += '\n';
+            });
+            content += '\n\n';
+            
+            content += '多选题答案：\n';
+            multipleChoice.forEach((q, index) => {
+                content += `${index + 1}. ${q.answer}  `;
+                if ((index + 1) % 5 === 0) content += '\n';
+            });
+            content += '\n';
+            
             // 创建下载
             const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
@@ -850,6 +869,26 @@
                 if (q.optionD) html += '<div class="option">D. ' + q.optionD + '</div>';
                 html += '</div>';
             });
+            
+            // 添加答案部分
+            html += '<h2>【参考答案】</h2>';
+            html += '<div class="info">';
+            html += '<p><strong>单选题答案：</strong></p>';
+            html += '<p style="line-height: 2;">';
+            singleChoice.forEach((q, index) => {
+                html += `${index + 1}. ${q.answer} &nbsp;&nbsp; `;
+                if ((index + 1) % 5 === 0) html += '<br>';
+            });
+            html += '</p>';
+            
+            html += '<p style="margin-top: 15px;"><strong>多选题答案：</strong></p>';
+            html += '<p style="line-height: 2;">';
+            multipleChoice.forEach((q, index) => {
+                html += `${index + 1}. ${q.answer} &nbsp;&nbsp; `;
+                if ((index + 1) % 5 === 0) html += '<br>';
+            });
+            html += '</p>';
+            html += '</div>';
             
             html += '</body></html>';
             
