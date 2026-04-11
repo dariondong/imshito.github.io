@@ -622,7 +622,7 @@
 
         function showExamResult() {
             let correct = 0;
-            const wrongQuestions = JSON.parse(localStorage.getItem('hamExamWrongQuestions_B') || '[]');
+            const wrongQuestions = JSON.parse(localStorage.getItem('hamExamBWrongQuestions') || '[]');
             
             filteredQuestions.forEach(q => {
                 const userAnswer = userAnswers[q.uniqueId];
@@ -647,7 +647,7 @@
                 }
             });
             
-            localStorage.setItem('hamExamWrongQuestions_B', JSON.stringify(wrongQuestions));
+            localStorage.setItem('hamExamBWrongQuestions', JSON.stringify(wrongQuestions));
             
             // 保存考试记录
             const examProgress = {
