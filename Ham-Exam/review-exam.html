@@ -210,11 +210,13 @@
                 ? userAnswer.join('') === question.answer 
                 : userAnswer === question.answer;
             
-            feedback.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
-            feedback.innerHTML = `
-                <div class="feedback-title">${isCorrect ? '✓ 回答正确' : '✗ 回答错误'}</div>
-                ${!isCorrect ? `你的答案：${userAnswerText}<br>` : ''}正确答案：${question.answer}
-            `;
+            if (feedback) {
+                feedback.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
+                feedback.innerHTML = `
+                    <div class="feedback-title">${isCorrect ? '✓ 回答正确' : '✗ 回答错误'}</div>
+                    ${!isCorrect ? `你的答案：${userAnswerText}<br>` : ''}正确答案：${question.answer}
+                `;
+            }
 
             const options = document.querySelectorAll('.option');
             const correctAnswersArr = question.answer.split('');

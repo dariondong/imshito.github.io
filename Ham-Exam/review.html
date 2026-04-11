@@ -167,7 +167,10 @@
             typeTag.className = 'question-type-tag' + (isMultiple ? ' multi' : '');
             
             // 清除反馈区域
-            document.getElementById('feedback').innerHTML = '';
+            const feedback = document.getElementById('feedback');
+            if (feedback) {
+                feedback.innerHTML = '';
+            }
             hasSubmitted = false;
             
             const optionsContainer = document.getElementById('optionsContainer');
@@ -191,8 +194,12 @@
                 optionsContainer.appendChild(optionDiv);
             });
 
-            document.getElementById('feedback').className = 'feedback';
-            document.getElementById('feedback').style.display = 'none';
+            // 清除反馈（如果存在）
+            const feedbackEl = document.getElementById('feedback');
+            if (feedbackEl) {
+                feedbackEl.className = 'feedback';
+                feedbackEl.style.display = 'none';
+            }
 
             if (userAnswers[question.uniqueId] !== undefined) {
                 const savedAnswer = userAnswers[question.uniqueId];
