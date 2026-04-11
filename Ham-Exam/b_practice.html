@@ -265,14 +265,21 @@
 
         function showQuestion(index) {
             const question = filteredQuestions[index];
-            const isMultiple = question.answer.length > 1;
+            if (!question) {
+                console.error('题目不存在:', index);
+                return;
+            }
+            
+            const isMultiple = question.answer && question.answer.length > 1;
             
             document.getElementById('questionNumber').textContent = `第 ${index + 1} 题 / 共 ${filteredQuestions.length} 题`;
             document.getElementById('questionText').textContent = question.question;
             
             const typeTag = document.getElementById('questionType');
-            typeTag.textContent = isMultiple ? '多选' : '单选';
-            typeTag.className = 'question-type-tag' + (isMultiple ? ' multi' : '');
+            if (typeTag) {
+                typeTag.textContent = isMultiple ? '多选' : '单选';
+                typeTag.className = 'question-type-tag' + (isMultiple ? ' multi' : '');
+            }
             
             // 清除反馈区域
             document.getElementById('feedbackArea').innerHTML = '';
@@ -325,6 +332,8 @@
                 hasSubmitted = false;
             }
 
+            console.log('题目', index+1, 'hasSubmitted:', hasSubmitted, 'hasAnswered:', userAnswers[question.uniqueId], 'hasChecked:', correctAnswers[question.uniqueId]);
+            
             updateProgress();
             updateStats();
             updateNavButtons();
@@ -380,6 +389,7 @@
             
             saveProgress();
             updateStats();
+            updateNavButtons();
         }
 
         function autoCheckAnswer() {
@@ -405,6 +415,7 @@
             
             saveProgress();
             updateStats();
+            updateNavButtons();
         }
 
         function showResult(question, userAnswer, isCorrect) {
@@ -449,7 +460,6 @@
         function previousQuestion() {
             if (currentQuestionIndex > 0) {
                 currentQuestionIndex--;
-                hasSubmitted = false;
                 showQuestion(currentQuestionIndex);
             }
         }
@@ -457,7 +467,6 @@
         function nextQuestion() {
             if (currentQuestionIndex < filteredQuestions.length - 1) {
                 currentQuestionIndex++;
-                hasSubmitted = false;
                 showQuestion(currentQuestionIndex);
             }
         }
@@ -485,18 +494,19 @@
             
             document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
             
-            // 如果已提交，显示"下一题"，否则显示"提交"
-            if (hasSubmitted || hasChecked) {
+            // 如果已判断正误，显示"下一题"
+            if (hasChecked) {
                 actionBtn.textContent = '下一题 →';
                 actionBtn.className = 'nav-btn';
                 actionBtn.onclick = nextQuestion;
                 // 最后一题时禁用
                 actionBtn.disabled = currentQuestionIndex === filteredQuestions.length - 1;
             } else {
+                // 未判断正误的题目，显示"提交"
                 actionBtn.textContent = '提交 →';
                 actionBtn.className = 'nav-btn submit';
                 actionBtn.onclick = submitAnswer;
-                // 未答题时禁用
+                // 只有在已答题时才启用，未答题时禁用
                 actionBtn.disabled = !hasAnswered;
             }
         }
