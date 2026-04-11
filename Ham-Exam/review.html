@@ -289,11 +289,37 @@
             
             showResult(question, userAnswer, isCorrect);
             
+            // 如果答对了，从错题本中移除
             if (isCorrect) {
                 const index = wrongQuestions.indexOf(question.uniqueId);
                 if (index > -1) {
                     wrongQuestions.splice(index, 1);
                     localStorage.setItem('hamExamWrongQuestions', JSON.stringify(wrongQuestions));
+                    
+                    // 从 filteredQuestions 中移除这道题
+                    filteredQuestions.splice(currentQuestionIndex, 1);
+                    
+                    // 调整当前题号
+                    if (currentQuestionIndex >= filteredQuestions.length) {
+                        currentQuestionIndex = Math.max(0, filteredQuestions.length - 1);
+                    }
+                    
+                    // 如果还有题目，显示下一题
+                    if (filteredQuestions.length > 0) {
+                        setTimeout(() => {
+                            showQuestion(currentQuestionIndex);
+                            updateStats();
+                            updateNavButtons();
+                        }, 1000);
+                        return; // 跳过后面的更新
+                    } else {
+                        // 所有题目都答对了
+                        setTimeout(() => {
+                            alert('🎉 太棒了！所有错题都已掌握！');
+                            location.reload();
+                        }, 1000);
+                        return;
+                    }
                 }
             }
             
