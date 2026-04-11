@@ -276,7 +276,6 @@
             
             // 清除反馈区域
             document.getElementById('feedbackArea').innerHTML = '';
-            hasSubmitted = false;
             
             const optionsContainer = document.getElementById('optionsContainer');
             optionsContainer.innerHTML = '';
@@ -301,18 +300,29 @@
 
             // 恢复答案状态
             if (correctAnswers[question.uniqueId] !== undefined) {
+                // 已判断正误的题目
                 const userAnswer = userAnswers[question.uniqueId];
                 const isCorrect = Array.isArray(userAnswer) 
                     ? userAnswer.join('') === question.answer 
                     : userAnswer === question.answer;
                 showResult(question, userAnswer, isCorrect);
+                hasSubmitted = true;
             } else if (userAnswers[question.uniqueId] !== undefined) {
+                // 已答但未判断的题目
                 const savedAnswer = userAnswers[question.uniqueId];
-                if (isMultiple && Array.isArray(savedAnswer)) {
-                    savedAnswer.forEach(letter => applyOptionSelection(letter, true));
+                if (isMultiple) {
+                    if (Array.isArray(savedAnswer)) {
+                        savedAnswer.forEach(letter => applyOptionSelection(letter, true));
+                    } else if (typeof savedAnswer === 'string') {
+                        savedAnswer.split('').forEach(letter => applyOptionSelection(letter, true));
+                    }
                 } else if (!isMultiple && savedAnswer) {
                     applyOptionSelection(savedAnswer, true);
                 }
+                hasSubmitted = false;
+            } else {
+                // 未答的题目
+                hasSubmitted = false;
             }
 
             updateProgress();
@@ -333,7 +343,7 @@
 
         function handleOptionClick(letter) {
             const question = filteredQuestions[currentQuestionIndex];
-            const isMultiple = question.answer.length > 1;
+            const isMultiple = question.answer && question.answer.length > 1;
             
             if (hasSubmitted || correctAnswers[question.uniqueId] !== undefined) {
                 return;
@@ -343,7 +353,11 @@
                 if (!userAnswers[question.uniqueId]) {
                     userAnswers[question.uniqueId] = [];
                 }
-                const currentAnswers = userAnswers[question.uniqueId];
+                let currentAnswers = userAnswers[question.uniqueId];
+                if (typeof currentAnswers === 'string') {
+                    currentAnswers = currentAnswers.split('');
+                    userAnswers[question.uniqueId] = currentAnswers;
+                }
                 const index = currentAnswers.indexOf(letter);
                 if (index > -1) {
                     currentAnswers.splice(index, 1);
@@ -362,7 +376,6 @@
                     }
                 });
                 userAnswers[question.uniqueId] = letter;
-                autoCheckAnswer();
             }
             
             saveProgress();
@@ -464,7 +477,10 @@
         function updateNavButtons() {
             const actionBtn = document.getElementById('actionBtn');
             const question = filteredQuestions[currentQuestionIndex];
-            const hasAnswered = question && userAnswers[question.uniqueId] !== undefined;
+            const hasAnswered = question && userAnswers[question.uniqueId] !== undefined && 
+                (Array.isArray(userAnswers[question.uniqueId]) ? 
+                    userAnswers[question.uniqueId].length > 0 : 
+                    userAnswers[question.uniqueId] !== '');
             const hasChecked = question && correctAnswers[question.uniqueId] !== undefined;
             
             document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;

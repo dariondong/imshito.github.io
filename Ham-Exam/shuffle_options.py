@@ -191,38 +191,45 @@ if __name__ == '__main__':
     print("业余无线电题库选项打乱工具")
     print("=" * 60)
     
-    # 如果有命令行参数
-    if len(sys.argv) > 1:
-        input_file = sys.argv[1]
-        output_file = sys.argv[2] if len(sys.argv) > 2 else None
-    else:
-        # 默认处理 A 类题库
-        input_file = '业余无线电 A 类.csv'
-        output_file = '业余无线电 A 类_已打乱.csv'
+    # 定义要处理的文件列表
+    files_to_process = [
+        ('业余无线电 A 类.csv', '业余无线电 A 类_已打乱.csv'),
+        ('业余无线电 B 类.csv', '业余无线电 B 类_已打乱.csv'),
+    ]
     
-    try:
-        # 先验证原文件
-        verify_csv(input_file)
+    print(f"\n将要处理以下文件：")
+    for input_file, output_file in files_to_process:
+        print(f"  {input_file} -> {output_file}")
+    
+    response = input("\n输入 Y 继续，或直接按 Enter 跳过：").strip().upper()
+    
+    if response == 'Y' or not response:
+        for input_file, output_file in files_to_process:
+            try:
+                print(f"\n{'=' * 60}")
+                print(f"处理文件：{input_file}")
+                print('=' * 60)
+                
+                # 先验证原文件
+                verify_csv(input_file)
+                
+                # 打乱选项
+                shuffle_options(input_file, output_file)
+                
+                # 验证打乱后的文件
+                print("\n" + "=" * 60)
+                verify_csv(output_file)
+                
+                print(f"\n[OK] {input_file} 处理完成！")
+                
+            except FileNotFoundError:
+                print(f"\n[WARN] 文件不存在，跳过：{input_file}")
+            except Exception as e:
+                print(f"\n[ERROR] 处理失败：{e}")
+                import traceback
+                traceback.print_exc()
         
-        # 询问是否继续
-        print(f"\n是否要打乱选项并保存到：{output_file}")
-        response = input("输入 Y 继续，或直接按 Enter 跳过：").strip().upper()
-        
-        if response == 'Y' or not response:
-            shuffle_options(input_file, output_file)
-            
-            # 验证打乱后的文件
-            print("\n" + "=" * 60)
-            verify_csv(output_file)
-            
-            print(f"\n[OK] 处理完成！")
-            print(f"新文件：{output_file}")
-            print(f"\n如果满意结果，可以手动替换原文件，或修改代码直接覆盖原文件")
-        
-    except FileNotFoundError:
-        print(f"\n[ERROR] 错误：找不到文件 '{input_file}'")
-        print("请确保文件在当前目录下，或提供完整路径")
-    except Exception as e:
-        print(f"\n[ERROR] 错误：{e}")
-        import traceback
-        traceback.print_exc()
+        print(f"\n{'=' * 60}")
+        print("[OK] 所有文件处理完成！")
+        print("=" * 60)
+        print(f"\n如果满意结果，可以手动替换原文件")

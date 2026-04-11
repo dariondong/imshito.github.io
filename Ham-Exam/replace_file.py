@@ -39,21 +39,34 @@ if __name__ == '__main__':
     print("题库文件替换工具")
     print("=" * 60)
     
-    original = '业余无线电 A 类.csv'
-    shuffled = '业余无线电 A 类_已打乱.csv'
+    files = [
+        ('业余无线电 A 类.csv', '业余无线电 A 类_已打乱.csv'),
+        ('业余无线电 B 类.csv', '业余无线电 B 类_已打乱.csv'),
+    ]
     
-    print(f"\n原文件：{original}")
-    print(f"新文件：{shuffled}")
+    print(f"\n将要替换以下文件：")
+    for original, shuffled in files:
+        print(f"  {original} <- {shuffled}")
     
     response = input("\n确定要替换原文件吗？(输入 Y 确认): ").strip().upper()
     
     if response == 'Y':
-        if backup_and_replace(original, shuffled):
-            print("\n[OK] 替换成功！现在可以刷新浏览器重新加载题库了。")
+        success_count = 0
+        for original, shuffled in files:
+            print(f"\n{'=' * 60}")
+            if backup_and_replace(original, shuffled):
+                success_count += 1
+        
+        print(f"\n{'=' * 60}")
+        if success_count == len(files):
+            print(f"[OK] 所有文件替换成功！")
+            print(f"\n现在可以刷新浏览器重新加载题库了。")
         else:
-            print("\n[ERROR] 替换失败")
+            print(f"[WARN] 部分文件替换失败，成功 {success_count}/{len(files)}")
+        print("=" * 60)
     else:
         print("\n已取消操作")
         print(f"\n您可以手动操作：")
-        print(f"1. 备份原文件：复制 {original} 到 {original}.backup")
-        print(f"2. 替换文件：复制 {shuffled} 覆盖 {original}")
+        for original, shuffled in files:
+            print(f"1. 备份原文件：复制 {original} 到 {original}.backup")
+            print(f"2. 替换文件：复制 {shuffled} 覆盖 {original}")
