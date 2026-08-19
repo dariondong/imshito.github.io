@@ -1,0 +1,1872 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英语沙龙协会 - 高州二中</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Microsoft YaHei", "PingFang SC", -apple-system, sans-serif;
+      color: #333;
+      background: #f5f0e8;
+      overflow-x: hidden;
+    }
+
+    /* === Scroll Progress Bar === */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #e8b84b, #d4943a, #e8b84b);
+      background-size: 200% 100%;
+      z-index: 9999;
+      transition: width 0.1s linear;
+      animation: progressShine 2s linear infinite;
+    }
+
+    @keyframes progressShine {
+      0% { background-position: 200% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    /* === Back to Top === */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #1a3a5c;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      z-index: 9998;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .back-to-top:hover {
+      background: #e8b84b;
+      transform: translateY(-4px);
+    }
+
+    /* === Floating Particles === */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      font-size: 1.2rem;
+      opacity: 0;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+      10%  { opacity: 0.15; }
+      90%  { opacity: 0.15; }
+      100% { opacity: 0; transform: translateY(-10vh) rotate(360deg); }
+    }
+
+    /* === Hero Section === */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('beijing.webp') center/cover no-repeat;
+      filter: brightness(0.5);
+      will-change: transform;
+      animation: heroZoom 30s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1); }
+      to   { transform: scale(1.08); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(10, 20, 40, 0.25) 0%,
+        rgba(10, 20, 40, 0.55) 60%,
+        rgba(10, 20, 40, 0.75) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #fff;
+      padding: 0 20px;
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 700;
+      letter-spacing: 8px;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+      animation: titleFadeIn 1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+      animation-delay: 0.2s;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 300;
+      letter-spacing: 4px;
+      opacity: 0;
+      margin-bottom: 8px;
+      animation: subtitleFadeIn 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+      animation-delay: 0.5s;
+    }
+
+    .hero-typing {
+      display: inline-block;
+      border-right: 2px solid rgba(255,255,255,0.6);
+      padding-right: 4px;
+      animation: blink 0.8s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .hero-tagline {
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      opacity: 0;
+      margin-bottom: 40px;
+      animation: subtitleFadeIn 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+      animation-delay: 0.7s;
+    }
+
+    @keyframes titleFadeIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes subtitleFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 0.85; transform: translateY(0); }
+    }
+
+    .hero-scroll {
+      display: inline-block;
+      width: 30px;
+      height: 48px;
+      border: 2px solid rgba(255, 255, 255, 0.45);
+      border-radius: 15px;
+      position: relative;
+      opacity: 0;
+      animation: scrollReveal 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 1.2s forwards;
+    }
+
+    .hero-scroll::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 9px;
+      background: #fff;
+      border-radius: 2px;
+      animation: scrollDot 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes scrollReveal {
+      to { opacity: 1; }
+    }
+
+    @keyframes scrollDot {
+      0%   { top: 6px; opacity: 0; }
+      20%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { top: 28px; opacity: 0; }
+    }
+
+    /* === Section Common === */
+    .section {
+      padding: 90px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1a3a5c;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(90deg, #e8b84b, #d4943a);
+      margin: 14px auto 0;
+      border-radius: 2px;
+      transform: scaleX(0);
+      animation: lineExpand 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+      animation-delay: 0.3s;
+    }
+
+    @keyframes lineExpand {
+      to { transform: scaleX(1); }
+    }
+
+    .section-desc {
+      text-align: center;
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    /* === Reveal on Scroll === */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    
+
+    /* === Intro Section === */
+    .intro { background: #fff; }
+
+    .intro-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .intro-card {
+      background: #fafaf7;
+      border: 1px solid #e8e4dc;
+      border-radius: 14px;
+      padding: 32px 18px;
+      text-align: center;
+      cursor: default;
+      transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  box-shadow 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  border-color 0.4s ease;
+      will-change: transform;
+    }
+
+    .intro-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+      border-color: #d4c9a8;
+    }
+
+    .intro-card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 14px;
+      display: inline-block;
+      transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .intro-card:hover .intro-card-icon {
+      transform: scale(1.15) translateY(-4px);
+    }
+
+    .intro-card h3 {
+      font-size: 1.05rem;
+      color: #1a3a5c;
+      margin-bottom: 8px;
+    }
+
+    .intro-card p {
+      font-size: 0.85rem;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    /* === Activities Section === */
+    .activities { background: #fff; }
+
+    .act-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .act-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: #fafaf7;
+      border: 1px solid #e8e4dc;
+      border-radius: 14px;
+      padding: 24px 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .act-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .act-num {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      transition: transform 0.3s ease;
+    }
+
+    .act-item:hover .act-num {
+      transform: scale(1.1) rotate(10deg);
+    }
+
+    .act-item:nth-child(1) .act-num { background: #5b8ec9; }
+    .act-item:nth-child(2) .act-num { background: #e8b84b; }
+    .act-item:nth-child(3) .act-num { background: #6cbf8a; }
+    .act-item:nth-child(4) .act-num { background: #d4756b; }
+    .act-item:nth-child(5) .act-num { background: #9b7ec4; }
+    .act-item:nth-child(6) .act-num { background: #5b8ec9; }
+
+    .act-info h4 {
+      font-size: 1.05rem;
+      color: #1a3a5c;
+      margin-bottom: 6px;
+    }
+
+    .act-info p {
+      font-size: 0.85rem;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    /* === Departments Section === */
+    .departments {
+      background: linear-gradient(180deg, #f5f0e8 0%, #ebe4d5 100%);
+    }
+
+    .dept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .dept-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 32px 22px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #e8e4dc;
+      cursor: default;
+      transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  box-shadow 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+      will-change: transform;
+    }
+
+    .dept-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+    }
+
+    .dept-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .dept-card:hover::before {
+      transform: scaleY(1);
+    }
+
+    .dept-card:nth-child(1)::before { background: #5b8ec9; }
+    .dept-card:nth-child(2)::before { background: #e8b84b; }
+    .dept-card:nth-child(3)::before { background: #6cbf8a; }
+    .dept-card:nth-child(4)::before { background: #d4756b; }
+    .dept-card:nth-child(5)::before { background: #9b7ec4; }
+
+    .dept-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      display: inline-block;
+      transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .dept-card:hover .dept-icon {
+      transform: scale(1.1) rotate(-5deg);
+    }
+
+    .dept-card h3 {
+      font-size: 1.15rem;
+      color: #1a3a5c;
+      margin-bottom: 6px;
+      transition: color 0.3s;
+    }
+
+    .dept-card .dept-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      color: #fff;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .dept-card:hover .dept-tag {
+      transform: scale(1.05);
+    }
+
+    .dept-card:nth-child(1) .dept-tag { background: #5b8ec9; }
+    .dept-card:nth-child(2) .dept-tag { background: #e8b84b; }
+    .dept-card:nth-child(3) .dept-tag { background: #6cbf8a; }
+    .dept-card:nth-child(4) .dept-tag { background: #d4756b; }
+    .dept-card:nth-child(5) .dept-tag { background: #9b7ec4; }
+
+    .dept-card p {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    /* === Join Steps Section === */
+    .join-steps {
+      background: linear-gradient(180deg, #ebe4d5 0%, #f5f0e8 100%);
+    }
+
+    .steps-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .step-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+      flex: 1;
+      min-width: 140px;
+      max-width: 190px;
+      border: 1px solid #e8e4dc;
+      position: relative;
+      transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  box-shadow 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+      will-change: transform;
+    }
+
+    .step-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .step-card:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.3rem;
+      color: #d4c9a8;
+      font-weight: 300;
+    }
+
+    .step-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e8b84b, #d4943a);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-bottom: 12px;
+    }
+
+    .step-card h4 {
+      font-size: 0.95rem;
+      color: #1a3a5c;
+      margin-bottom: 6px;
+    }
+
+    .step-card p {
+      font-size: 0.8rem;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    .step-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* === Newspaper Section === */
+    .newspaper {
+      background: #fff;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .news-card {
+      background: #fafaf7;
+      border: 1px solid #e8e4dc;
+      border-radius: 14px;
+      padding: 24px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  box-shadow 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  border-color 0.4s ease;
+      will-change: transform;
+    }
+
+    .news-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+      border-color: #d4c9a8;
+    }
+
+    .news-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      transition: transform 0.4s ease;
+    }
+
+    .news-card:hover .news-icon {
+      transform: scale(1.1);
+    }
+
+    .news-card h4 {
+      font-size: 1.05rem;
+      color: #1a3a5c;
+      margin-bottom: 6px;
+    }
+
+    .news-card .news-date {
+      font-size: 0.8rem;
+      color: #999;
+      margin-bottom: 8px;
+    }
+
+    .news-card .news-hint {
+      font-size: 0.78rem;
+      color: #e8b84b;
+      font-weight: 500;
+    }
+
+    /* === Modal === */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      width: 90vw;
+      max-width: 1000px;
+      height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-overlay.open .modal {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid #e8e4dc;
+      flex-shrink: 0;
+    }
+
+    .modal-header h3 {
+      font-size: 1.1rem;
+      color: #1a3a5c;
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: #f5f0e8;
+      color: #666;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .modal-close:hover {
+      background: #d4756b;
+      color: #fff;
+    }
+
+    .modal-body {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .modal-body iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* === Gains Section === */
+    .gains { background: #fff; }
+
+    .gains-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .gain-card {
+      background: linear-gradient(135deg, #fafaf7 0%, #f5f0e8 100%);
+      border: 1px solid #e8e4dc;
+      border-radius: 14px;
+      padding: 28px 20px;
+      text-align: center;
+      transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  box-shadow 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+      will-change: transform;
+    }
+
+    .gain-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .gain-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      display: inline-block;
+      transition: transform 0.4s ease;
+    }
+
+    .gain-card:hover .gain-icon {
+      transform: scale(1.15);
+    }
+
+    .gain-card h4 {
+      font-size: 1.05rem;
+      color: #1a3a5c;
+      margin-bottom: 8px;
+    }
+
+    .gain-card p {
+      font-size: 0.85rem;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    /* === FAQ Section === */
+    .faq {
+      background: linear-gradient(180deg, #f5f0e8 0%, #ebe4d5 100%);
+    }
+
+    .faq-list {
+      max-width: 750px;
+      margin: 48px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .faq-item {
+      background: #fff;
+      border: 1px solid #e8e4dc;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .faq-item:hover {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .faq-q {
+      padding: 16px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1a3a5c;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+
+    .faq-q::after {
+      content: '+';
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: #d4c9a8;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.open .faq-q::after {
+      content: '−';
+      transform: rotate(180deg);
+    }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  padding 0.4s ease;
+      padding: 0 20px;
+      font-size: 0.88rem;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 200px;
+      padding: 0 20px 16px;
+    }
+
+    /* === Join Section === */
+    .join {
+      background: #1a3a5c;
+      color: #fff;
+      text-align: center;
+    }
+
+    .join .section-title { color: #fff; }
+    .join .section-title::after {
+      background: linear-gradient(90deg, #e8b84b, #f0d68a);
+    }
+
+    .join .section-desc {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .join-highlight {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #e8b84b;
+      margin: 28px 0 14px;
+      letter-spacing: 3px;
+      animation: highlightPulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes highlightPulse {
+      0%, 100% { opacity: 0.85; transform: scale(1); }
+      50%      { opacity: 1;    transform: scale(1.03); }
+    }
+
+    .join-tagline {
+      font-size: 1.05rem;
+      opacity: 0.85;
+      margin-bottom: 10px;
+    }
+
+    .join-contact {
+      margin-top: 24px;
+      font-size: 0.88rem;
+      opacity: 0.6;
+      line-height: 1.8;
+    }
+
+    /* === Footer === */
+    .footer {
+      background: #0f2840;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      padding: 36px 20px;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* === Game Section === */
+    .game-section {
+      background: linear-gradient(180deg, #f5f0e8 0%, #e8dfd0 100%);
+      padding: 90px 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .game-section .section-title {
+      color: #1a3a5c;
+    }
+
+    .game-wrapper {
+      max-width: 700px;
+      margin: 40px auto 0;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: #1a3a5c;
+      color: #fff;
+    }
+
+    .game-stat {
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .game-stat span {
+      color: #e8b84b;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .game-stat .lives {
+      display: flex;
+      gap: 3px;
+      margin-left: 4px;
+    }
+
+    .game-stat .lives i {
+      font-size: 0.85rem;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .game-stat .lives i.lost {
+      opacity: 0.25;
+      transform: scale(0.8);
+    }
+
+    .game-area {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #f5f0e8 0%, #fafaf7 100%);
+    }
+
+    .game-word {
+      position: absolute;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1a3a5c;
+      padding: 8px 16px;
+      background: #fff;
+      border: 2px solid #e8b84b;
+      border-radius: 8px;
+      white-space: nowrap;
+      transition: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .game-word.popped {
+      animation: popWord 0.3s ease forwards;
+    }
+
+    @keyframes popWord {
+      0%   { transform: scale(1); opacity: 1; }
+      50%  { transform: scale(1.3); opacity: 0.7; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    .game-word.missed {
+      animation: missWord 0.4s ease forwards;
+    }
+
+    @keyframes missWord {
+      to { opacity: 0; transform: translateY(20px); }
+    }
+
+    .game-input-row {
+      display: flex;
+      padding: 14px 20px;
+      gap: 10px;
+      background: #fafaf7;
+      border-top: 1px solid #e8e4dc;
+    }
+
+    .game-input-row input {
+      flex: 1;
+      padding: 10px 16px;
+      border: 2px solid #e8e4dc;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.3s;
+    }
+
+    .game-input-row input:focus {
+      border-color: #e8b84b;
+    }
+
+    .game-input-row button {
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #e8b84b, #d4943a);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+      white-space: nowrap;
+    }
+
+    .game-input-row button:hover {
+      transform: scale(1.03);
+    }
+
+    .game-input-row button:active {
+      transform: scale(0.97);
+    }
+
+    .game-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(26, 58, 92, 0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .game-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .game-overlay h3 {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
+
+    .game-overlay .final-score {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #e8b84b;
+      margin-bottom: 16px;
+    }
+
+    .game-overlay button {
+      padding: 12px 36px;
+      background: linear-gradient(135deg, #e8b84b, #d4943a);
+      color: #fff;
+      border: none;
+      border-radius: 28px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+      font-family: inherit;
+    }
+
+    .game-overlay button:hover {
+      transform: scale(1.05);
+    }
+
+    /* === Responsive: Tablet === */
+    @media (max-width: 900px) {
+      .intro-cards { grid-template-columns: repeat(2, 1fr); }
+      .act-grid { grid-template-columns: 1fr 1fr; }
+      .gains-grid { grid-template-columns: repeat(2, 1fr); }
+      .dept-grid { grid-template-columns: repeat(2, 1fr); }
+      .dept-card:nth-child(5) { grid-column: 1 / -1; max-width: 400px; justify-self: center; width: 100%; }
+    }
+
+    /* === Responsive: Mobile === */
+    @media (max-width: 600px) {
+      .hero {
+        height: 85vh;
+        min-height: 420px;
+      }
+
+      .hero-title {
+        font-size: 1.8rem;
+        letter-spacing: 4px;
+      }
+
+      .hero-subtitle {
+        font-size: 0.95rem;
+      }
+
+      .section {
+        padding: 50px 14px;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+
+      .section-desc {
+        font-size: 0.88rem;
+        padding: 0 8px;
+      }
+
+      .intro-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .intro-card {
+        padding: 24px 14px;
+      }
+
+      .intro-card-icon {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+      }
+
+      .intro-card h3 {
+        font-size: 0.95rem;
+      }
+
+      .intro-card p {
+        font-size: 0.78rem;
+      }
+
+      .act-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .act-item {
+        padding: 20px 16px;
+        gap: 12px;
+      }
+
+      .act-num {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+      }
+
+      .dept-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .dept-card {
+        padding: 26px 20px;
+      }
+
+      .dept-card:nth-child(5) {
+        grid-column: 1;
+        max-width: none;
+        justify-self: auto;
+        width: 100%;
+      }
+
+      .dept-icon {
+        font-size: 1.8rem;
+      }
+
+      .steps-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .step-card {
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        text-align: left;
+        padding: 18px 20px;
+      }
+
+      .step-card:not(:last-child)::after {
+        display: none;
+      }
+
+      .step-num {
+        margin-bottom: 0;
+      }
+
+      .gains-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .gain-card {
+        padding: 22px 14px;
+      }
+
+      .gain-icon {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+      }
+
+      .gain-card h4 {
+        font-size: 0.95rem;
+      }
+
+      .gain-card p {
+        font-size: 0.78rem;
+      }
+
+      .faq-q {
+        padding: 14px 16px;
+        font-size: 0.9rem;
+      }
+
+      .faq-a {
+        padding: 0 16px;
+        font-size: 0.82rem;
+      }
+
+      .faq-item.open .faq-a {
+        padding: 0 16px 14px;
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .news-card {
+        padding: 20px 16px;
+      }
+
+      .news-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .modal {
+        width: 95vw;
+        height: 80vh;
+        border-radius: 12px;
+      }
+
+      .modal-header {
+        padding: 12px 16px;
+      }
+
+      .modal-header h3 {
+        font-size: 1rem;
+      }
+
+      .modal-close {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+      }
+
+      .game-section {
+        padding: 50px 14px;
+      }
+
+      .game-wrapper {
+        margin-top: 24px;
+        border-radius: 12px;
+      }
+
+      .game-header {
+        padding: 12px 16px;
+      }
+
+      .game-stat {
+        font-size: 0.78rem;
+      }
+
+      .game-stat span {
+        font-size: 0.95rem;
+      }
+
+      .game-area {
+        height: 300px;
+      }
+
+      .game-word {
+        font-size: 1rem;
+        padding: 6px 12px;
+      }
+
+      .game-input-row {
+        padding: 10px 14px;
+        gap: 8px;
+      }
+
+      .game-input-row input {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+
+      .game-input-row button {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+
+      .game-overlay h3 {
+        font-size: 1.3rem;
+      }
+
+      .game-overlay .final-score {
+        font-size: 2.2rem;
+      }
+
+      .join-highlight {
+        font-size: 1.2rem;
+      }
+
+      .join-tagline {
+        font-size: 0.95rem;
+      }
+
+      .back-to-top {
+        bottom: 20px;
+        right: 16px;
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到顶部">↑</button>
+
+  <!-- Floating Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">英语沙龙协会</h1>
+      <p class="hero-subtitle"><span class="hero-typing" id="typingText"></span></p>
+      <p class="hero-tagline">高州二中 · 唯一的英语学习社团</p>
+      <div class="hero-scroll"></div>
+    </div>
+  </section>
+
+  <!-- 英语小游戏 -->
+  <section class="game-section">
+    <h2 class="section-title">英语打字小游戏</h2>
+    <p class="section-desc reveal" style="color:#555;">输入下落单词的英文，按下回车或点击按钮消除它们！</p>
+    <div class="game-wrapper reveal">
+      <div class="game-header">
+        <div class="game-stat">得分 <span id="gameScore">0</span></div>
+        <div class="game-stat">等级 <span id="gameLevel">1</span></div>
+        <div class="game-stat">
+          生命
+          <span class="lives" id="gameLives">
+            <i>❤️</i><i>❤️</i><i>❤️</i>
+          </span>
+        </div>
+      </div>
+      <div class="game-area" id="gameArea">
+        <div class="game-overlay show" id="gameOverlay">
+          <h3 id="gameOverTitle">英语打字小游戏</h3>
+          <div class="final-score" id="gameFinalScore">🏆</div>
+          <button onclick="startGame()">开始游戏</button>
+        </div>
+      </div>
+      <div class="game-input-row">
+        <input type="text" id="gameInput" placeholder="输入英文单词，按回车消除..." autocomplete="off" />
+        <button onclick="checkWord()">消除</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 社团简介 -->
+  <section class="intro section">
+    <h2 class="section-title">关于我们</h2>
+    <p class="section-desc reveal">
+      英语沙龙协会是一个年轻且具有巨大发展前途的组织团体，也是高州二中唯一的英语学习社团。
+      我们致力于营造轻松、欢乐的英语学习氛围，让每一位成员都能在快乐中成长。
+    </p>
+    <div class="intro-cards">
+      <div class="intro-card reveal" style="transition-delay: 0s">
+        <div class="intro-card-icon">🎉</div>
+        <h3>轻松氛围</h3>
+        <p>定期开展活动，分享学习感受与心得，增强同学之间的情感交流</p>
+      </div>
+      <div class="intro-card reveal" style="transition-delay: 0.12s">
+        <div class="intro-card-icon">🎤</div>
+        <h3>展示自我</h3>
+        <p>尽可能多地提供在公众面前表现自己的机会，让内向的同学找到自信</p>
+      </div>
+      <div class="intro-card reveal" style="transition-delay: 0.24s">
+        <div class="intro-card-icon">🤝</div>
+        <h3>敞开心扉</h3>
+        <p>让更多同学学会敞开心扉，与人沟通，发现乐趣</p>
+      </div>
+      <div class="intro-card reveal" style="transition-delay: 0.36s">
+        <div class="intro-card-icon">🚫</div>
+        <h3>不限成绩</h3>
+        <p>英语不好也可以参加！不限成绩，欢迎每一位热爱生活的你</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 社团活动 -->
+  <section class="activities section">
+    <h2 class="section-title">社团活动</h2>
+    <p class="section-desc reveal">丰富多彩的活动，让英语学习不再枯燥</p>
+    <div class="act-grid">
+      <div class="act-item reveal" style="transition-delay: 0s">
+        <div class="act-num">1</div>
+        <div class="act-info">
+          <h4>英语沙龙报纸</h4>
+          <p>由社团成员共同编辑制作英语报纸，内容涵盖校园新闻、英语知识和趣味故事。</p>
+        </div>
+      </div>
+      <div class="act-item reveal" style="transition-delay: 0.1s">
+        <div class="act-num">2</div>
+        <div class="act-info">
+          <h4>英语配音秀</h4>
+          <p>选取经典影视片段进行配音比拼，在趣味中练习发音、语调和情感表达。</p>
+        </div>
+      </div>
+      <div class="act-item reveal" style="transition-delay: 0.2s">
+        <div class="act-num">3</div>
+        <div class="act-info">
+          <h4>英语知识竞赛</h4>
+          <p>涵盖词汇、语法、文化常识等内容的趣味竞赛，以赛促学，激发学习热情。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 部门介绍 -->
+  <section class="departments section">
+    <h2 class="section-title">社团部门</h2>
+    <p class="section-desc reveal">五大部门，各具特色，总有一个适合你</p>
+    <div class="dept-grid">
+      <div class="dept-card reveal" style="transition-delay: 0s">
+        <div class="dept-icon">📝</div>
+        <h3>秘书部</h3>
+        <span class="dept-tag">心灵细腻</span>
+        <p>负责文笔类工作，英语报纸的打印和分发，以及活动通知和签到管理。如果你心灵细腻，这里是你施展才华的最佳舞台。</p>
+      </div>
+      <div class="dept-card reveal" style="transition-delay: 0.1s">
+        <div class="dept-icon">📢</div>
+        <h3>宣传部</h3>
+        <span class="dept-tag">文笔卓绝</span>
+        <p>负责活动宣传单的设计和派发，会议的通知传达。如果你文笔卓绝，你的创意将在这里闪耀光芒。</p>
+      </div>
+      <div class="dept-card reveal" style="transition-delay: 0.2s">
+        <div class="dept-icon">💡</div>
+        <h3>策划部</h3>
+        <span class="dept-tag">想法丰富</span>
+        <p>负责活动策划与报纸编辑。如果你想法多、想象力丰富且有电脑编辑特长，这里是你发挥创意的舞台。</p>
+      </div>
+      <div class="dept-card reveal" style="transition-delay: 0.3s">
+        <div class="dept-icon">🎨</div>
+        <h3>口语部</h3>
+        <span class="dept-tag">责任心强</span>
+        <p>参与各类活动设计与道具制作，以及报纸的制作。如果你责任心强、有耐心，这里期待你的加入。</p>
+      </div>
+      <div class="dept-card reveal" style="transition-delay: 0.4s">
+        <div class="dept-icon">🤝</div>
+        <h3>涉外部</h3>
+        <span class="dept-tag">胆大心细</span>
+        <p>替社团筹备资金，负责活动资金积累。如果你胆子大、想锻炼胆量，这里将是你挑战自我的平台。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 加入流程 -->
+  <section class="join-steps section">
+    <h2 class="section-title">加入流程</h2>
+    <p class="section-desc reveal">简单四步，轻松加入英语沙龙协会</p>
+    <div class="steps-row">
+      <div class="step-card reveal" style="transition-delay: 0s">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <h4>了解社团</h4>
+          <p>阅读宣传资料，了解各部职责，找到心仪方向</p>
+        </div>
+      </div>
+      <div class="step-card reveal" style="transition-delay: 0.12s">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <h4>填写报名</h4>
+          <p>在招新期间提交报名表，选择意向部门</p>
+        </div>
+      </div>
+      <div class="step-card reveal" style="transition-delay: 0.24s">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <h4>参加面试</h4>
+          <p>轻松愉快的简短面试，了解你的兴趣特长</p>
+        </div>
+      </div>
+      <div class="step-card reveal" style="transition-delay: 0.36s">
+        <div class="step-num">4</div>
+        <div class="step-text">
+          <h4>正式加入</h4>
+          <p>通过后即可成为正式成员，开启精彩社团生活</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 报纸阅览 -->
+  <section class="newspaper section">
+    <h2 class="section-title">报纸阅览</h2>
+    <p class="section-desc reveal">点击查看往期英语沙龙报纸</p>
+    <div class="news-grid">
+      <div class="news-card reveal" style="transition-delay: 0s" onclick="openNews('baozhi/8.19.pdf', '英语沙龙报 - 8月19日')">
+        <div class="news-icon">📰</div>
+        <h4>英语沙龙报</h4>
+        <div class="news-date">2026年8月19日</div>
+        <div class="news-hint">点击阅读 →</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 社团收获 -->
+  <section class="gains section">
+    <h2 class="section-title">你的收获</h2>
+    <p class="section-desc reveal">加入英语沙龙协会，你将获得远超英语学习的成长</p>
+    <div class="gains-grid">
+      <div class="gain-card reveal" style="transition-delay: 0s">
+        <div class="gain-icon">📈</div>
+        <h4>英语能力提升</h4>
+        <p>在沉浸式英语环境中，听说读写能力全面提升，告别哑巴英语</p>
+      </div>
+      <div class="gain-card reveal" style="transition-delay: 0.1s">
+        <div class="gain-icon">💬</div>
+        <h4>沟通表达能力</h4>
+        <p>通过演讲、讨论、活动组织，锻炼口才与人际交往能力</p>
+      </div>
+      <div class="gain-card reveal" style="transition-delay: 0.2s">
+        <div class="gain-icon">👥</div>
+        <h4>真挚友谊</h4>
+        <p>在共同学习和活动中结识志同道合的朋友，收获珍贵友谊</p>
+      </div>
+      <div class="gain-card reveal" style="transition-delay: 0.3s">
+        <div class="gain-icon">🏆</div>
+        <h4>组织策划能力</h4>
+        <p>亲身参与活动策划与执行，培养领导力和团队协作精神</p>
+      </div>
+      <div class="gain-card reveal" style="transition-delay: 0.4s">
+        <div class="gain-icon">💪</div>
+        <h4>自信心提升</h4>
+        <p>在公众面前展示自我，让内向的同学也能找到自信与光芒</p>
+      </div>
+      <div class="gain-card reveal" style="transition-delay: 0.5s">
+        <div class="gain-icon">📝</div>
+        <h4>实践技能</h4>
+        <p>学习活动策划、宣传设计、报纸编辑等实用技能，丰富履历</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 常见问题 -->
+  <section class="faq section">
+    <h2 class="section-title">常见问题</h2>
+    <p class="section-desc reveal">你可能关心的问题，这里都有答案</p>
+    <div class="faq-list">
+      <div class="faq-item reveal" style="transition-delay: 0s">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">我英语不好，可以参加吗？</div>
+        <div class="faq-a">当然可以！英语沙龙协会不限成绩，我们欢迎所有对英语感兴趣的同学。在这里，我们更注重的是学习和进步的过程，而不是起点的高低。</div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay: 0.1s">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">社团活动一般在什么时间？</div>
+        <div class="faq-a">社团活动一般安排在课后时间，不会影响正常上课。</div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay: 0.2s">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">可以同时加入多个部门吗？</div>
+        <div class="faq-a">建议每位同学先选择一个部门集中精力发展，等熟悉社团运作后，如果学有余力，也可以参与其他部门的活动。</div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay: 0.3s">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">加入社团需要会费吗？</div>
+        <div class="faq-a">我们会收取少量社费用于活动物资和报纸印刷，具体金额会在招新时说明，保证公开透明。涉外部也会积极为社团筹措资金。</div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay: 0.4s">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">社团招新一般在什么时候？</div>
+        <div class="faq-a">每年新生入学季是主要招新时间，此外学期中也会根据实际情况进行补招。请关注校内宣传海报和广播通知。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 加入我们 -->
+  <section class="join section">
+    <h2 class="section-title">加入我们</h2>
+    <p class="section-desc reveal" style="color: rgba(255,255,255,0.75);">
+      无论你的英语水平如何，无论你性格内向还是外向——<br>
+      英语沙龙协会都欢迎你的到来！
+    </p>
+    <p class="join-highlight">英语不好也可以参加！不限成绩！</p>
+    <p class="join-tagline">让我们一起，在轻松欢乐的氛围中，学好英语，交到朋友，找到自信。</p>
+    <p class="join-contact">
+      招新信息请关注校内海报、广播通知<br>
+      或前往社团活动室咨询
+    </p>
+  </section>
+
+  <!-- 声明 -->
+  <section class="section" style="padding: 30px 24px; text-align: center; background: #fff;">
+    <p style="font-size: 0.82rem; color: #aaa; line-height: 1.8; max-width: 700px; margin: 0 auto;">
+      本网页仅提供英语沙龙协会的简要介绍与活动展示，内容仅供参考，具体招新时间、活动安排及部门信息以学校实际通知为准。如有疑问请联系社团负责人或关注校内公告。
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    高州二中 · 英语沙龙协会 · English Salon Association
+    <br><span style="font-size: 0.75rem; opacity: 0.5; margin-top: 8px; display: inline-block;"><a href="https://theez.top" target="_blank" style="color: rgba(255,255,255,0.5); text-decoration: none;">theez.top</a> · 作者 DarionDong 提供技术支持 · 2026.08.19 · 以实际学校与工作提供为准</span>
+    <br><span style="font-size: 0.75rem; opacity: 0.4;">联系作者：QQ 3421016150 · 微信 BG7LZQ</span>
+  </footer>
+
+  <!-- Newspaper Modal -->
+  <div class="modal-overlay" id="newsModal" onclick="closeNews(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="modalTitle">报纸阅览</h3>
+        <button class="modal-close" onclick="closeNews()">✕</button>
+      </div>
+      <div class="modal-body">
+        <iframe id="modalFrame" src="" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // === Scroll Progress Bar ===
+    const progressBar = document.getElementById('progressBar');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = progress + '%';
+    });
+
+    // === Back to Top ===
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('visible', window.scrollY > 500);
+    });
+
+    // === Scroll-triggered reveal ===
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // === Typing Effect ===
+    const typingText = document.getElementById('typingText');
+    const text = 'English Salon Association';
+    let charIndex = 0;
+
+    function type() {
+      if (charIndex < text.length) {
+        typingText.textContent += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(type, 80 + Math.random() * 40);
+      } else {
+        setTimeout(() => {
+          typingText.textContent = '';
+          charIndex = 0;
+          setTimeout(type, 500);
+        }, 3000);
+      }
+    }
+
+    setTimeout(type, 1200);
+
+    // === Floating Particles ===
+    const particlesContainer = document.getElementById('particles');
+    const emojis = ['✨', '🌟', '💫', '⭐', '🔤', '📖', '🎓', '💡'];
+
+    function createParticle() {
+      const particle = document.createElement('span');
+      particle.className = 'particle';
+      particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDuration = (8 + Math.random() * 12) + 's';
+      particle.style.animationDelay = Math.random() * 5 + 's';
+      particle.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+      particlesContainer.appendChild(particle);
+
+      setTimeout(() => {
+        particle.remove();
+      }, 20000);
+    }
+
+    // Create initial particles
+    for (let i = 0; i < 12; i++) {
+      setTimeout(createParticle, i * 600);
+    }
+
+    // Keep creating particles
+    setInterval(createParticle, 2500);
+
+    // === Word Typing Game ===
+    const wordBank = [
+      'apple', 'book', 'cat', 'dog', 'egg', 'fish', 'girl', 'house', 'ice', 'jump',
+      'king', 'love', 'moon', 'night', 'open', 'pen', 'queen', 'rain', 'sun', 'tree',
+      'blue', 'cloud', 'dance', 'eagle', 'fly', 'green', 'happy', 'island', 'joy', 'kite',
+      'light', 'music', 'note', 'ocean', 'peace', 'quiet', 'run', 'smile', 'think', 'water',
+      'bear', 'candy', 'dream', 'flower', 'garden', 'heart', 'lemon', 'magic', 'noble', 'piano',
+      'river', 'star', 'tiger', 'wind', 'zebra', 'angel', 'brave', 'clean', 'deer', 'early'
+    ];
+
+    let gameRunning = false;
+    let gameScore = 0;
+    let gameLives = 3;
+    let gameLevel = 1;
+    let gameWords = [];
+    let gameLoopId = null;
+    let gameSpawnId = null;
+    let fallSpeed = 0.6;
+
+    const gameArea = document.getElementById('gameArea');
+    const gameInput = document.getElementById('gameInput');
+    const gameOverlay = document.getElementById('gameOverlay');
+
+    function startGame() {
+      gameScore = 0;
+      gameLives = 3;
+      gameLevel = 1;
+      fallSpeed = 0.6;
+      gameWords = [];
+      gameRunning = true;
+
+      document.getElementById('gameScore').textContent = '0';
+      document.getElementById('gameLevel').textContent = '1';
+      updateLivesDisplay();
+      gameOverlay.classList.remove('show');
+      gameArea.querySelectorAll('.game-word').forEach(el => el.remove());
+      gameInput.value = '';
+      gameInput.focus();
+
+      gameLoopId = requestAnimationFrame(gameLoop);
+      spawnWord();
+    }
+
+    function updateLivesDisplay() {
+      const livesEl = document.getElementById('gameLives');
+      const hearts = livesEl.querySelectorAll('i');
+      hearts.forEach((h, i) => {
+        h.classList.toggle('lost', i >= gameLives);
+      });
+    }
+
+    function endGame() {
+      gameRunning = false;
+      if (gameLoopId) cancelAnimationFrame(gameLoopId);
+      if (gameSpawnId) clearTimeout(gameSpawnId);
+      document.getElementById('gameFinalScore').textContent = gameScore;
+      document.getElementById('gameOverTitle').textContent = gameLives > 0 ? '恭喜通关！' : '游戏结束';
+      document.getElementById('gameOverlay').classList.add('show');
+      gameOverlay.querySelector('button').textContent = '再来一局';
+    }
+
+    function spawnWord() {
+      if (!gameRunning) return;
+
+      const word = wordBank[Math.floor(Math.random() * wordBank.length)];
+      const el = document.createElement('div');
+      el.className = 'game-word';
+      el.textContent = word;
+      el.style.left = (10 + Math.random() * 70) + '%';
+      el.style.top = '-40px';
+      gameArea.appendChild(el);
+
+      gameWords.push({ el, word, y: -40 });
+
+      const nextSpawn = 1800 - gameLevel * 120;
+      gameSpawnId = setTimeout(spawnWord, Math.max(600, nextSpawn));
+    }
+
+    function gameLoop() {
+      if (!gameRunning) return;
+
+      gameWords.forEach(w => {
+        w.y += fallSpeed;
+        w.el.style.top = w.y + 'px';
+      });
+
+      // Check for missed words
+      const missed = gameWords.filter(w => w.y > gameArea.clientHeight);
+      missed.forEach(w => {
+        w.el.classList.add('missed');
+        setTimeout(() => w.el.remove(), 400);
+        gameLives--;
+        updateLivesDisplay();
+        if (gameLives <= 0) {
+          gameRunning = false;
+          endGame();
+          return;
+        }
+      });
+      gameWords = gameWords.filter(w => w.y <= gameArea.clientHeight && !w.el.classList.contains('missed'));
+
+      if (gameRunning) {
+        gameLoopId = requestAnimationFrame(gameLoop);
+      }
+    }
+
+    function checkWord() {
+      if (!gameRunning) return;
+
+      const input = gameInput.value.trim().toLowerCase();
+      if (!input) return;
+
+      const idx = gameWords.findIndex(w => w.word === input);
+      if (idx !== -1) {
+        const w = gameWords[idx];
+        w.el.classList.add('popped');
+        setTimeout(() => w.el.remove(), 300);
+        gameWords.splice(idx, 1);
+
+        gameScore += 10;
+        document.getElementById('gameScore').textContent = gameScore;
+
+        // Level up every 50 points
+        const newLevel = Math.floor(gameScore / 50) + 1;
+        if (newLevel > gameLevel) {
+          gameLevel = newLevel;
+          fallSpeed += 0.15;
+          document.getElementById('gameLevel').textContent = gameLevel;
+        }
+      }
+
+      gameInput.value = '';
+      gameInput.focus();
+    }
+
+    gameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        checkWord();
+      }
+    });
+
+    // === Newspaper Modal ===
+    function openNews(url, title) {
+      document.getElementById('modalFrame').src = url;
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('newsModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeNews(e) {
+      if (e && e.target !== document.getElementById('newsModal')) return;
+      document.getElementById('newsModal').classList.remove('open');
+      document.getElementById('modalFrame').src = '';
+      document.body.style.overflow = '';
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英语沙龙协会 - 宣传卡片</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #e8e4dc;
+      font-family: "Microsoft YaHei", "PingFang SC", -apple-system, sans-serif;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      display: flex;
+      width: 600px;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 左侧二维码区 */
+    .card-left {
+      width: 200px;
+      background: linear-gradient(160deg, #1a3a5c 0%, #2a5a8c 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      gap: 16px;
+    }
+
+    .card-left .qr-box {
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .card-left .qr-box img {
+      width: 120px;
+      height: 120px;
+      display: block;
+    }
+
+    .card-left .qr-url {
+      color: #e8b84b;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    .card-left .qr-hint {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.72rem;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* 右侧内容区 */
+    .card-right {
+      flex: 1;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .card-right .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .card-right .logo-icon {
+      font-size: 2rem;
+    }
+
+    .card-right h2 {
+      font-size: 1.3rem;
+      color: #1a3a5c;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .card-right .subtitle {
+      font-size: 0.78rem;
+      color: #999;
+      letter-spacing: 1px;
+    }
+
+    .card-right .divider {
+      width: 40px;
+      height: 2px;
+      background: #e8b84b;
+      border-radius: 1px;
+    }
+
+    .card-right .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-right .info-list li {
+      font-size: 0.8rem;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-right .info-list li .label {
+      color: #1a3a5c;
+      font-weight: 600;
+      min-width: 50px;
+    }
+
+    .card-right .tagline {
+      font-size: 0.78rem;
+      color: #e8b84b;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .card-right .web-url {
+      font-size: 0.72rem;
+      color: #1a3a5c;
+      background: #f5f0e8;
+      padding: 6px 12px;
+      border-radius: 6px;
+      display: inline-block;
+      letter-spacing: 0.5px;
+    }
+
+    /* 导出按钮 */
+    .export-btns {
+      display: flex;
+      gap: 12px;
+    }
+
+    .export-btns button {
+      padding: 10px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .export-btns button:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-print {
+      background: #1a3a5c;
+      color: #fff;
+    }
+
+    .btn-download {
+      background: #e8b84b;
+      color: #fff;
+    }
+
+    /* 打印样式 */
+    @media print {
+      body { background: #fff; gap: 0; }
+      .export-btns { display: none; }
+      .card { box-shadow: none; border: 1px solid #ddd; }
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        flex-direction: column;
+        width: 320px;
+      }
+      .card-left {
+        width: 100%;
+        flex-direction: row;
+        padding: 20px;
+        gap: 20px;
+      }
+      .card-left .qr-box img {
+        width: 90px;
+        height: 90px;
+      }
+      .card-right {
+        padding: 20px 18px;
+      }
+      .export-btns {
+        flex-direction: column;
+        width: 320px;
+      }
+      .export-btns button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <!-- 左侧：二维码 -->
+    <div class="card-left">
+      <div class="qr-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://theez.top/sl" alt="二维码" crossorigin="anonymous" />
+      </div>
+      <div>
+        <div class="qr-url">theez.top/sl</div>
+        <div class="qr-hint">扫码了解更多</div>
+      </div>
+    </div>
+
+    <!-- 右侧：信息 -->
+    <div class="card-right">
+      <div class="logo-area">
+        <span class="logo-icon">📚</span>
+        <div>
+          <h2>英语沙龙协会</h2>
+          <div class="subtitle">高州二中 · 唯一英语学习社团</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <ul class="info-list">
+        <li><span class="label">五大部门</span> 秘书 · 宣传 · 策划 · 口语 · 涉外</li>
+        <li><span class="label">社团活动</span> 英语报纸 · 配音秀 · 知识竞赛</li>
+        <li><span class="label">加入门槛</span> 不限成绩，英语不好也能参加！</li>
+      </ul>
+
+      <div class="tagline">轻松 · 欢乐 · 自信 · 成长</div>
+
+      <div class="web-url">访问网页：theez.top/sl</div>
+    </div>
+  </div>
+
+  <!-- 导出按钮 -->
+  <div class="export-btns">
+    <button class="btn-print" onclick="printCard()">打印卡片</button>
+    <button class="btn-download" onclick="downloadCard()">下载图片</button>
+  </div>
+
+  <script>
+    function printCard() {
+      window.print();
+    }
+
+    async function downloadCard() {
+      const btn = document.querySelector('.btn-download');
+      btn.textContent = '生成中...';
+      btn.disabled = true;
+
+      try {
+        const canvas = await html2canvas(document.getElementById('card'), {
+          scale: 2,
+          backgroundColor: '#ffffff',
+          useCORS: true,
+          allowTaint: true,
+        });
+
+        const link = document.createElement('a');
+        link.download = '英语沙龙协会宣传卡片.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (e) {
+        alert('导出失败，请尝试使用打印功能');
+      }
+
+      btn.textContent = '下载图片';
+      btn.disabled = false;
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</body>
+</html>
