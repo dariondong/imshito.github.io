@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -95,8 +95,8 @@
     .hero {
       position: relative;
       width: 100%;
-      height: 100vh;
-      min-height: 600px;
+      min-height: 100vh;
+      min-height: 100svh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -109,13 +109,6 @@
       inset: 0;
       background: url('beijing.webp') center/cover no-repeat;
       filter: brightness(0.5);
-      will-change: transform;
-      animation: heroZoom 30s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
-    }
-
-    @keyframes heroZoom {
-      from { transform: scale(1); }
-      to   { transform: scale(1.08); }
     }
 
     .hero-overlay {
@@ -224,11 +217,27 @@
 
     /* === Section Common === */
     .section {
-      padding: 90px 24px;
-      max-width: 1100px;
+      width: 100%;
+      min-height: 100vh;
       margin: 0 auto;
+      padding: 80px 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       position: relative;
       z-index: 1;
+    }
+
+    .section-inner {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .section-inner > div {
+      width: 100%;
     }
 
     .section-title {
@@ -266,23 +275,18 @@
       margin: 0 auto 40px;
     }
 
-    /* === Reveal on Scroll === */
+    /* === Reveal on Scroll (scroll-scrub 渐变切换动画) === */
     .reveal {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
-                  transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+      transform: translateY(60px) scale(0.95);
+      filter: blur(8px);
+      will-change: transform, opacity, filter;
     }
 
     
 
     /* === Intro Section === */
-    .intro { background: #fff; }
+    .intro { background: linear-gradient(180deg, #ffffff 0%, #f9f2e6 100%); }
 
     .intro-cards {
       display: grid;
@@ -292,7 +296,7 @@
     }
 
     .intro-card {
-      background: #fafaf7;
+      background: linear-gradient(150deg, #fffdf8 0%, #f4e9d4 100%);
       border: 1px solid #e8e4dc;
       border-radius: 14px;
       padding: 32px 18px;
@@ -334,7 +338,7 @@
     }
 
     /* === Activities Section === */
-    .activities { background: #fff; }
+    .activities { background: linear-gradient(180deg, #f9f2e6 0%, #fffdf8 100%); }
 
     .act-grid {
       display: grid;
@@ -347,7 +351,7 @@
       display: flex;
       gap: 16px;
       align-items: flex-start;
-      background: #fafaf7;
+      background: linear-gradient(150deg, #fffdf8 0%, #f4e9d4 100%);
       border: 1px solid #e8e4dc;
       border-radius: 14px;
       padding: 24px 20px;
@@ -408,7 +412,7 @@
     }
 
     .dept-card {
-      background: #fff;
+      background: linear-gradient(150deg, #fffdf8 0%, #f5ecdb 100%);
       border-radius: 18px;
       padding: 32px 22px;
       position: relative;
@@ -505,7 +509,7 @@
     }
 
     .step-card {
-      background: #fff;
+      background: linear-gradient(150deg, #fffdf8 0%, #f5ecdb 100%);
       border-radius: 16px;
       padding: 28px 20px;
       text-align: center;
@@ -569,7 +573,7 @@
 
     /* === Newspaper Section === */
     .newspaper {
-      background: #fff;
+      background: linear-gradient(180deg, #ffffff 0%, #f9f2e6 100%);
     }
 
     .news-grid {
@@ -580,7 +584,7 @@
     }
 
     .news-card {
-      background: #fafaf7;
+      background: linear-gradient(150deg, #fffdf8 0%, #f4e9d4 100%);
       border: 1px solid #e8e4dc;
       border-radius: 14px;
       padding: 24px 20px;
@@ -709,7 +713,7 @@
     }
 
     /* === Gains Section === */
-    .gains { background: #fff; }
+    .gains { background: linear-gradient(180deg, #f9f2e6 0%, #fffdf8 100%); }
 
     .gains-grid {
       display: grid;
@@ -719,7 +723,7 @@
     }
 
     .gain-card {
-      background: linear-gradient(135deg, #fafaf7 0%, #f5f0e8 100%);
+      background: linear-gradient(150deg, #fffdf8 0%, #f4e9d4 100%);
       border: 1px solid #e8e4dc;
       border-radius: 14px;
       padding: 28px 20px;
@@ -771,7 +775,7 @@
     }
 
     .faq-item {
-      background: #fff;
+      background: linear-gradient(150deg, #fffdf8 0%, #f5ecdb 100%);
       border: 1px solid #e8e4dc;
       border-radius: 12px;
       overflow: hidden;
@@ -859,6 +863,30 @@
       margin-bottom: 10px;
     }
 
+    .join-qq-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 24px;
+      background: rgba(255,255,255,0.12);
+      color: #e8b84b;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 24px;
+      border: 1px solid rgba(232,184,75,0.35);
+      margin-top: 18px;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+    }
+
+    .join-qq-btn:hover {
+      background: rgba(232,184,75,0.15);
+      border-color: #e8b84b;
+      box-shadow: 0 0 20px rgba(232,184,75,0.15);
+      transform: translateY(-2px);
+    }
+
     .join-contact {
       margin-top: 24px;
       font-size: 0.88rem;
@@ -881,7 +909,12 @@
     /* === Game Section === */
     .game-section {
       background: linear-gradient(180deg, #f5f0e8 0%, #e8dfd0 100%);
-      padding: 90px 24px;
+      min-height: 100vh;
+      padding: 80px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       position: relative;
       z-index: 1;
     }
@@ -891,6 +924,7 @@
     }
 
     .game-wrapper {
+      width: 100%;
       max-width: 700px;
       margin: 40px auto 0;
       background: rgba(255, 255, 255, 0.95);
@@ -1080,8 +1114,8 @@
     /* === Responsive: Mobile === */
     @media (max-width: 600px) {
       .hero {
-        height: 85vh;
-        min-height: 420px;
+        min-height: 100vh;
+        min-height: 100svh;
       }
 
       .hero-title {
@@ -1351,6 +1385,24 @@
     </div>
   </section>
 
+  <!-- 加入我们 -->
+  <section class="join section">
+    <h2 class="section-title">加入我们</h2>
+    <p class="section-desc reveal" style="color: rgba(255,255,255,0.75);">
+      无论你的英语水平如何，无论你性格内向还是外向——<br>
+      英语沙龙协会都欢迎你的到来！
+    </p>
+    <p class="join-highlight">英语不好也可以参加！不限成绩！</p>
+    <p class="join-tagline">让我们一起，在轻松欢乐的氛围中，学好英语，交到朋友，找到自信。</p>
+    <a class="join-qq-btn" href="https://qm.qq.com/q/jH0Exhdmhy" target="_blank">
+      🐧 点击加入QQ报名群
+    </a>
+    <p class="join-contact">
+      招新信息请关注校内海报、广播通知<br>
+      或前往社团活动室咨询
+    </p>
+  </section>
+
   <!-- 英语小游戏 -->
   <section class="game-section">
     <h2 class="section-title">英语打字小游戏</h2>
@@ -1594,23 +1646,8 @@
     </div>
   </section>
 
-  <!-- 加入我们 -->
-  <section class="join section">
-    <h2 class="section-title">加入我们</h2>
-    <p class="section-desc reveal" style="color: rgba(255,255,255,0.75);">
-      无论你的英语水平如何，无论你性格内向还是外向——<br>
-      英语沙龙协会都欢迎你的到来！
-    </p>
-    <p class="join-highlight">英语不好也可以参加！不限成绩！</p>
-    <p class="join-tagline">让我们一起，在轻松欢乐的氛围中，学好英语，交到朋友，找到自信。</p>
-    <p class="join-contact">
-      招新信息请关注校内海报、广播通知<br>
-      或前往社团活动室咨询
-    </p>
-  </section>
-
   <!-- 声明 -->
-  <section class="section" style="padding: 30px 24px; text-align: center; background: #fff;">
+  <section class="section" style="min-height: auto; justify-content: flex-start; padding: 40px 24px; text-align: center; background: #fff;">
     <p style="font-size: 0.82rem; color: #aaa; line-height: 1.8; max-width: 700px; margin: 0 auto;">
       本网页仅提供英语沙龙协会的简要介绍与活动展示，内容仅供参考，具体招新时间、活动安排及部门信息以学校实际通知为准。如有疑问请联系社团负责人或关注校内公告。
     </p>
@@ -1646,22 +1683,51 @@
       progressBar.style.width = progress + '%';
     });
 
+    // === 全屏 section：把内容包进 .section-inner 实现全宽背景 + 居中限宽内容 ===
+    document.querySelectorAll('section.section').forEach(sec => {
+      const inner = document.createElement('div');
+      inner.className = 'section-inner';
+      while (sec.firstChild) inner.appendChild(sec.firstChild);
+      sec.appendChild(inner);
+    });
+
+    // === 给所有板块标题也加入缩放切换动画 ===
+    document.querySelectorAll('.section-title').forEach(t => t.classList.add('reveal'));
+
     // === Back to Top ===
     const backToTop = document.getElementById('backToTop');
     window.addEventListener('scroll', () => {
       backToTop.classList.toggle('visible', window.scrollY > 500);
     });
 
-    // === Scroll-triggered reveal ===
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    // === Scroll-scrub reveal: 内容跟随滚动一气到底（跟手无延迟） ===
+    const revealEls = document.querySelectorAll('.reveal');
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    function updateReveals() {
+      const vh = window.innerHeight;
+      revealEls.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        // progress: 元素顶部从视口底部(0) 滑到视口中部(1)，跟手、一气到底
+        let p = (vh - rect.top) / (vh * 0.5);
+        p = Math.max(0, Math.min(1, p));
+        el.style.opacity = p;
+        el.style.transform = `translateY(${(1 - p) * 60}px) scale(${0.95 + 0.05 * p})`;
+        el.style.filter = `blur(${(1 - p) * 8}px)`;
+      });
+    }
+
+    let revealTicking = false;
+    window.addEventListener('scroll', () => {
+      if (!revealTicking) {
+        revealTicking = true;
+        requestAnimationFrame(() => {
+          updateReveals();
+          revealTicking = false;
+        });
+      }
+    }, { passive: true });
+
+    updateReveals();
 
     // === Typing Effect ===
     const typingText = document.getElementById('typingText');
